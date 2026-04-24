@@ -1,0 +1,23 @@
+{
+  "name": "whisper-agents",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Supplier + buyer agents for Whisper Exchange",
+  "type": "module",
+  "scripts": {
+    "supplier": "tsx supplier.ts",
+    "buyer": "tsx buyer.ts",
+    "signals": "tsx signals.ts"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1",
+    "@noble/curves": "^1.6.0",
+    "@solana/web3.js": "^1.95.4",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
+  }
+}
