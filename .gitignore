@@ -6,3 +6,8 @@ node_modules
 test-ledger
 .yarn
 .surfpool
+
+# agent runtime state
+agents/keys/
+agents/payloads/
+agents/.env
