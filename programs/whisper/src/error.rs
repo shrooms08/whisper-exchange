@@ -12,8 +12,6 @@ pub enum ErrorCode {
     NotSupplier,
     #[msg("Payload has already been delivered")]
     AlreadyDelivered,
-    #[msg("Rating has already been submitted for this purchase")]
-    AlreadyRated,
     #[msg("listing_id does not match supplier's counter")]
     ListingIdMismatch,
     #[msg("Supplier authority wallet does not match supplier agent")]

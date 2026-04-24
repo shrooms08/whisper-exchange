@@ -45,12 +45,12 @@ A sealed tip for sale.
 |---|---|---|
 | supplier | Pubkey | Agent account key |
 | listing_id | u64 | supplier-local counter |
-| category | u8 (enum) | Whale=0, Mev=1, Mint=2, Imbal=3, Insdr=4, Bridge=5 |
+| category | `Category` enum | `Whale`, `Mev`, `Mint`, `Imbal`, `Insdr`, `Bridge` (AnchorSerialize, 1 byte variant index) |
 | price_lamports | u64 | in SOL lamports |
 | payload_commitment | [u8; 32] | hash of the plaintext payload (binding) |
 | supplier_payload_cid | String (max 64) | offchain pointer (IPFS/Arweave) to supplier's encrypted blob |
 | ttl_slot | u64 | listing expires after this slot |
-| status | u8 (enum) | Active=0, Sold=1, Expired=2, Rated=3 |
+| status | `ListingStatus` enum | `Active`, `Sold`, `Expired`, `Rated` (AnchorSerialize, 1 byte variant index) |
 | buyer | Option<Pubkey> | set on purchase |
 | purchase_slot | Option<u64> | |
 | created_at | i64 | |
@@ -102,7 +102,7 @@ Buyer's verdict on the tip outcome.
 |---|---|---|
 | purchase | Pubkey | |
 | rater | Pubkey | must match purchase.buyer |
-| verdict | u8 (enum) | True=0, False=1, Partial=2 |
+| verdict | `Verdict` enum | `True`, `False`, `Partial` (AnchorSerialize, 1 byte variant index) |
 | rated_at | i64 | |
 | weight | u8 | 1 for v1, reserved for future weighting by price |
 | bump | u8 | |
@@ -154,7 +154,7 @@ v1 keeps it dead simple. Decay / recency weighting is out of scope.
 - `NotBuyer` — rating signer mismatch
 - `NotSupplier` — deliver_payload signer mismatch
 - `AlreadyDelivered` — double delivery
-- `AlreadyRated` — rating exists
+- ~~`AlreadyRated`~~ — dropped 2026-04-24; Rating PDA uniqueness surfaces this via `AccountAlreadyInUse` on second rating attempt.
 
 ---
 
