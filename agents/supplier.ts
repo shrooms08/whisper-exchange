@@ -193,6 +193,7 @@ async function handleSignal(
   log('SIGNAL_DETECTED', { id: signal.id, category: signal.category });
 
   const payload = {
+    signal_id: signal.id,
     category: signal.category,
     signal_ref: signal.signal_ref,
     claim: signal.claim,

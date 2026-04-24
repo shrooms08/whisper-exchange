@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Whisper Exchange — Wireframes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0b0e;
+    --paper: #141418;
+    --ink: #e8e8ec;
+    --ink-2: #a0a0aa;
+    --ink-3: #5a5a66;
+    --rule: #2a2a32;
+    --rule-2: #1e1e26;
+    --accent: oklch(0.68 0.25 300);
+    --accent-soft: oklch(0.68 0.25 300 / 0.18);
+    --accent-dim: oklch(0.68 0.25 300 / 0.45);
+    --danger: oklch(0.72 0.22 25);
+    --ok: oklch(0.78 0.18 160);
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Space Grotesk', sans-serif; }
+  * { box-sizing: border-box; }
+
+  .wf { background: var(--paper); border: 1.5px solid var(--rule); border-radius: 3px; }
+  .wf-dashed { border: 1.5px dashed var(--rule); border-radius: 3px; background: transparent; }
+  .wf-hand { font-family: 'Caveat', cursive; color: var(--ink-2); }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .h { font-family: 'Space Grotesk', sans-serif; font-weight: 600; letter-spacing: -0.01em; }
+  .annot { font-family: 'Caveat', cursive; color: var(--accent); font-weight: 600; }
+  .pill { display:inline-flex; align-items:center; gap:6px; padding: 2px 8px; border:1px solid var(--rule); border-radius: 999px; font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--ink-2); }
+  .pill.accent { border-color: var(--accent-dim); color: var(--accent); background: var(--accent-soft); }
+  .dot { width:6px; height:6px; border-radius:50%; background: var(--ok); box-shadow: 0 0 6px var(--ok); }
+  .dot.v { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .dot.r { background: var(--danger); box-shadow: 0 0 6px var(--danger); }
+  .redacted { display:inline-block; background: var(--ink); color: var(--ink); border-radius: 1px; user-select:none; }
+  .glow { box-shadow: 0 0 0 1px var(--accent-dim), 0 0 18px var(--accent-soft); }
+
+  .screen { width: 100%; height: 100%; background: var(--bg); display:flex; flex-direction: column; overflow: hidden; position: relative; }
+  .topbar { height: 36px; border-bottom: 1px solid var(--rule); display:flex; align-items:center; padding: 0 14px; gap: 12px; background: linear-gradient(180deg, #101014, #0b0b0e); flex-shrink: 0; }
+  .topbar .brand { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: 0.02em; font-size: 12px; }
+  .topbar .brand span { color: var(--accent); }
+  .topbar .crumbs { display:flex; gap: 10px; color: var(--ink-3); font-size: 10px; font-family: 'JetBrains Mono'; }
+  .topbar .spacer { flex:1; }
+  .topbar .status { display:flex; gap: 10px; color: var(--ink-2); font-size: 10px; font-family: 'JetBrains Mono'; align-items:center; }
+
+  .logbar { height: 34px; border-top: 1px solid var(--rule); background: #0d0d12; display:flex; align-items:center; gap: 14px; padding: 0 14px; font-family: 'JetBrains Mono'; font-size: 10px; color: var(--ink-2); flex-shrink: 0; overflow: hidden; }
+
+  .panel { background: var(--paper); border: 1px solid var(--rule); display:flex; flex-direction: column; }
+  .panel-head { padding: 10px 14px; border-bottom: 1px solid var(--rule); display:flex; align-items:center; gap: 10px; flex-shrink: 0; }
+  .panel-title { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; }
+  .panel-sub { font-size: 10px; color: var(--ink-3); font-family: 'JetBrains Mono'; letter-spacing: 0.04em; }
+  .panel-body { padding: 12px 14px; overflow: hidden; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+
+  .row { display:flex; align-items:center; gap: 10px; padding: 8px 10px; border: 1px solid var(--rule-2); border-radius: 2px; background: #101014; }
+  .row:hover { border-color: var(--rule); }
+  .row .cell { font-family: 'JetBrains Mono'; font-size: 11px; }
+
+  .rep { display:inline-flex; align-items:center; gap: 3px; }
+  .rep i { width: 4px; height: 10px; background: var(--rule); border-radius: 1px; }
+  .rep i.on { background: var(--accent); box-shadow: 0 0 6px var(--accent-soft); }
+
+  .envelope { stroke: var(--ink-2); fill: none; stroke-width: 1.2; }
+  .envelope .seal { fill: var(--accent); stroke: none; filter: drop-shadow(0 0 4px var(--accent-soft)); }
+
+  .field { display:flex; flex-direction: column; gap: 4px; }
+  .field label { font-size: 9px; font-family: 'JetBrains Mono'; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); }
+  .field .inp { border:1px dashed var(--rule); background: #0d0d12; height: 26px; border-radius: 2px; padding: 0 8px; display:flex; align-items:center; font-family: 'JetBrains Mono'; font-size: 11px; color: var(--ink-2); }
+  .btn { border: 1px solid var(--accent-dim); background: var(--accent-soft); color: var(--accent); font-family: 'JetBrains Mono'; font-size: 11px; padding: 7px 12px; border-radius: 2px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+  .btn.ghost { background: transparent; border-color: var(--rule); color: var(--ink-2); }
+  .btn:hover { box-shadow: 0 0 12px var(--accent-soft); }
+
+  @keyframes scroll-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .ticker { white-space: nowrap; display: inline-block; animation: scroll-x 45s linear infinite; }
+
+  @keyframes envslide { 0% { transform: translateX(-20px); opacity:0 } 10% { opacity: 1 } 90% { opacity: 1 } 100% { transform: translateX(160px); opacity: 0 } }
+  .env-anim { animation: envslide 6s ease-in-out infinite; }
+
+  @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .sweep { transform-origin: center; animation: sweep 6s linear infinite; }
+
+  .arrow { stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+  [data-dc-focus] .screen { font-size: 13px; }
+  .list { display:flex; flex-direction: column; gap: 6px; }
+
+  .ob { display:grid; grid-template-columns: 60px 1fr 70px 60px 30px; gap: 8px; align-items:center; padding: 7px 8px; border-bottom: 1px dashed var(--rule-2); font-family: 'JetBrains Mono'; font-size: 11px; color: var(--ink-2); }
+  .ob .cat { color: var(--ink); }
+  .ob .price { color: var(--accent); }
+  .ob:hover { background: #101014; }
+
+  .payload { border: 1px dashed var(--accent-dim); padding: 10px 12px; background: linear-gradient(180deg, rgba(157,78,221,0.05), transparent); font-family: 'JetBrains Mono'; font-size: 11px; color: var(--ink); border-radius: 2px; }
+  .payload .line { color: var(--ink-2); }
+  .payload .kw { color: var(--accent); }
+
+  .signal { padding: 9px 10px; border-left: 2px solid var(--accent); background: #101014; border-radius: 0 2px 2px 0; }
+  .signal h5 { margin: 0 0 3px; font-size: 12px; font-weight: 600; }
+  .signal .meta { font-family: 'JetBrains Mono'; font-size: 10px; color: var(--ink-3); }
+
+  .split-2 { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; flex:1; min-height: 0; padding: 12px; }
+  .split-asym { display:grid; grid-template-columns: 0.8fr 1.2fr; gap: 12px; flex:1; min-height: 0; padding: 12px; }
+  .split-3 { display:grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 12px; flex:1; min-height: 0; padding: 12px; }
+  .split-v { display:flex; flex-direction: column; gap: 12px; flex:1; min-height: 0; padding: 12px; }
+
+  .scan::before {
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background: repeating-linear-gradient(180deg, transparent 0 2px, rgba(255,255,255,0.012) 2px 3px);
+  }
+
+  .redact-line { display:flex; gap: 6px; align-items: center; padding: 5px 0; }
+  .redact-line .bar { flex:1; height: 10px; background: #1a1a22; border-radius: 1px; }
+  .redact-line .bar.short { flex: 0.4; }
+  .redact-line .bar.mid { flex: 0.7; }
+
+  .radar { position: relative; aspect-ratio: 1; max-height: 180px; margin: 0 auto; }
+
+  .arena { position: relative; overflow: hidden; background:
+    radial-gradient(circle at 50% 50%, rgba(157,78,221,0.10), transparent 60%),
+    #0d0d12;
+    border: 1px solid var(--rule); border-radius: 2px;
+  }
+
+  .margin-note { font-family: 'Caveat', cursive; color: var(--ink-2); font-size: 18px; line-height: 1.1; }
+  .margin-note b { color: var(--accent); font-weight: 700; }
+</style>
+
+<script type="application/json" id="_tweak_defaults">{
+  "accent": "violet",
+  "density": "breathing",
+  "personas": true
+}</script>
+</head>
+<body>
+
+<template id="__bundler_thumbnail" data-bg-color="#0b0b0e">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0b0b0e" />
+    <g transform="translate(420 260)" fill="none" stroke="#b470ff" stroke-width="6">
+      <rect x="0" y="0" width="360" height="240" rx="6" />
+      <path d="M0 0 L180 140 L360 0" />
+      <circle cx="180" cy="140" r="28" fill="#b470ff" stroke="none" />
+    </g>
+    <text x="600" y="600" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="28" fill="#b470ff" letter-spacing="4">WHISPER.EXCHANGE</text>
+    <text x="600" y="640" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="16" fill="#5a5a66" letter-spacing="3">UNSEALING…</text>
+  </svg>
+</template>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="parts.jsx"></script>
+<script type="text/babel" src="v1-bloomberg.jsx"></script>
+<script type="text/babel" src="v2-deaddrop.jsx"></script>
+<script type="text/babel" src="v3-triptych.jsx"></script>
+<script type="text/babel" src="v4-radar.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+
+</body>
+</html>
