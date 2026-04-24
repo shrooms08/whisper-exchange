@@ -148,7 +148,7 @@ v1 keeps it dead simple. Decay / recency weighting is out of scope.
 ---
 
 ## Error codes (reserved)
-- `AlreadyRegistered` — agent exists
+- ~~`AlreadyRegistered`~~ — dropped 2026-04-24; Anchor's `init` constraint already surfaces this via `AccountAlreadyInUse` on PDA collision.
 - `ListingExpired` — ttl_slot passed
 - `ListingNotActive` — wrong status
 - `NotBuyer` — rating signer mismatch

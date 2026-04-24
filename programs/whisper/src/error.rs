@@ -2,8 +2,6 @@ use anchor_lang::prelude::*;
 
 #[error_code]
 pub enum ErrorCode {
-    #[msg("Agent is already registered for this authority")]
-    AlreadyRegistered,
     #[msg("Listing has expired (past ttl_slot)")]
     ListingExpired,
     #[msg("Listing is not in Active status")]

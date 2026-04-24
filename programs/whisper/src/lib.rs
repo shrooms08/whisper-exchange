@@ -22,4 +22,39 @@ pub mod whisper {
     ) -> Result<()> {
         instructions::register_agent::handler(ctx, handle, pubkey_x25519)
     }
+
+    pub fn create_listing(
+        ctx: Context<CreateListing>,
+        listing_id: u64,
+        category: Category,
+        price_lamports: u64,
+        payload_commitment: [u8; 32],
+        supplier_payload_cid: String,
+        ttl_slot: u64,
+    ) -> Result<()> {
+        instructions::create_listing::handler(
+            ctx,
+            listing_id,
+            category,
+            price_lamports,
+            payload_commitment,
+            supplier_payload_cid,
+            ttl_slot,
+        )
+    }
+
+    pub fn purchase_listing(ctx: Context<PurchaseListing>) -> Result<()> {
+        instructions::purchase_listing::handler(ctx)
+    }
+
+    pub fn deliver_payload(
+        ctx: Context<DeliverPayload>,
+        buyer_payload_cid: String,
+    ) -> Result<()> {
+        instructions::deliver_payload::handler(ctx, buyer_payload_cid)
+    }
+
+    pub fn submit_rating(ctx: Context<SubmitRating>, verdict: Verdict) -> Result<()> {
+        instructions::submit_rating::handler(ctx, verdict)
+    }
 }
