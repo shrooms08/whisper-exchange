@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-whisper = "AD1BetBSjTDkpQBbzKYaswz9KrHraz54P1Vt2AGNJw5Z"
+whisper = "6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H"
 
 [provider]
 cluster = "localnet"

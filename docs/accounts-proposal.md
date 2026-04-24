@@ -131,14 +131,14 @@ pub struct PurchaseListing<'info> {
     /// The supplier's Agent account (read) — used to look up `supplier_agent.authority`
     /// so we can transfer lamports to the right wallet.
     #[account(
-        constraint = supplier_agent.key() == listing.supplier @ ErrorCode::SupplierMismatch,
+        constraint = supplier_agent.key() == listing.supplier @ ErrorCode::NotSupplier,
     )]
     pub supplier_agent: Account<'info, Agent>,
 
     /// The supplier's wallet (receives lamports). Must match supplier_agent.authority.
     #[account(
         mut,
-        constraint = supplier_authority.key() == supplier_agent.authority @ ErrorCode::SupplierAuthorityMismatch,
+        constraint = supplier_authority.key() == supplier_agent.authority @ ErrorCode::UnauthorizedSupplier,
     )]
     pub supplier_authority: SystemAccount<'info>,
 
@@ -239,7 +239,7 @@ pub struct SubmitRating<'info> {
 
     #[account(
         mut,
-        constraint = supplier_agent.key() == listing.supplier @ ErrorCode::SupplierMismatch,
+        constraint = supplier_agent.key() == listing.supplier @ ErrorCode::NotSupplier,
     )]
     pub supplier_agent: Account<'info, Agent>,
 
@@ -269,11 +269,12 @@ pub struct SubmitRating<'info> {
 The schema reserved `AlreadyRegistered`, `ListingExpired`, `ListingNotActive`, `NotBuyer`, `NotSupplier`, `AlreadyDelivered`, `AlreadyRated`. This proposal adds:
 
 - `ListingIdMismatch` — passed `listing_id` != `supplier_agent.listings_created`
-- `SupplierMismatch` — supplier_agent key doesn't match listing.supplier
-- `SupplierAuthorityMismatch` — supplier_authority wallet doesn't match supplier_agent.authority
+- `UnauthorizedSupplier` — supplier_authority wallet doesn't match supplier_agent.authority
 - `HandleTooLong` — handle > 32 chars
 - `CidTooLong` — CID > 64 chars
 - `NotDelivered` — rating attempted before deliver_payload
+
+Note: `SupplierMismatch` was merged into `NotSupplier` (schema-sanctioned name covers both "wrong supplier_agent passed for this listing" and "signer is not the supplier" — same check, different framings).
 
 Flag any you'd rather rename or fold into the schema's set.
 

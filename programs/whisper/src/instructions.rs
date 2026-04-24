@@ -1,3 +1,3 @@
-pub mod initialize;
+pub mod register_agent;
 
-pub use initialize::*;
+pub use register_agent::*;
