@@ -32,6 +32,7 @@ import type { Idl } from '@coral-xyz/anchor';
 import { x25519 } from '@noble/curves/ed25519';
 
 import { canonicalize, commit, openSealed, toHex } from './crypto.ts';
+import { fetchAllSafe } from './anchor-helpers.ts';
 import { MockFeed, type FeedEvent, type Resolution, type SignalCategory, type Verdict } from './signals.ts';
 
 loadDotenv();
@@ -233,10 +234,13 @@ async function listingScanner(ctx: {
 }
 
 async function scanOnce(chain: Chain, buyerPda: web3.PublicKey, state: State): Promise<void> {
-  const listings = await withRetry(
-    () => (chain.program.account as any).listing.all() as Promise<Array<{ publicKey: web3.PublicKey; account: any }>>,
+  const { results: listings, skipped: listingsSkipped } = await withRetry(
+    () => fetchAllSafe<any>(chain.program, 'Listing'),
     'listing.all',
   );
+  if (listingsSkipped > 0) {
+    log('LISTINGS_FILTERED', { skipped: listingsSkipped });
+  }
 
   for (const { publicKey: listingPda, account: listing } of listings) {
     const key = listingPda.toBase58();
@@ -304,7 +308,7 @@ async function purchase(
     const sig = await withRetry(
       () =>
         (chain.program.methods as any)
-          .purchaseListing()
+          .purchaseListingPublic()
           .accounts({
             listing: listingPda,
             purchase,
@@ -315,7 +319,7 @@ async function purchase(
             systemProgram: web3.SystemProgram.programId,
           })
           .rpc(),
-      'purchase_listing',
+      'purchase_listing_public',
     );
 
     log('LISTING_PURCHASED', {
@@ -376,10 +380,13 @@ async function deliveryOnce(
   x25519Priv: Uint8Array,
   state: State,
 ): Promise<void> {
-  const purchases = await withRetry(
-    () => (chain.program.account as any).purchase.all() as Promise<Array<{ publicKey: web3.PublicKey; account: any }>>,
+  const { results: purchases, skipped: purchasesSkipped } = await withRetry(
+    () => fetchAllSafe<any>(chain.program, 'Purchase'),
     'purchase.all',
   );
+  if (purchasesSkipped > 0) {
+    log('PURCHASES_FILTERED', { skipped: purchasesSkipped });
+  }
 
   for (const { publicKey: purchasePdaKey, account: purchase } of purchases) {
     if (!purchase.buyer.equals(buyerPda)) continue;

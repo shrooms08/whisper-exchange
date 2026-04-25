@@ -29,3 +29,11 @@ Running log of architectural decisions made during Whisper Exchange development.
   2. **`settle_purchase` runs on base layer post-commit.** Does the actual `system_program::transfer(buyer → supplier_authority, price_lamports)`. Buyer agent calls this after the commit-back signature confirms.
 - Privacy story: buyer-listing linkage is hidden during the ER phase. The price + supplier wallet appear on base only at settle time, decoupled in time from the listing-status flip. Less ideal than fully-private one-tx, but real privacy improvement over the current public flow.
 - If `settle_purchase` reveals more than acceptable, fall back to MagicBlock Private Payments API (USDC). Out of scope for v1 demo.
+
+## 2026-04-25 — Listing TTL bumped 60 → 200 slots
+
+TTL bumped 60→200 slots (~80–100s window) for development cycle resilience; tightening for demo recording is optional. Old 60-slot value (~25-30s on devnet) was burning out before the buyer's retry logic could land a purchase under load (orphan-Purchase deserialize spam was slowing every poll).
+
+## 2026-04-25 — Anchor 0.31 TS client normalizes IDL account names to camelCase in coder API
+
+PascalCase from raw IDL JSON (e.g. `'Listing'`) throws `Account not found` when passed to `coder.accounts.memcmp(name)` or `coder.accounts.decode(name, data)`. Always lowercase the first letter before calling these. `fetchAllSafe` in `agents/anchor-helpers.ts` normalizes input automatically. `program.account.<name>` (the AccountClient property) uses camelCase and is the safe path for typed access.

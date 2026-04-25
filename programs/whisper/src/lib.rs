@@ -45,8 +45,8 @@ pub mod whisper {
         )
     }
 
-    pub fn purchase_listing(ctx: Context<PurchaseListing>) -> Result<()> {
-        instructions::purchase_listing::handler(ctx)
+    pub fn purchase_listing_public(ctx: Context<PurchaseListingPublic>) -> Result<()> {
+        instructions::purchase_listing_public::handler(ctx)
     }
 
     pub fn deliver_payload(
@@ -73,5 +73,27 @@ pub mod whisper {
         lamports: u64,
     ) -> Result<()> {
         instructions::delegate_test_with_transfer::handler(ctx, lamports)
+    }
+
+    pub fn init_purchase_for_delegation(
+        ctx: Context<InitPurchaseForDelegation>,
+        listing_id: u64,
+    ) -> Result<()> {
+        instructions::init_purchase_for_delegation::handler(ctx, listing_id)
+    }
+
+    pub fn delegate_for_purchase(
+        ctx: Context<DelegateForPurchase>,
+        listing_id: u64,
+    ) -> Result<()> {
+        instructions::delegate_for_purchase::handler(ctx, listing_id)
+    }
+
+    pub fn purchase_listing_private(ctx: Context<PurchaseListingPrivate>) -> Result<()> {
+        instructions::purchase_listing_private::handler(ctx)
+    }
+
+    pub fn settle_purchase(ctx: Context<SettlePurchase>) -> Result<()> {
+        instructions::settle_purchase::handler(ctx)
     }
 }

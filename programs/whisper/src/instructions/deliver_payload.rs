@@ -10,6 +10,7 @@ pub struct DeliverPayload<'info> {
         seeds = [b"purchase", listing.key().as_ref()],
         bump = purchase.bump,
         constraint = !purchase.delivered @ ErrorCode::AlreadyDelivered,
+        constraint = purchase.settled @ ErrorCode::NotSettled,
     )]
     pub purchase: Account<'info, Purchase>,
 

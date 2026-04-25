@@ -5,7 +5,7 @@ use crate::error::ErrorCode;
 use crate::state::{Agent, Listing, ListingStatus, Purchase};
 
 #[derive(Accounts)]
-pub struct PurchaseListing<'info> {
+pub struct PurchaseListingPublic<'info> {
     #[account(
         mut,
         seeds = [
@@ -53,7 +53,7 @@ pub struct PurchaseListing<'info> {
     pub system_program: Program<'info, System>,
 }
 
-pub fn handler(ctx: Context<PurchaseListing>) -> Result<()> {
+pub fn handler(ctx: Context<PurchaseListingPublic>) -> Result<()> {
     let clock = Clock::get()?;
     require!(
         clock.slot <= ctx.accounts.listing.ttl_slot,
@@ -80,6 +80,7 @@ pub fn handler(ctx: Context<PurchaseListing>) -> Result<()> {
     purchase.buyer_payload_cid = String::new();
     purchase.purchased_at_slot = clock.slot;
     purchase.delivered = false;
+    purchase.settled = true; // public path settles atomically; satisfies deliver_payload's NotSettled gate
     purchase.bump = ctx.bumps.purchase;
 
     let listing = &mut ctx.accounts.listing;

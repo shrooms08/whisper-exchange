@@ -22,4 +22,12 @@ pub enum ErrorCode {
     CidTooLong,
     #[msg("Payload has not been delivered yet")]
     NotDelivered,
+    #[msg("Purchase has already been settled")]
+    AlreadySettled,
+    #[msg("Purchase has not been settled — buyer must pay before delivery")]
+    NotSettled,
+    #[msg("Purchase.listing does not match the Listing PDA passed")]
+    PurchaseListingMismatch,
+    #[msg("Purchase.price_paid_lamports does not match Listing.price_lamports")]
+    PriceMismatch,
 }

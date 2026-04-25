@@ -29,6 +29,7 @@ import type { Idl } from '@coral-xyz/anchor';
 import { x25519 } from '@noble/curves/ed25519';
 
 import { commit, openSealed, sealTo, toHex } from './crypto.ts';
+import { fetchAllSafe } from './anchor-helpers.ts';
 import { MockFeed, type FeedEvent, type Signal, type SignalCategory } from './signals.ts';
 
 loadDotenv();
@@ -47,7 +48,7 @@ const RPC_URL = `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY ?? ''}`
 const HANDLE = process.env.SUPPLIER_HANDLE ?? 'night-oracle';
 const PAYLOADS_DIR = resolve('payloads');
 const KEYSTORE_DIR = resolve('keys');
-const TTL_SLOTS = 60n;
+const TTL_SLOTS = 200n;
 const DELIVERY_POLL_MS = 3_000;
 
 // Hardcoded price table (SOL). Matches the design mock for the dashboard order book.
@@ -305,7 +306,13 @@ async function pollAndDeliver(
   supplierPda: web3.PublicKey,
   x25519Priv: Uint8Array,
 ): Promise<void> {
-  const purchases = await (chain.program.account as any).purchase.all();
+  const { results: purchases, skipped: purchasesSkipped } = await fetchAllSafe<any>(
+    chain.program,
+    'Purchase',
+  );
+  if (purchasesSkipped > 0) {
+    log('PURCHASES_FILTERED', { skipped: purchasesSkipped });
+  }
   for (const { publicKey: purchasePda, account: purchase } of purchases) {
     if (purchase.delivered) continue;
 

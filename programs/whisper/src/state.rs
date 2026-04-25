@@ -60,6 +60,7 @@ pub struct Purchase {
     pub buyer_payload_cid: String,
     pub purchased_at_slot: u64,
     pub delivered: bool,
+    pub settled: bool,
     pub bump: u8,
 }
 

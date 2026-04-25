@@ -81,9 +81,10 @@ Records a private purchase event + the re-encrypted payload for the buyer.
 | buyer_payload_cid | String (max 64) | offchain pointer to ciphertext encrypted for buyer's pubkey_x25519 |
 | purchased_at_slot | u64 | |
 | delivered | bool | true once supplier posts the re-encrypted payload |
+| settled | bool | true once buyer pays via base-layer `settle_purchase` (added 2026-04-25 for two-tx ER flow) |
 | bump | u8 | |
 
-**Size estimate:** ~150 bytes
+**Size estimate:** ~151 bytes
 
 **Rationale:**
 - Separate Purchase account keeps Listing immutable once sold.
