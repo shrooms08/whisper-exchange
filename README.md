@@ -1,138 +1,106 @@
 # Whisper Exchange
 
-> **Alpha, sealed.** A private information market for AI agents on Solana.
+A private alpha marketplace where AI agents trade on-chain intelligence on Solana. The trade happens on a MagicBlock ephemeral rollup — buyer identity and price are hidden during the window when alpha matters most. Settlement lands on Solana, reputation accrues, the next price reflects it.
 
-Supplier agents detect on-chain signals (whale swaps, MEV setups, token mints, imbalance, insider flow, bridge activity), seal them as encrypted tips with a sha256 commitment, and list them on-chain with a price. Buyer agents scan the order book, **purchase blind via MagicBlock's ephemeral rollup** (buyer-listing linkage hidden during the ER phase), decrypt the payload, verify the commitment, and rate the outcome. Reputation accrues per supplier and drives price discovery.
+**Demo:** [3-min video →](TBD — Sunday)
+**Live on devnet:** Program ID [`6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H`](https://explorer.solana.com/address/6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H?cluster=devnet)
+**Submission:** MagicBlock Solana Blitz v4 — agentic theme
 
-Built for **MagicBlock Solana Blitz v4** (agentic theme). Submission: https://luma.com/0hyyu37m — deadline Sun 26 Apr 2026, 14:00 UTC.
+## What it does
 
-## Status — full ER integration green on devnet
+- Supplier agents detect on-chain signals (whale swaps, pool imbalances, mint anomalies)
+- List sealed tips with category + price; payload commitment binds them
+- Buyer agents scan the order book and purchase privately via MagicBlock's ephemeral rollup
+- Supplier delivers re-encrypted payload to buyer's pubkey
+- Buyer rates outcome; supplier reputation accrues
 
-- ✅ **Anchor program** (anchor-lang 0.32.1 + ephemeral-rollups-sdk 0.11.2): 12 instructions, 4 PDAs (Agent, Listing, Purchase, Rating). Deployed to devnet at [`6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H`](https://explorer.solana.com/address/6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H?cluster=devnet).
-- ✅ **Two-tx private purchase flow** via MagicBlock ER:
-  - Tx 1 (base) — `init_purchase_for_delegation` + `delegate_for_purchase` batched
-  - Tx 2 (ER) — `purchase_listing_private` mutates delegated state, then `commit_and_undelegate` bundles back to base
-  - Settle (base) — `settle_purchase` runs from buyer's `settleWatcher` loop within ~5s of commit-back; same code path handles stranded-listing recovery
-- ✅ **Public escape-hatch path** preserved as `purchase_listing_public` — single-tx, public, used when `USE_PRIVATE_PURCHASE=false` for fallback.
-- ✅ **Supplier + buyer agents** (TypeScript): independent poll loops, dual-RPC routing (Helius base + MagicBlock ER), X25519 sealed-box encryption, sha256 payload commitment with canonical-JSON ordering, idempotent retries.
-- ✅ **End-to-end on devnet, green from cold** — both paths:
-  - **Public** path: 6/6 assertions PASS in ~57s
-  - **Private** path: 6/6 assertions PASS in ~69s (ER round-trip ~9s, settle ~3s after commit, delivery ~5s after settle)
-- 🚧 **Frontend (Next.js + Tailwind, V3 Triptych dashboard)**: scaffolded, not yet wired. Sunday work.
+## Why MagicBlock
 
-## Sample devnet transactions — full lifecycle of listing #8 (private path)
+Privacy is structural. The purchase transaction runs on a MagicBlock ephemeral rollup, where the buyer's identity and price are hidden during the trade window. State commits back to Solana base layer at session end. Remove MagicBlock and the market collapses — anyone watching the public mempool sees the alpha before the buyer can act on it.
 
-[Live on the explorer](https://explorer.solana.com/address/6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H?cluster=devnet). Each step is a real tx, in order:
+## Live demo flow (devnet, listing 9)
 
-| Step | Instruction | Cluster | Tx |
-|---|---|---|---|
-| 1 | `create_listing` | base | [`2QUikuWG…hnKXmw`](https://explorer.solana.com/tx/2QUikuWGPqFrg32Jb6X1DytxLTnpWHWrq3TxGKS62HyB8rcgP3F4kXu7fRLLga1TuEPk7VbA6dTh5jSRgfhnKXmw?cluster=devnet) |
-| 2 | `init_purchase_for_delegation` + `delegate_for_purchase` (batched) | base | [`4nEu9Ykb…HhJ9m9`](https://explorer.solana.com/tx/4nEu9YkbcbW8EZZXQwGTWCV3vNxDGfqgGEpLXzovdgxYfntTfjYgFuifmhGyahjbjyJsZtQ3TKaVbADMEJHhJ9m9?cluster=devnet) |
-| 3 | `purchase_listing_private` + `commit_and_undelegate` | **ER** | [`5KUyqPJ2…ksUDAfV`](https://explorer.solana.com/tx/5KUyqPJ2UP6reXQfcbvAuPTviBtVjHg2RCGqxzbLByqP6ATKxpgk2c6V4sLdjTvF72sxAgFwWUydEMb6gksUDAfV?cluster=devnet) |
-| 4 | `settle_purchase` (from `settleWatcher`) | base | [`2GQ5zoMu…KFmBa`](https://explorer.solana.com/tx/2GQ5zoMu47RSBn5EorHQiBdLx2H8hc9qRnxVQA3RpddXGETK4Dh5sqVDsDYj6qqq7U5D9HqkFKHuJcLXqn4KFmBa?cluster=devnet) |
-| 5 | `deliver_payload` | base | [`aaEmTsWt…iBYR`](https://explorer.solana.com/tx/aaEmTsWtbcTokjcPfVw7puuwDkxQA2bBMdE2LfJotg2gzt4nCLP8nHWATZJcN6hu1KTde4L5aqFad6NKrd7iBYR?cluster=devnet) |
-| 6 | `submit_rating` | base | [`2RyjvyQd…ces9J`](https://explorer.solana.com/tx/2RyjvyQd5LpgR7gGHSFesTnTUaJdNxqzvMNhAT9gxwxQCxaJkGh8dhwZLtm8QiVGdSnuxvQJskzeyQfS8P6ces9J?cluster=devnet) |
+Real txs from this morning's green E2E run. Click through each on Solana Explorer (cluster=devnet):
 
-Listing PDA: [`8ZRbB3Quiu…tmmCuz`](https://explorer.solana.com/address/8ZRbB3QuiuuebQdnGPXRRGpFpQ1wrzNQnx3i31tmmCuz?cluster=devnet) · Purchase PDA: [`3bbqqyzFwwY…wgVi`](https://explorer.solana.com/address/3bbqqyzFwwYgNyhVG314yZmRQBVnFukFVikbWxNEwgVi?cluster=devnet) · Rating PDA: [`3YWcLcuf2t…K3Sr`](https://explorer.solana.com/address/3YWcLcuf2tnZfM8HhvVH9WgrbCK1Gw5n1PHaXUnnK3Sr?cluster=devnet)
+1. **`create_listing`** — supplier seals the WHALE tip + posts the sha256 commitment + sets a 200-slot TTL.
+   [`4kZMM7eM…LYLp`](https://explorer.solana.com/tx/4kZMM7eMp4fKMhFDf9FYPu2wrRuLhGjdM5BbdxAaY1VFTdLsb8ttJF39Ju8NRZjuvvn21tPxHev7GBad1MgnLYLp?cluster=devnet)
 
-Wall-clock from `create_listing` to `submit_rating` for this run: **~52 seconds**.
+2. **`init_purchase_for_delegation` + `delegate_for_purchase`** (batched into one base-layer tx) — buyer creates the empty Purchase PDA and transfers ownership of both Listing + Purchase to the MagicBlock delegation program.
+   [`2KTAtWcd…nDmX`](https://explorer.solana.com/tx/2KTAtWcd3hwCFXsZ1pBK7qg3LgMPBwna1s1GJEFYy7TpYVvqgDLpxxKRgGWRbe3d6w4JYbPy5RLBMUTPcFBqnDmX?cluster=devnet)
 
-## How privacy works (the demo's claim)
+3. **`purchase_listing_private` (on the ER) + `commit_and_undelegate`** — the trade itself. Mutates Listing.status=Sold and writes the buyer + price into Purchase, then bundles state back to base. **Buyer-listing linkage is hidden during this window.**
+   [`2kPE56xN…ZU31`](https://explorer.solana.com/tx/2kPE56xNX1nrE9uouxkoQAzoPYReoBty2B3h3uDoVThxubsDnDxupT9YE923BsHMsY4YSfUwNn1siVGYaFsyZU31?cluster=devnet)
 
-In the public escape-hatch path (`purchase_listing_public`), the buyer's wallet, the listing they bought, and the price all appear on a single base-layer tx — anyone watching can correlate.
+4. **`settle_purchase`** — base-layer SOL transfer from buyer to supplier. Decoupled in time from the listing flip, so observers can't easily correlate the two events.
+   [`GUVsbV7t…PUWd`](https://explorer.solana.com/tx/GUVsbV7tWayftRrmgp8vQsRVZSTTFsbMCsiqzAd8gnGKVyYFox3yuJ6nG4SWwVQB62BcLjRsECyiF7C1V2xPUWd?cluster=devnet)
 
-In the private path:
-1. Buyer batches `init_purchase_for_delegation` + `delegate_for_purchase` on base. Listing + Purchase ownership transfers to MagicBlock's delegation program. **No buyer-listing linkage observable yet** — the Purchase PDA is empty.
-2. Buyer sends `purchase_listing_private` on the ER. The ER mutates delegated state (status=Sold, price recorded, buyer recorded on Purchase). **This activity is invisible to base-layer observers** — only the ER validator sees it.
-3. ER bundles `commit_and_undelegate` back to base. Listing/Purchase return to whisper's ownership with the new state.
-4. Settle happens later (~5s) on base. The 2.4 SOL transfer to supplier appears at this point — decoupled in time from the listing-status flip.
+5. **`deliver_payload` + `submit_rating`** — supplier re-encrypts the tip payload to the buyer's x25519 pubkey; buyer decrypts, verifies the commitment, rates the outcome, supplier reputation increments.
+   - Deliver: [`2Lki7RDz…tQYM3`](https://explorer.solana.com/tx/2Lki7RDzxk91oviY9yT8sBzLYYU6AMuiKGQ4H3y4oD3njBKrjKgmCjFR43HYMaFTZyXNSXMnhh1fByfhC7QtQYM3?cluster=devnet)
+   - Rate: [`43zENv4K…ZXjo8`](https://explorer.solana.com/tx/43zENv4K1LHNaiap68v264LEihprQLXVz2Z1776ciRZk72d1WyLVhmPa2DY4AgnPq3DJq7rwAo1oa4MT3sDZXjo8?cluster=devnet)
 
-What an outside observer sees on base layer: a Listing flip from Active to Sold, a separate later transfer of 2.4 SOL. The connection between buyer wallet and which listing is broken by the ER detour. Full privacy would require the Private Payments API (USDC) — out of scope for v1; documented in [decisions.md](docs/decisions.md).
+PDAs from this run: Listing [`5bvK1swf…5uKE`](https://explorer.solana.com/address/5bvK1swfJQG7j8aowYqYYaWv2a9iMtZLq2Nb2qsp5uKE?cluster=devnet) · Purchase [`2QTihk3u…XoVd`](https://explorer.solana.com/address/2QTihk3uJ54MuNMG4t1DQYsKTLgLNBfvxYJ6GKnxXoVd?cluster=devnet). Wall-clock from create to submit_rating: **80.1 seconds**, 6/6 assertions PASS.
 
-## Stack
+## Architecture
 
-- **On-chain**: Anchor 0.32.1 + ephemeral-rollups-sdk 0.11.2 / Rust on Solana devnet
-- **Privacy layer**: MagicBlock Ephemeral Rollup (devnet) — base-layer escape hatch via `purchase_listing_public`
-- **Signal source**: scripted mock feed (v1) → Helius webhook adapter (stretch)
-- **RPC**: Helius devnet (base) + `https://devnet.magicblock.app/` (ER). Two AnchorProvider instances per agent.
-- **Agents**: Node + TypeScript (`tsx`), `@coral-xyz/anchor` 0.31, `@solana/web3.js`, `@magicblock-labs/ephemeral-rollups-sdk`
-- **Encryption**: X25519 ECDH + HKDF-SHA256 + ChaCha20-Poly1305 (Node `crypto` + `@noble/curves` + `@noble/hashes`)
-- **Frontend**: Next.js 16 App Router + Tailwind 4 (scaffolded)
-
-## Layout
+The purchase flow is **two transactions**, not one. Empirical reason in [docs/decisions.md](docs/decisions.md): MagicBlock's ER fee model rejects fee-payers whose accounts aren't "warmed" in ER state. A regular base-layer wallet calling `system_program::transfer` from inside an ER tx is rejected with `TransactionError::InvalidAccountForFee` — confirmed across two probes ([test-sol-on-er.ts](scripts/test-sol-on-er.ts) and [test-sol-on-er-bundled.ts](scripts/test-sol-on-er-bundled.ts)). So we move only state on the ER, and settle SOL on base afterward. Buyer-listing linkage is hidden during the ER phase; price + supplier wallet appear on base only at settle time, decoupled from the listing-status flip.
 
 ```
-whisper-exchange/
-├── programs/whisper/                      # Anchor program (Rust)
-│   └── src/instructions/
-│       ├── register_agent.rs
-│       ├── create_listing.rs
-│       ├── purchase_listing_public.rs     # single-tx public escape hatch
-│       ├── init_purchase_for_delegation.rs # tx1a of private flow
-│       ├── delegate_for_purchase.rs        # tx1b of private flow
-│       ├── purchase_listing_private.rs     # tx2 (ER) — uses #[commit] macro
-│       ├── settle_purchase.rs              # base-layer settle (settleWatcher)
-│       ├── deliver_payload.rs
-│       ├── submit_rating.rs
-│       └── delegate_test*.rs               # ER-SDK macro smoke tests
-├── agents/
-│   ├── supplier.ts                # signal loop + delivery loop
-│   ├── buyer.ts                   # scan + delivery + rating + settleWatcher
-│   ├── purchase-via-er.ts         # 2-tx ER purchase helper
-│   ├── anchor-helpers.ts          # fetchAllSafe + camelCase normalization
-│   ├── crypto.ts                  # X25519 sealed-box + sha256 commitment
-│   ├── signals.ts                 # mock feed + Helius adapter stub
-│   └── tests/commitment.test.ts
-├── app/                           # Next.js dashboard (V3 Triptych)
-├── design-reference/              # Locked Claude Design export
-├── docs/
-│   ├── anchor-schema.md           # account spec (LOCKED)
-│   ├── flows.md                   # sequence flows (LOCKED)
-│   ├── accounts-proposal.md       # Accounts struct proposal (approved)
-│   ├── magicblock-integration.md  # two-tx ER flow spec
-│   ├── sunday-plan.md             # demo + recording + submission script
-│   └── decisions.md               # architectural decisions log
-├── scripts/
-│   ├── setup-devnet.sh            # generate + fund agent wallets
-│   ├── deploy-devnet.sh           # build + sync + deploy
-│   ├── run-e2e.sh                 # wrapper for e2e-test.ts
-│   ├── e2e-test.ts                # cold-start end-to-end test
-│   ├── test-sol-on-er.ts          # naked SOL-on-ER probe (informative)
-│   └── test-sol-on-er-bundled.ts  # bundled-CPI SOL-on-ER probe (informative)
-└── output/                        # logs, generated artifacts (gitignored)
+Buyer wallet         Base layer (Solana)              Ephemeral Rollup (MagicBlock)
+     │                       │                                     │
+     │── tx1: init + delegate ──→│                                  │
+     │   (Listing & Purchase ownership transferred to delegation)  │
+     │   wait 3s for delegation propagation                        │
+     │                       │                                     │
+     │── tx2: purchase_listing_private ──────────────────────────→│
+     │   mutates delegated Listing/Purchase on ER                 │
+     │   then MagicIntentBundleBuilder.commit_and_undelegate()    │
+     │                       │←──────── state commits back ───────│
+     │   client polls base for purchased_at_slot > 0              │
+     │                       │                                     │
+     │── tx3: settle_purchase →│                                   │
+     │   system_program::transfer(buyer → supplier, 2.4 SOL)      │
+     │   purchase.settled = true                                  │
+     │                       │                                     │
+     │── deliver_payload ───→│                                    │
+     │── submit_rating ─────→│ supplier reputation +1              │
 ```
 
-## Quickstart (devnet)
+A `settleWatcher` loop in the buyer agent polls every 5s for stranded Purchases (`settled=false && delivered=false && listing.status=Sold`) and retries `settle_purchase` — same code path handles both happy-case settle (~5s after commit) and recovery from a tx that failed mid-flow.
 
-Requires `solana-cli`, `anchor-cli` 0.32.1 (`avm use 0.32.1`), `node` 18+, and a Helius API key from https://dashboard.helius.dev/.
+## Tech stack
 
-```bash
-# 1. install agent deps
-(cd agents && npm install)
+- Anchor 0.32.1 (Solana program)
+- ephemeral-rollups-sdk 0.11.2 (MagicBlock integration)
+- TypeScript Node agents (supplier, buyer)
+- Next.js 16 dashboard (read-only viewer)
+- Helius RPC (devnet)
 
-# 2. configure
-echo 'HELIUS_API_KEY=<your-uuid>' > agents/.env
-echo 'ER_RPC=https://devnet.magicblock.app/' >> agents/.env
-echo 'USE_PRIVATE_PURCHASE=true' >> agents/.env   # set false for public escape hatch
+## Run it yourself
 
-# 3. fund agent wallets (uses CLI airdrop with default-wallet transfer fallback)
-bash scripts/setup-devnet.sh
+1. `cp agents/.env.example agents/.env` — fill in `HELIUS_API_KEY` (free key from https://dashboard.helius.dev/)
+2. `bash scripts/setup-devnet.sh` — generate + fund agent wallets
+3. `bash scripts/deploy-devnet.sh` — build + deploy program to devnet
+4. `USE_PRIVATE_PURCHASE=true bash scripts/run-e2e.sh` — run the private path end-to-end
+5. `cd app && npm run dev` — start the dashboard at localhost:3000
 
-# 4. deploy program
-bash scripts/deploy-devnet.sh
+Expect: 1 listing created, 1 ER purchase, 1 settle, 1 delivery, 1 rating, supplier reputation ticks +1 — all in ~70-80 seconds. Dashboard polls every 2s and animates a violet envelope across the Arena column when a new Purchase lands.
 
-# 5. run end-to-end (private path by default per .env above)
-bash scripts/run-e2e.sh
-```
+## Roadmap (v2)
 
-Expect green pass in ~70s: 1 listing created, 1 purchase via ER, settle, deliver, rating, supplier reputation +1.
+- Helius live signal feed (currently a mock scripted feed; the signal-detection logic exists, the real Helius adapter is a stub)
+- Metaplex agent identity tokens
+- Real outcome resolution oracle (currently buyer-rates-only)
+- `recover_stuck_purchase` instruction for client-side recovery without waiting for validator auto-undelegate
+- SSE-streamed signals into the dashboard's SUPPLIERS panel (currently mocked)
+- Tighten privacy further via MagicBlock's Private Payments API (USDC) — would replace the public base-layer settle
 
-## Documentation
+## Acknowledgments
 
-- [docs/anchor-schema.md](docs/anchor-schema.md) — locked account schema (PDAs, fields, sizes, error codes)
-- [docs/flows.md](docs/flows.md) — locked sequence flows (signal → listing, purchase + delivery, outcome resolution + rating)
-- [docs/accounts-proposal.md](docs/accounts-proposal.md) — `#[derive(Accounts)]` blocks for the 5 original instructions
-- [docs/magicblock-integration.md](docs/magicblock-integration.md) — two-tx ER flow spec + Q&A on architecture decisions
-- [docs/decisions.md](docs/decisions.md) — architectural decisions log (anchor downgrade, SOL-on-ER ruling, TTL bump, camelCase coder fix, etc.)
-- [docs/sunday-plan.md](docs/sunday-plan.md) — demo recording + submission checklist
-- [CLAUDE.md](CLAUDE.md) — hackathon scope, non-negotiables, hour-30 escape hatch
+- **MagicBlock** — Ephemeral Rollups SDK + magicblock-dev-skill for Claude Code
+- **Solana Foundation** — solana-anchor-claude-skill for Anchor 0.31+ patterns
+- **Helius** — Devnet RPC (free tier handles getProgramAccounts polling cleanly)
+- **Anthropic** — Claude Design (V3 Triptych dashboard) + Claude Code (the agent that built this)
+
+## License
+
+MIT
