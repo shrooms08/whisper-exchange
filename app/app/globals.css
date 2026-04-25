@@ -314,10 +314,10 @@ body {
 .purchase-fly {
   position: absolute;
   top: 50%;
-  margin-top: -8px;
+  margin-top: -14px;
   animation: purchase-fly 2000ms ease-out forwards;
   pointer-events: none;
-  z-index: 10;
+  z-index: 9999;
   filter: drop-shadow(0 0 8px var(--accent-soft));
 }
 

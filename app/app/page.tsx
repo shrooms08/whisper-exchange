@@ -207,7 +207,23 @@ export default function Page() {
               key={animating.pubkey}
               title={`new purchase ${animating.pubkey} · ${animating.price} ◎`}
             >
-              <Envelope size={28} />
+              {/* High-contrast envelope: solid violet body + white flap + white seal.
+                  Stand-out brighter than the stroke-only Envelope used elsewhere. */}
+              <svg
+                width="32"
+                height="22"
+                viewBox="0 0 40 28"
+                style={{ filter: 'drop-shadow(0 0 12px var(--accent))' }}
+              >
+                <rect x="1" y="1" width="38" height="26" rx="2" fill="var(--accent)" />
+                <path
+                  d="M2 2 L20 17 L38 2"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  fill="none"
+                />
+                <circle cx="20" cy="17" r="3" fill="white" />
+              </svg>
             </div>
           )}
           <div className="panel-body" style={{ alignItems: 'stretch' }}>
