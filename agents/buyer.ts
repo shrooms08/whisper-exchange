@@ -39,7 +39,14 @@ loadDotenv();
 // ---------- config ----------
 
 const DRY_RUN = process.env.DRY_RUN === '1';
-const RPC_URL = process.env.RPC_URL ?? 'https://api.devnet.solana.com';
+const HELIUS_API_KEY = process.env.HELIUS_API_KEY;
+if (!DRY_RUN && !HELIUS_API_KEY) {
+  console.error(
+    '[buyer] FATAL: HELIUS_API_KEY env var is required. Get one at https://dashboard.helius.dev/ and put it in agents/.env',
+  );
+  process.exit(1);
+}
+const RPC_URL = `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY ?? ''}`;
 const HANDLE = process.env.BUYER_HANDLE ?? 'alpha-hunter';
 const PAYLOADS_DIR = resolve('payloads');
 const KEYSTORE_DIR = resolve('keys');
