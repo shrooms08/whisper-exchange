@@ -1,239 +1,315 @@
-2026-04-25T12:41:16.016Z T+0.0s [main] e2e start
-2026-04-25T12:41:16.051Z T+0.0s [main] supplier pubkey: 4hKCYECqV2DiyQDZHvtTYK6pyugqUip8VeN5eWX2PUYH
-2026-04-25T12:41:16.051Z T+0.0s [main] buyer    pubkey: 2Rpgzgmtp6x4Pz7G4fUtMw3JqPS75WuiQTJV4DCRnB5F
-2026-04-25T12:41:17.104Z T+1.1s [setup] supplier agent already registered at 2xxUeqqqrTb9AsuxSdrmMFJfmsXpoP3vsKgsbkA2GXQF
-2026-04-25T12:41:17.645Z T+1.6s [setup] buyer agent already registered at F4LEohnS4BWpneCEKW4DqJZ2vR8dn2nAzvxErAXkiNEE
-2026-04-25T12:41:18.160Z T+2.1s [main] baseline supplier state: listings_created=7 rep=4/4 (this run must produce listing_id=7)
-2026-04-25T12:41:18.160Z T+2.1s [main] spawning supplier + buyer
-2026-04-25T12:41:18.722Z T+2.7s [supplier] 2026-04-25T12:41:18.721Z [supplier] STARTUP dry_run=false base_rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b er_rpc=https://devnet.magicblock.app/
-2026-04-25T12:41:18.755Z T+2.7s [supplier] 2026-04-25T12:41:18.755Z [supplier] KEYS_LOADED solana=4hKCYECqV2DiyQDZHvtTYK6pyugqUip8VeN5eWX2PUYH x25519=d1c1c5402bb64b18…
-2026-04-25T12:41:18.825Z T+2.8s [buyer] 2026-04-25T12:41:18.824Z [buyer] STARTUP dry_run=false base_rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b er_rpc=https://devnet.magicblock.app/ use_private_purchase=true
-2026-04-25T12:41:18.858Z T+2.8s [buyer] 2026-04-25T12:41:18.858Z [buyer] KEYS_LOADED solana=2Rpgzgmtp6x4Pz7G4fUtMw3JqPS75WuiQTJV4DCRnB5F x25519=8ee0af91733e2bd4…
-2026-04-25T12:41:19.729Z T+3.7s [supplier] 2026-04-25T12:41:19.729Z [supplier] AGENT_EXISTS pda=2xxUeqqqrTb9AsuxSdrmMFJfmsXpoP3vsKgsbkA2GXQF
-2026-04-25T12:41:19.730Z T+3.7s [buyer] 2026-04-25T12:41:19.729Z [buyer] AGENT_EXISTS pda=F4LEohnS4BWpneCEKW4DqJZ2vR8dn2nAzvxErAXkiNEE
-2026-04-25T12:41:20.081Z T+4.1s [supplier] 2026-04-25T12:41:20.081Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:20.259Z T+4.2s [buyer] 2026-04-25T12:41:20.259Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:41:20.507Z T+4.5s [buyer] 2026-04-25T12:41:20.507Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:20.724Z T+4.7s [supplier] 2026-04-25T12:41:20.724Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:41:20.900Z T+4.9s [buyer] 2026-04-25T12:41:20.900Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:41:21.413Z T+5.4s [buyer] 2026-04-25T12:41:21.412Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:41:21.414Z T+5.4s [buyer] {"ts":"2026-04-25T12:41:21.414Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:41:21.414Z T+5.4s [buyer] 2026-04-25T12:41:21.414Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
-2026-04-25T12:41:21.414Z T+5.4s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:41:21.414Z T+5.4s [buyer] Logs: 
-2026-04-25T12:41:21.414Z T+5.4s [buyer] [
-2026-04-25T12:41:21.414Z T+5.4s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:41:21.650Z T+5.6s [buyer] 2026-04-25T12:41:21.650Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:41:22.529Z T+6.5s [buyer] 2026-04-25T12:41:22.529Z [buyer] SETTLE_RETRY_OK sig=4sBaCf28e1wvX5ZDSNETmesJToutxs1tYQmpmPq3AdTJkPEt88caCPuLhwrd8jHkHPB2NCXrLWyKNY6TTiMjRw2J listing=AC9w3ddaVqVcZZZbk3ieG8db4T1GRzyFr5WcbnSCKWCf purchase=Eeryf6ARZEMEjjbTggVzEQSXemTfL5AKpm5TtuKxADdp
-2026-04-25T12:41:22.618Z T+6.6s [buyer] {"ts":"2026-04-25T12:41:22.618Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:41:22.619Z T+6.6s [buyer] 2026-04-25T12:41:22.618Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
-2026-04-25T12:41:22.619Z T+6.6s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:41:22.619Z T+6.6s [buyer] Logs: 
-2026-04-25T12:41:22.619Z T+6.6s [buyer] [
-2026-04-25T12:41:22.619Z T+6.6s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:41:23.776Z T+7.8s [buyer] 2026-04-25T12:41:23.775Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:24.072Z T+8.1s [buyer] 2026-04-25T12:41:24.072Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:41:24.095Z T+8.1s [supplier] 2026-04-25T12:41:24.095Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:24.351Z T+8.3s [buyer] 2026-04-25T12:41:24.350Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:41:24.725Z T+8.7s [supplier] 2026-04-25T12:41:24.725Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:41:24.731Z T+8.7s [supplier] 2026-04-25T12:41:24.731Z [supplier] SIGNAL_DETECTED id=sig-WHALE-0001 category=WHALE
-2026-04-25T12:41:24.734Z T+8.7s [buyer] 2026-04-25T12:41:24.734Z [buyer] FEED_SIGNAL_OBSERVED signal_id=sig-WHALE-0001
-2026-04-25T12:41:25.038Z T+9.0s [supplier] 2026-04-25T12:41:25.038Z [supplier] PAYLOAD_SEALED listing_id=7 commitment=5fe61513dfedfb3f… cid=local://L-7.bin ciphertext_bytes=389
-2026-04-25T12:41:25.197Z T+9.2s [buyer] 2026-04-25T12:41:25.196Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:41:27.274Z T+11.3s [buyer] {"ts":"2026-04-25T12:41:27.274Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:41:27.274Z T+11.3s [buyer] 2026-04-25T12:41:27.274Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
-2026-04-25T12:41:27.274Z T+11.3s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:41:27.274Z T+11.3s [buyer] Logs: 
-2026-04-25T12:41:27.274Z T+11.3s [buyer] [
-2026-04-25T12:41:27.274Z T+11.3s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:41:27.280Z T+11.3s [buyer] 2026-04-25T12:41:27.280Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:27.572Z T+11.6s [buyer] 2026-04-25T12:41:27.571Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:41:27.581Z T+11.6s [buyer] 2026-04-25T12:41:27.581Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:41:27.886Z T+11.9s [buyer] 2026-04-25T12:41:27.886Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:41:27.896Z T+11.9s [supplier] 2026-04-25T12:41:27.895Z [supplier] LISTING_CREATED listing_id=7 listing_pda=B3pPkK5bx15Unxc87aAXXESkYX2pTxrJ8x3aDeZdVz1x price_lamports=2400000000 ttl_slot=457979684 tx=5Zyrs6LXtiBQWuNsFAyGSLetC31PG8AzkB6aBRDWznFAWyHVQe4TdWgfQkh5jm6Db9HSv4ddPQcF715N6H188k5K
-2026-04-25T12:41:27.908Z T+11.9s [supplier] 2026-04-25T12:41:27.908Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:28.623Z T+12.6s [supplier] 2026-04-25T12:41:28.622Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:41:29.213Z T+13.2s [buyer] {"ts":"2026-04-25T12:41:29.212Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:41:29.214Z T+13.2s [buyer] 2026-04-25T12:41:29.212Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
-2026-04-25T12:41:29.214Z T+13.2s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:41:29.214Z T+13.2s [buyer] Logs: 
-2026-04-25T12:41:29.214Z T+13.2s [buyer] [
-2026-04-25T12:41:29.214Z T+13.2s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:41:30.189Z T+14.2s [buyer] 2026-04-25T12:41:30.189Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:30.466Z T+14.5s [buyer] 2026-04-25T12:41:30.466Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:41:30.849Z T+14.8s [buyer] 2026-04-25T12:41:30.848Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:41:31.893Z T+15.9s [buyer] 2026-04-25T12:41:31.893Z [buyer] PURCHASE_RULE_MATCH listing=B3pPkK5bx15Unxc87aAXXESkYX2pTxrJ8x3aDeZdVz1x category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:41:31.978Z T+16.0s [supplier] 2026-04-25T12:41:31.977Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:32.721Z T+16.7s [supplier] 2026-04-25T12:41:32.721Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:41:35.698Z T+19.7s [buyer] 2026-04-25T12:41:35.698Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:36.016Z T+20.0s [buyer] 2026-04-25T12:41:36.016Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:41:36.635Z T+20.6s [buyer] 2026-04-25T12:41:36.634Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:41:36.635Z T+20.6s [supplier] 2026-04-25T12:41:36.635Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:37.389Z T+21.4s [buyer] {"ts":"2026-04-25T12:41:37.388Z","actor":"buyer","kind":"PURCHASE_VIA_ER_TX1_OK","payload":{"sig":"4s2YE8x4HLASefTu1pjwQigNUqg8RoMGJaf7vmAEFCRVLThSSY4H2WhAF5VZkDM6xAMV8onM3bGAs6Pm46Q4efxi","listing":"B3pPkK5bx15Unxc87aAXXESkYX2pTxrJ8x3aDeZdVz1x","purchase":"8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq","ms":4893}}
-2026-04-25T12:41:37.782Z T+21.8s [supplier] 2026-04-25T12:41:37.782Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:41:40.003Z T+24.0s [buyer] 2026-04-25T12:41:40.002Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:40.276Z T+24.3s [buyer] 2026-04-25T12:41:40.275Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:41:40.525Z T+24.5s [buyer] 2026-04-25T12:41:40.525Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:41:41.879Z T+25.9s [supplier] 2026-04-25T12:41:41.878Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:42.585Z T+26.6s [supplier] 2026-04-25T12:41:42.585Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:41:42.754Z T+26.7s [buyer] 2026-04-25T12:41:42.753Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:43.030Z T+27.0s [buyer] 2026-04-25T12:41:43.027Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:41:43.257Z T+27.2s [buyer] 2026-04-25T12:41:43.254Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:41:45.912Z T+29.9s [supplier] 2026-04-25T12:41:45.911Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:46.011Z T+30.0s [buyer] 2026-04-25T12:41:46.011Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:46.307Z T+30.3s [buyer] 2026-04-25T12:41:46.307Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:41:46.637Z T+30.6s [buyer] 2026-04-25T12:41:46.637Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:41:47.729Z T+31.7s [buyer] {"ts":"2026-04-25T12:41:47.729Z","actor":"buyer","kind":"PURCHASE_VIA_ER_TX2_OK","payload":{"sig":"41HQsZu2jgdvf9C19vVAxGe1hLhEPAmLdubVfLZjHi3EMAeFmoib66MWSWZcevq8GSihwTnV44kckcHVh7DhakV1","commit_landed_after_ms":10341}}
-2026-04-25T12:41:47.807Z T+31.8s [supplier] 2026-04-25T12:41:47.807Z [supplier] DELIVERY_POLL_ERROR err=AnchorError caused by account: purchase. Error Code: NotSettled. Error Number: 6011. Error Message: Purchase has not been settled — buyer must pay before delivery.
-2026-04-25T12:41:48.796Z T+32.8s [buyer] {"ts":"2026-04-25T12:41:48.795Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx3","err":"AnchorError caused by account: purchase. Error Code: AlreadySettled. Error Number: 6010. Error Message: Purchase has already been settled."}}
-2026-04-25T12:41:48.796Z T+32.8s [buyer] 2026-04-25T12:41:48.795Z [buyer] PURCHASE_VIA_ER_ERROR listing=B3pPkK5bx15Unxc87aAXXESkYX2pTxrJ8x3aDeZdVz1x err=AnchorError caused by account: purchase. Error Code: AlreadySettled. Error Number: 6010. Error Message: Purchase has already been settled.
-2026-04-25T12:41:48.960Z T+32.9s [buyer] 2026-04-25T12:41:48.960Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:49.085Z T+33.1s [buyer] 2026-04-25T12:41:49.084Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:41:49.168Z T+33.2s [buyer] 2026-04-25T12:41:49.168Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:41:49.616Z T+33.6s [buyer] 2026-04-25T12:41:49.615Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:41:49.796Z T+33.8s [buyer] 2026-04-25T12:41:49.796Z [buyer] SETTLE_RETRY_OK sig=36gAScawBKGvS5LWiGZqcPtrEzhmy9kfYwZuXTwwD74ThwegE7dtGc1wt7qJdNvdBWYVhDusncg9sid2iQKaubaL listing=B3pPkK5bx15Unxc87aAXXESkYX2pTxrJ8x3aDeZdVz1x purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq
-2026-04-25T12:41:50.098Z T+34.1s [buyer] {"ts":"2026-04-25T12:41:50.097Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:41:50.098Z T+34.1s [buyer] 2026-04-25T12:41:50.097Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
-2026-04-25T12:41:50.098Z T+34.1s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:41:50.098Z T+34.1s [buyer] Logs: 
-2026-04-25T12:41:50.098Z T+34.1s [buyer] [
-2026-04-25T12:41:50.098Z T+34.1s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:41:50.477Z T+34.5s [buyer] 2026-04-25T12:41:50.477Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:41:51.532Z T+35.5s [supplier] 2026-04-25T12:41:51.532Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:52.120Z T+36.1s [supplier] 2026-04-25T12:41:52.119Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:41:52.586Z T+36.6s [buyer] 2026-04-25T12:41:52.586Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:52.973Z T+37.0s [buyer] 2026-04-25T12:41:52.972Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:41:53.184Z T+37.2s [buyer] {"ts":"2026-04-25T12:41:53.184Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:41:53.184Z T+37.2s [buyer] 2026-04-25T12:41:53.184Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
-2026-04-25T12:41:53.184Z T+37.2s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:41:53.184Z T+37.2s [buyer] Logs: 
-2026-04-25T12:41:53.184Z T+37.2s [buyer] [
-2026-04-25T12:41:53.184Z T+37.2s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:41:53.348Z T+37.3s [buyer] 2026-04-25T12:41:53.348Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:41:54.736Z T+38.7s [buyer] 2026-04-25T12:41:54.734Z [buyer] RESOLUTION_RECEIVED signal_id=sig-WHALE-0001 verdict=True
-2026-04-25T12:41:55.535Z T+39.5s [supplier] 2026-04-25T12:41:55.534Z [supplier] PAYLOAD_DELIVERED listing_id=7 buyer_cid=local://P-7.bin tx=EmHZtWXzSZC5KXzxqCPcW6JrmdX5QkfxQvmG3h2VYYAnLkXMNmXufst7hFQXyXbk4Ag7ZiNJqeRJfkA1Q5YsSM4
-2026-04-25T12:41:55.724Z T+39.7s [buyer] 2026-04-25T12:41:55.723Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:41:55.731Z T+39.7s [supplier] 2026-04-25T12:41:55.731Z [supplier] SIGNAL_LOOP_DONE
-2026-04-25T12:41:55.734Z T+39.7s [buyer] 2026-04-25T12:41:55.734Z [buyer] FEED_CONSUMER_DONE
-2026-04-25T12:41:56.489Z T+40.5s [buyer] 2026-04-25T12:41:56.489Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:41:56.789Z T+40.8s [buyer] {"ts":"2026-04-25T12:41:56.787Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:41:56.789Z T+40.8s [buyer] 2026-04-25T12:41:56.788Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
-2026-04-25T12:41:56.789Z T+40.8s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:41:56.789Z T+40.8s [buyer] Logs: 
-2026-04-25T12:41:56.789Z T+40.8s [buyer] [
-2026-04-25T12:41:56.789Z T+40.8s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:41:56.822Z T+40.8s [buyer] {"ts":"2026-04-25T12:41:56.822Z","actor":"buyer","kind":"payload_decrypted","payload":{"purchase":"8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq","listing":"B3pPkK5bx15Unxc87aAXXESkYX2pTxrJ8x3aDeZdVz1x","signal_id":"sig-WHALE-0001","payload":{"signal_id":"sig-WHALE-0001","category":"WHALE","signal_ref":"slot 287491203, wallet 7xKXtg2CW87iF5RxC84LBu68kAr7GhvsqxNWwUPHhQh9","claim":"WHALE_SWAP predicted within 6 blocks","evidence":[{"kind":"balance_delta","wallet":"7xKX…Qh9","pool":"Raydium JUP/SOL","sol":120}],"recommended_action":"short JUP/SOL, size ≤ 120 SOL"}}}
-2026-04-25T12:41:56.822Z T+40.8s [buyer] 2026-04-25T12:41:56.822Z [buyer] OUTCOME_WINDOW_OPENED purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq signal_id=sig-WHALE-0001 window_ms=30000
-2026-04-25T12:41:57.014Z T+41.0s [buyer] 2026-04-25T12:41:57.014Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:41:57.148Z T+41.1s [buyer] 2026-04-25T12:41:57.148Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:41:57.670Z T+41.7s [buyer] 2026-04-25T12:41:57.670Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:41:58.629Z T+42.6s [buyer] {"ts":"2026-04-25T12:41:58.629Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:41:58.629Z T+42.6s [buyer] 2026-04-25T12:41:58.629Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
-2026-04-25T12:41:58.629Z T+42.6s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:41:58.629Z T+42.6s [buyer] Logs: 
-2026-04-25T12:41:58.629Z T+42.6s [buyer] [
-2026-04-25T12:41:58.629Z T+42.6s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:41:58.873Z T+42.9s [supplier] 2026-04-25T12:41:58.873Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:03.398Z T+47.4s [supplier] 2026-04-25T12:42:03.397Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:42:04.648Z T+48.6s [buyer] 2026-04-25T12:42:04.648Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:05.054Z T+49.0s [buyer] 2026-04-25T12:42:05.053Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:42:05.348Z T+49.3s [buyer] 2026-04-25T12:42:05.348Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:42:07.611Z T+51.6s [buyer] 2026-04-25T12:42:07.611Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:07.734Z T+51.7s [supplier] 2026-04-25T12:42:07.734Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:07.819Z T+51.8s [buyer] 2026-04-25T12:42:07.819Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:42:08.039Z T+52.0s [buyer] 2026-04-25T12:42:08.039Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:42:08.323Z T+52.3s [supplier] 2026-04-25T12:42:08.322Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:42:10.453Z T+54.4s [buyer] 2026-04-25T12:42:10.452Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:10.696Z T+54.7s [buyer] 2026-04-25T12:42:10.696Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:42:11.006Z T+55.0s [buyer] 2026-04-25T12:42:11.006Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:42:11.506Z T+55.5s [buyer] 2026-04-25T12:42:11.506Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:42:11.581Z T+55.6s [supplier] 2026-04-25T12:42:11.581Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:12.131Z T+56.1s [supplier] 2026-04-25T12:42:12.130Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:42:12.583Z T+56.6s [buyer] {"ts":"2026-04-25T12:42:12.582Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:42:12.583Z T+56.6s [buyer] 2026-04-25T12:42:12.582Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
-2026-04-25T12:42:12.583Z T+56.6s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:42:12.583Z T+56.6s [buyer] Logs: 
-2026-04-25T12:42:12.583Z T+56.6s [buyer] [
-2026-04-25T12:42:12.583Z T+56.6s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:42:12.800Z T+56.8s [buyer] 2026-04-25T12:42:12.800Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:42:13.894Z T+57.9s [buyer] {"ts":"2026-04-25T12:42:13.894Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:42:13.894Z T+57.9s [buyer] 2026-04-25T12:42:13.894Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
-2026-04-25T12:42:13.894Z T+57.9s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:42:13.894Z T+57.9s [buyer] Logs: 
-2026-04-25T12:42:13.894Z T+57.9s [buyer] [
-2026-04-25T12:42:13.894Z T+57.9s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:42:14.416Z T+58.4s [buyer] 2026-04-25T12:42:14.416Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:15.028Z T+59.0s [buyer] 2026-04-25T12:42:15.028Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:42:15.300Z T+59.3s [buyer] 2026-04-25T12:42:15.298Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:42:15.349Z T+59.3s [supplier] 2026-04-25T12:42:15.349Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:16.127Z T+60.1s [supplier] 2026-04-25T12:42:16.127Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:42:16.502Z T+60.5s [buyer] 2026-04-25T12:42:16.502Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:42:19.264Z T+63.2s [buyer] 2026-04-25T12:42:19.264Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:19.415Z T+63.4s [supplier] 2026-04-25T12:42:19.415Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:19.743Z T+63.7s [buyer] 2026-04-25T12:42:19.743Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:42:19.987Z T+64.0s [buyer] {"ts":"2026-04-25T12:42:19.987Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:42:19.987Z T+64.0s [buyer] 2026-04-25T12:42:19.987Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
-2026-04-25T12:42:19.987Z T+64.0s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:42:19.987Z T+64.0s [buyer] Logs: 
-2026-04-25T12:42:19.987Z T+64.0s [buyer] [
-2026-04-25T12:42:19.987Z T+64.0s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:42:20.042Z T+64.0s [supplier] 2026-04-25T12:42:20.041Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:42:20.239Z T+64.2s [buyer] 2026-04-25T12:42:20.239Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:42:20.278Z T+64.3s [buyer] 2026-04-25T12:42:20.278Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:42:21.428Z T+65.4s [buyer] {"ts":"2026-04-25T12:42:21.428Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:42:21.428Z T+65.4s [buyer] 2026-04-25T12:42:21.428Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
-2026-04-25T12:42:21.429Z T+65.4s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:42:21.429Z T+65.4s [buyer] Logs: 
-2026-04-25T12:42:21.429Z T+65.4s [buyer] [
-2026-04-25T12:42:21.429Z T+65.4s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:42:22.637Z T+66.6s [buyer] 2026-04-25T12:42:22.637Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:23.017Z T+67.0s [buyer] 2026-04-25T12:42:23.017Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:42:23.272Z T+67.3s [buyer] 2026-04-25T12:42:23.271Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:42:23.312Z T+67.3s [supplier] 2026-04-25T12:42:23.312Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:23.779Z T+67.8s [supplier] 2026-04-25T12:42:23.779Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:42:24.038Z T+68.0s [buyer] 2026-04-25T12:42:24.034Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:42:27.187Z T+71.2s [supplier] 2026-04-25T12:42:27.186Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:27.381Z T+71.4s [buyer] 2026-04-25T12:42:27.381Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:27.625Z T+71.6s [buyer] 2026-04-25T12:42:27.622Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:42:27.912Z T+71.9s [supplier] 2026-04-25T12:42:27.911Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:42:27.942Z T+71.9s [buyer] {"ts":"2026-04-25T12:42:27.941Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:42:27.942Z T+71.9s [buyer] 2026-04-25T12:42:27.942Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
-2026-04-25T12:42:27.942Z T+71.9s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:42:27.942Z T+71.9s [buyer] Logs: 
-2026-04-25T12:42:27.942Z T+71.9s [buyer] [
-2026-04-25T12:42:27.942Z T+71.9s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:42:28.115Z T+72.1s [buyer] 2026-04-25T12:42:28.114Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:42:28.236Z T+72.2s [buyer] 2026-04-25T12:42:28.236Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=4
-2026-04-25T12:42:29.302Z T+73.3s [buyer] {"ts":"2026-04-25T12:42:29.302Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
-2026-04-25T12:42:29.302Z T+73.3s [buyer] 2026-04-25T12:42:29.302Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
-2026-04-25T12:42:29.302Z T+73.3s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
-2026-04-25T12:42:29.302Z T+73.3s [buyer] Logs: 
-2026-04-25T12:42:29.302Z T+73.3s [buyer] [
-2026-04-25T12:42:29.302Z T+73.3s [buyer]   "Program 6ac2jbi5FM…
-2026-04-25T12:42:30.348Z T+74.3s [buyer] 2026-04-25T12:42:30.348Z [buyer] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:30.557Z T+74.5s [buyer] 2026-04-25T12:42:30.557Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
-2026-04-25T12:42:30.863Z T+74.8s [buyer] 2026-04-25T12:42:30.863Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
-2026-04-25T12:42:31.378Z T+75.4s [buyer] 2026-04-25T12:42:31.377Z [buyer] RATING_SUBMITTED purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq signal_id=sig-WHALE-0001 verdict=True tx=3zmBz7jpp6yah6RiUd3V1CRdUGEXpZ9LPHVjrrkC5Y2HsJ6wMxGxx8JXN1XBWG6zbtanbuF8BEd9WE3Uh69kwuBL
-2026-04-25T12:42:31.380Z T+75.4s [supplier] 2026-04-25T12:42:31.380Z [supplier] PURCHASES_FILTERED skipped=4
-2026-04-25T12:42:31.769Z T+75.8s [main] all assertions pass at T+73.6s — early exit
-2026-04-25T12:42:31.769Z T+75.8s [main] tearing down children
-2026-04-25T12:42:31.769Z T+75.8s [main] sending SIGTERM to children
-2026-04-25T12:42:31.805Z T+75.8s [buyer] 2026-04-25T12:42:31.803Z [buyer] SHUTDOWN_REQUESTED
-2026-04-25T12:42:31.806Z T+75.8s [supplier] 2026-04-25T12:42:31.803Z [supplier] SHUTDOWN_REQUESTED
-2026-04-25T12:42:32.060Z T+76.0s [buyer] 2026-04-25T12:42:32.060Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=5
-2026-04-25T12:42:32.099Z T+76.1s [supplier] 2026-04-25T12:42:32.098Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
-2026-04-25T12:42:32.528Z T+76.5s [buyer] 2026-04-25T12:42:32.526Z [buyer] SETTLE_WATCHER_DONE
-2026-04-25T12:42:32.865Z T+76.8s [buyer] 2026-04-25T12:42:32.864Z [buyer] DELIVERY_WATCHER_DONE
-2026-04-25T12:42:33.379Z T+77.4s [buyer] 2026-04-25T12:42:33.379Z [buyer] RATING_DISPATCHER_DONE
-2026-04-25T12:42:34.793Z T+78.8s [main] SIGKILL pid=61705
-2026-04-25T12:42:34.795Z T+78.8s [main] SIGKILL pid=61720
-2026-04-25T12:42:34.795Z T+78.8s 
-2026-04-25T12:42:34.795Z T+78.8s === assertions ===
-2026-04-25T12:42:34.795Z T+78.8s   PASS  listing status == Rated  status=rated listing_id=7 pda=B3pPkK5bx15Unxc87aAXXESkYX2pTxrJ8x3aDeZdVz1x
-2026-04-25T12:42:34.795Z T+78.8s   PASS  purchase exists  pda=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq
-2026-04-25T12:42:34.795Z T+78.8s   PASS  purchase.delivered == true  delivered=true cid=local://P-7.bin
-2026-04-25T12:42:34.795Z T+78.8s   PASS  rating exists  pda=DmUmeeMErYvEsYb7xrC2fg1JiH9KHAYKqLHzYyCksvwi
-2026-04-25T12:42:34.795Z T+78.8s   PASS  rating.verdict == True  verdict=true
-2026-04-25T12:42:34.795Z T+78.8s   PASS  supplier.reputation_den incremented by exactly 1  num=5 den=5 (baseline num=4 den=4)
-2026-04-25T12:42:34.795Z T+78.8s === total wall-clock: 78.8s ===
-2026-04-25T12:42:34.795Z T+78.8s === result: PASS ===
+2026-04-25T12:56:49.797Z T+0.0s [main] e2e start
+2026-04-25T12:56:49.833Z T+0.0s [main] supplier pubkey: 4hKCYECqV2DiyQDZHvtTYK6pyugqUip8VeN5eWX2PUYH
+2026-04-25T12:56:49.833Z T+0.0s [main] buyer    pubkey: 2Rpgzgmtp6x4Pz7G4fUtMw3JqPS75WuiQTJV4DCRnB5F
+2026-04-25T12:56:50.918Z T+1.1s [setup] supplier agent already registered at 2xxUeqqqrTb9AsuxSdrmMFJfmsXpoP3vsKgsbkA2GXQF
+2026-04-25T12:56:51.276Z T+1.5s [setup] buyer agent already registered at F4LEohnS4BWpneCEKW4DqJZ2vR8dn2nAzvxErAXkiNEE
+2026-04-25T12:56:51.774Z T+2.0s [main] baseline supplier state: listings_created=8 rep=5/5 (this run must produce listing_id=8)
+2026-04-25T12:56:51.774Z T+2.0s [main] spawning supplier + buyer
+2026-04-25T12:56:52.343Z T+2.5s [supplier] 2026-04-25T12:56:52.341Z [supplier] STARTUP dry_run=false base_rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b er_rpc=https://devnet.magicblock.app/
+2026-04-25T12:56:52.375Z T+2.6s [supplier] 2026-04-25T12:56:52.374Z [supplier] KEYS_LOADED solana=4hKCYECqV2DiyQDZHvtTYK6pyugqUip8VeN5eWX2PUYH x25519=d1c1c5402bb64b18…
+2026-04-25T12:56:52.448Z T+2.7s [buyer] 2026-04-25T12:56:52.447Z [buyer] STARTUP dry_run=false base_rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b er_rpc=https://devnet.magicblock.app/ use_private_purchase=true
+2026-04-25T12:56:52.480Z T+2.7s [buyer] 2026-04-25T12:56:52.480Z [buyer] KEYS_LOADED solana=2Rpgzgmtp6x4Pz7G4fUtMw3JqPS75WuiQTJV4DCRnB5F x25519=8ee0af91733e2bd4…
+2026-04-25T12:56:53.113Z T+3.3s [supplier] 2026-04-25T12:56:53.113Z [supplier] AGENT_EXISTS pda=2xxUeqqqrTb9AsuxSdrmMFJfmsXpoP3vsKgsbkA2GXQF
+2026-04-25T12:56:53.373Z T+3.6s [buyer] 2026-04-25T12:56:53.373Z [buyer] AGENT_EXISTS pda=F4LEohnS4BWpneCEKW4DqJZ2vR8dn2nAzvxErAXkiNEE
+2026-04-25T12:56:53.486Z T+3.7s [supplier] 2026-04-25T12:56:53.486Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:56:54.120Z T+4.3s [buyer] 2026-04-25T12:56:54.120Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:56:54.251Z T+4.5s [buyer] 2026-04-25T12:56:54.251Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:56:54.253Z T+4.5s [supplier] 2026-04-25T12:56:54.252Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:56:54.481Z T+4.7s [buyer] 2026-04-25T12:56:54.481Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:56:54.918Z T+5.1s [buyer] 2026-04-25T12:56:54.918Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:56:55.270Z T+5.5s [buyer] 2026-04-25T12:56:55.270Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:56:55.558Z T+5.8s [buyer] {"ts":"2026-04-25T12:56:55.558Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:56:55.559Z T+5.8s [buyer] 2026-04-25T12:56:55.558Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
+2026-04-25T12:56:55.559Z T+5.8s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:56:55.559Z T+5.8s [buyer] Logs: 
+2026-04-25T12:56:55.559Z T+5.8s [buyer] [
+2026-04-25T12:56:55.559Z T+5.8s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:56:55.970Z T+6.2s [buyer] 2026-04-25T12:56:55.969Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:56:57.314Z T+7.5s [buyer] {"ts":"2026-04-25T12:56:57.314Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:56:57.315Z T+7.5s [buyer] 2026-04-25T12:56:57.314Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
+2026-04-25T12:56:57.315Z T+7.5s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:56:57.315Z T+7.5s [buyer] Logs: 
+2026-04-25T12:56:57.315Z T+7.5s [buyer] [
+2026-04-25T12:56:57.315Z T+7.5s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:56:57.514Z T+7.7s [buyer] 2026-04-25T12:56:57.513Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:56:57.524Z T+7.7s [supplier] 2026-04-25T12:56:57.524Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:56:57.793Z T+8.0s [buyer] 2026-04-25T12:56:57.793Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:56:58.090Z T+8.3s [buyer] 2026-04-25T12:56:58.090Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:56:58.116Z T+8.3s [supplier] 2026-04-25T12:56:58.115Z [supplier] SIGNAL_DETECTED id=sig-WHALE-0001 category=WHALE
+2026-04-25T12:56:58.226Z T+8.4s [supplier] 2026-04-25T12:56:58.226Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:56:58.346Z T+8.6s [buyer] 2026-04-25T12:56:58.345Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:56:58.383Z T+8.6s [buyer] 2026-04-25T12:56:58.383Z [buyer] FEED_SIGNAL_OBSERVED signal_id=sig-WHALE-0001
+2026-04-25T12:56:58.721Z T+8.9s [supplier] 2026-04-25T12:56:58.720Z [supplier] PAYLOAD_SEALED listing_id=8 commitment=5fe61513dfedfb3f… cid=local://L-8.bin ciphertext_bytes=389
+2026-04-25T12:56:59.957Z T+10.2s [buyer] 2026-04-25T12:56:59.957Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:00.882Z T+11.1s [buyer] 2026-04-25T12:57:00.882Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:01.209Z T+11.4s [buyer] {"ts":"2026-04-25T12:57:01.208Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:01.209Z T+11.4s [buyer] 2026-04-25T12:57:01.209Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
+2026-04-25T12:57:01.209Z T+11.4s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:01.209Z T+11.4s [buyer] Logs: 
+2026-04-25T12:57:01.209Z T+11.4s [buyer] [
+2026-04-25T12:57:01.209Z T+11.4s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:01.369Z T+11.6s [buyer] 2026-04-25T12:57:01.369Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:01.369Z T+11.6s [supplier] 2026-04-25T12:57:01.369Z [supplier] LISTING_CREATED listing_id=8 listing_pda=8ZRbB3QuiuuebQdnGPXRRGpFpQ1wrzNQnx3i31tmmCuz price_lamports=2400000000 ttl_slot=457982153 tx=2QUikuWGPqFrg32Jb6X1DytxLTnpWHWrq3TxGKS62HyB8rcgP3F4kXu7fRLLga1TuEPk7VbA6dTh5jSRgfhnKXmw
+2026-04-25T12:57:01.495Z T+11.7s [buyer] 2026-04-25T12:57:01.494Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:01.617Z T+11.8s [supplier] 2026-04-25T12:57:01.617Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:01.743Z T+11.9s [buyer] 2026-04-25T12:57:01.743Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:02.105Z T+12.3s [buyer] 2026-04-25T12:57:02.105Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:02.272Z T+12.5s [supplier] 2026-04-25T12:57:02.272Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:02.618Z T+12.8s [buyer] {"ts":"2026-04-25T12:57:02.618Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:02.619Z T+12.8s [buyer] 2026-04-25T12:57:02.618Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
+2026-04-25T12:57:02.619Z T+12.8s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:02.619Z T+12.8s [buyer] Logs: 
+2026-04-25T12:57:02.619Z T+12.8s [buyer] [
+2026-04-25T12:57:02.619Z T+12.8s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:04.393Z T+14.6s [buyer] 2026-04-25T12:57:04.393Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:04.621Z T+14.8s [buyer] 2026-04-25T12:57:04.621Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:05.059Z T+15.3s [buyer] 2026-04-25T12:57:05.058Z [buyer] PURCHASE_RULE_MATCH listing=8ZRbB3QuiuuebQdnGPXRRGpFpQ1wrzNQnx3i31tmmCuz category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:05.403Z T+15.6s [buyer] 2026-04-25T12:57:05.402Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:05.483Z T+15.7s [supplier] 2026-04-25T12:57:05.482Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:05.734Z T+15.9s [buyer] 2026-04-25T12:57:05.734Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:05.989Z T+16.2s [supplier] 2026-04-25T12:57:05.989Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:07.204Z T+17.4s [buyer] {"ts":"2026-04-25T12:57:07.203Z","actor":"buyer","kind":"PURCHASE_VIA_ER_TX1_OK","payload":{"sig":"4nEu9YkbcbW8EZZXQwGTWCV3vNxDGfqgGEpLXzovdgxYfntTfjYgFuifmhGyahjbjyJsZtQ3TKaVbADMEJHhJ9m9","listing":"8ZRbB3QuiuuebQdnGPXRRGpFpQ1wrzNQnx3i31tmmCuz","purchase":"3bbqqyzFwwYgNyhVG314yZmRQBVnFukFVikbWxNEwgVi","ms":1715}}
+2026-04-25T12:57:08.017Z T+18.2s [buyer] 2026-04-25T12:57:08.017Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:08.296Z T+18.5s [buyer] 2026-04-25T12:57:08.296Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:08.589Z T+18.8s [buyer] 2026-04-25T12:57:08.589Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:08.860Z T+19.1s [buyer] 2026-04-25T12:57:08.860Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:09.272Z T+19.5s [supplier] 2026-04-25T12:57:09.272Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:09.971Z T+20.2s [supplier] 2026-04-25T12:57:09.971Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:11.163Z T+21.4s [buyer] 2026-04-25T12:57:11.163Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:11.471Z T+21.7s [buyer] 2026-04-25T12:57:11.471Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:11.743Z T+21.9s [buyer] 2026-04-25T12:57:11.743Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:12.021Z T+22.2s [buyer] 2026-04-25T12:57:12.021Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:13.226Z T+23.4s [supplier] 2026-04-25T12:57:13.226Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:13.795Z T+24.0s [supplier] 2026-04-25T12:57:13.794Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:14.258Z T+24.5s [buyer] 2026-04-25T12:57:14.258Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:14.470Z T+24.7s [buyer] {"ts":"2026-04-25T12:57:14.470Z","actor":"buyer","kind":"PURCHASE_VIA_ER_TX2_OK","payload":{"sig":"5KUyqPJ2UP6reXQfcbvAuPTviBtVjHg2RCGqxzbLByqP6ATKxpgk2c6V4sLdjTvF72sxAgFwWUydEMb6gksUDAfV","commit_landed_after_ms":7266}}
+2026-04-25T12:57:14.470Z T+24.7s [buyer] {"ts":"2026-04-25T12:57:14.470Z","actor":"buyer","kind":"PURCHASE_VIA_ER_DONE","payload":{"total_ms":8983,"listing":"8ZRbB3QuiuuebQdnGPXRRGpFpQ1wrzNQnx3i31tmmCuz","purchase":"3bbqqyzFwwYgNyhVG314yZmRQBVnFukFVikbWxNEwgVi"}}
+2026-04-25T12:57:14.470Z T+24.7s [buyer] 2026-04-25T12:57:14.470Z [buyer] LISTING_PURCHASED listing=8ZRbB3QuiuuebQdnGPXRRGpFpQ1wrzNQnx3i31tmmCuz purchase=3bbqqyzFwwYgNyhVG314yZmRQBVnFukFVikbWxNEwgVi tx=5KUyqPJ2UP6reXQfcbvAuPTviBtVjHg2RCGqxzbLByqP6ATKxpgk2c6V4sLdjTvF72sxAgFwWUydEMb6gksUDAfV path=private tx1=4nEu9YkbcbW8EZZXQwGTWCV3vNxDGfqgGEpLXzovdgxYfntTfjYgFuifmhGyahjbjyJsZtQ3TKaVbADMEJHhJ9m9 tx2=5KUyqPJ2UP6reXQfcbvAuPTviBtVjHg2RCGqxzbLByqP6ATKxpgk2c6V4sLdjTvF72sxAgFwWUydEMb6gksUDAfV total_ms=8983
+2026-04-25T12:57:14.473Z T+24.7s [buyer] 2026-04-25T12:57:14.472Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:14.622Z T+24.8s [buyer] 2026-04-25T12:57:14.622Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:14.695Z T+24.9s [buyer] 2026-04-25T12:57:14.695Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:14.912Z T+25.1s [buyer] 2026-04-25T12:57:14.911Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:15.896Z T+26.1s [buyer] {"ts":"2026-04-25T12:57:15.896Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:15.896Z T+26.1s [buyer] 2026-04-25T12:57:15.896Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
+2026-04-25T12:57:15.896Z T+26.1s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:15.896Z T+26.1s [buyer] Logs: 
+2026-04-25T12:57:15.896Z T+26.1s [buyer] [
+2026-04-25T12:57:15.896Z T+26.1s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:16.179Z T+26.4s [buyer] 2026-04-25T12:57:16.178Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:17.002Z T+27.2s [supplier] 2026-04-25T12:57:17.002Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:17.077Z T+27.3s [buyer] 2026-04-25T12:57:17.077Z [buyer] SETTLE_RETRY_OK sig=2GQ5zoMu47RSBn5EorHQiBdLx2H8hc9qRnxVQA3RpddXGETK4Dh5sqVDsDYj6qqq7U5D9HqkFKHuJcLXqn4KFmBa listing=8ZRbB3QuiuuebQdnGPXRRGpFpQ1wrzNQnx3i31tmmCuz purchase=3bbqqyzFwwYgNyhVG314yZmRQBVnFukFVikbWxNEwgVi
+2026-04-25T12:57:17.146Z T+27.4s [buyer] {"ts":"2026-04-25T12:57:17.146Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:17.146Z T+27.4s [buyer] 2026-04-25T12:57:17.146Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
+2026-04-25T12:57:17.146Z T+27.4s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:17.146Z T+27.4s [buyer] Logs: 
+2026-04-25T12:57:17.146Z T+27.4s [buyer] [
+2026-04-25T12:57:17.146Z T+27.4s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:17.155Z T+27.4s [buyer] 2026-04-25T12:57:17.155Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:17.355Z T+27.6s [buyer] 2026-04-25T12:57:17.355Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:17.564Z T+27.8s [buyer] 2026-04-25T12:57:17.564Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:17.766Z T+28.0s [buyer] 2026-04-25T12:57:17.766Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:19.067Z T+29.3s [supplier] 2026-04-25T12:57:19.067Z [supplier] PAYLOAD_DELIVERED listing_id=8 buyer_cid=local://P-8.bin tx=aaEmTsWtbcTokjcPfVw7puuwDkxQA2bBMdE2LfJotg2gzt4nCLP8nHWATZJcN6hu1KTde4L5aqFad6NKrd7iBYR
+2026-04-25T12:57:19.567Z T+29.8s [buyer] 2026-04-25T12:57:19.567Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:19.976Z T+30.2s [buyer] 2026-04-25T12:57:19.976Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:19.982Z T+30.2s [supplier] 2026-04-25T12:57:19.982Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:20.181Z T+30.4s [buyer] 2026-04-25T12:57:20.181Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:20.412Z T+30.6s [buyer] {"ts":"2026-04-25T12:57:20.412Z","actor":"buyer","kind":"payload_decrypted","payload":{"purchase":"3bbqqyzFwwYgNyhVG314yZmRQBVnFukFVikbWxNEwgVi","listing":"8ZRbB3QuiuuebQdnGPXRRGpFpQ1wrzNQnx3i31tmmCuz","signal_id":"sig-WHALE-0001","payload":{"signal_id":"sig-WHALE-0001","category":"WHALE","signal_ref":"slot 287491203, wallet 7xKXtg2CW87iF5RxC84LBu68kAr7GhvsqxNWwUPHhQh9","claim":"WHALE_SWAP predicted within 6 blocks","evidence":[{"kind":"balance_delta","wallet":"7xKX…Qh9","pool":"Raydium JUP/SOL","sol":120}],"recommended_action":"short JUP/SOL, size ≤ 120 SOL"}}}
+2026-04-25T12:57:20.412Z T+30.6s [buyer] 2026-04-25T12:57:20.412Z [buyer] OUTCOME_WINDOW_OPENED purchase=3bbqqyzFwwYgNyhVG314yZmRQBVnFukFVikbWxNEwgVi signal_id=sig-WHALE-0001 window_ms=30000
+2026-04-25T12:57:20.469Z T+30.7s [buyer] {"ts":"2026-04-25T12:57:20.469Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:20.470Z T+30.7s [buyer] 2026-04-25T12:57:20.469Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
+2026-04-25T12:57:20.470Z T+30.7s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:20.470Z T+30.7s [buyer] Logs: 
+2026-04-25T12:57:20.470Z T+30.7s [buyer] [
+2026-04-25T12:57:20.470Z T+30.7s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:20.616Z T+30.8s [buyer] 2026-04-25T12:57:20.616Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:20.681Z T+30.9s [buyer] 2026-04-25T12:57:20.681Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:20.827Z T+31.0s [buyer] 2026-04-25T12:57:20.827Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:22.035Z T+32.2s [buyer] {"ts":"2026-04-25T12:57:22.034Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:22.035Z T+32.2s [buyer] 2026-04-25T12:57:22.035Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
+2026-04-25T12:57:22.035Z T+32.2s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:22.035Z T+32.2s [buyer] Logs: 
+2026-04-25T12:57:22.035Z T+32.2s [buyer] [
+2026-04-25T12:57:22.035Z T+32.2s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:23.040Z T+33.2s [buyer] 2026-04-25T12:57:23.040Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:23.230Z T+33.4s [supplier] 2026-04-25T12:57:23.230Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:23.268Z T+33.5s [buyer] 2026-04-25T12:57:23.268Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:23.472Z T+33.7s [buyer] 2026-04-25T12:57:23.471Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:23.688Z T+33.9s [buyer] 2026-04-25T12:57:23.688Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:23.781Z T+34.0s [supplier] 2026-04-25T12:57:23.781Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:24.571Z T+34.8s [buyer] 2026-04-25T12:57:24.571Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:25.573Z T+35.8s [buyer] {"ts":"2026-04-25T12:57:25.572Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:25.573Z T+35.8s [buyer] 2026-04-25T12:57:25.572Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
+2026-04-25T12:57:25.573Z T+35.8s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:25.573Z T+35.8s [buyer] Logs: 
+2026-04-25T12:57:25.573Z T+35.8s [buyer] [
+2026-04-25T12:57:25.573Z T+35.8s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:25.770Z T+36.0s [buyer] 2026-04-25T12:57:25.770Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:26.513Z T+36.7s [buyer] 2026-04-25T12:57:26.513Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:26.772Z T+37.0s [buyer] {"ts":"2026-04-25T12:57:26.772Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:26.772Z T+37.0s [buyer] 2026-04-25T12:57:26.772Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
+2026-04-25T12:57:26.772Z T+37.0s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:26.772Z T+37.0s [buyer] Logs: 
+2026-04-25T12:57:26.772Z T+37.0s [buyer] [
+2026-04-25T12:57:26.772Z T+37.0s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:26.820Z T+37.0s [buyer] 2026-04-25T12:57:26.820Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:26.991Z T+37.2s [supplier] 2026-04-25T12:57:26.991Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:27.022Z T+37.2s [buyer] 2026-04-25T12:57:27.021Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:27.218Z T+37.4s [buyer] 2026-04-25T12:57:27.218Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:27.492Z T+37.7s [supplier] 2026-04-25T12:57:27.492Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:28.378Z T+38.6s [buyer] 2026-04-25T12:57:28.378Z [buyer] RESOLUTION_RECEIVED signal_id=sig-WHALE-0001 verdict=True
+2026-04-25T12:57:29.114Z T+39.3s [supplier] 2026-04-25T12:57:29.114Z [supplier] SIGNAL_LOOP_DONE
+2026-04-25T12:57:29.330Z T+39.5s [buyer] 2026-04-25T12:57:29.330Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:29.378Z T+39.6s [buyer] 2026-04-25T12:57:29.378Z [buyer] FEED_CONSUMER_DONE
+2026-04-25T12:57:29.653Z T+39.9s [buyer] 2026-04-25T12:57:29.653Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:30.060Z T+40.3s [buyer] 2026-04-25T12:57:30.060Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:30.430Z T+40.6s [buyer] 2026-04-25T12:57:30.430Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:30.611Z T+40.8s [buyer] {"ts":"2026-04-25T12:57:30.611Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:30.611Z T+40.8s [buyer] 2026-04-25T12:57:30.611Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
+2026-04-25T12:57:30.612Z T+40.8s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:30.612Z T+40.8s [buyer] Logs: 
+2026-04-25T12:57:30.612Z T+40.8s [buyer] [
+2026-04-25T12:57:30.612Z T+40.8s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:30.793Z T+41.0s [buyer] 2026-04-25T12:57:30.792Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:30.842Z T+41.0s [supplier] 2026-04-25T12:57:30.841Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:30.889Z T+41.1s [buyer] 2026-04-25T12:57:30.889Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:31.614Z T+41.8s [supplier] 2026-04-25T12:57:31.614Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:32.005Z T+42.2s [buyer] {"ts":"2026-04-25T12:57:32.005Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:32.005Z T+42.2s [buyer] 2026-04-25T12:57:32.005Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
+2026-04-25T12:57:32.005Z T+42.2s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:32.005Z T+42.2s [buyer] Logs: 
+2026-04-25T12:57:32.005Z T+42.2s [buyer] [
+2026-04-25T12:57:32.005Z T+42.2s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:33.226Z T+43.4s [buyer] 2026-04-25T12:57:33.225Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:33.463Z T+43.7s [buyer] 2026-04-25T12:57:33.463Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:34.226Z T+44.4s [buyer] 2026-04-25T12:57:34.223Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:34.848Z T+45.1s [supplier] 2026-04-25T12:57:34.848Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:34.964Z T+45.2s [buyer] 2026-04-25T12:57:34.964Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:34.980Z T+45.2s [buyer] 2026-04-25T12:57:34.979Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:35.293Z T+45.5s [supplier] 2026-04-25T12:57:35.293Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:35.824Z T+46.0s [buyer] {"ts":"2026-04-25T12:57:35.823Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:35.825Z T+46.0s [buyer] 2026-04-25T12:57:35.823Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
+2026-04-25T12:57:35.825Z T+46.0s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:35.825Z T+46.0s [buyer] Logs: 
+2026-04-25T12:57:35.825Z T+46.0s [buyer] [
+2026-04-25T12:57:35.825Z T+46.0s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:36.085Z T+46.3s [buyer] 2026-04-25T12:57:36.085Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:36.916Z T+47.1s [buyer] {"ts":"2026-04-25T12:57:36.916Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:36.916Z T+47.1s [buyer] 2026-04-25T12:57:36.916Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
+2026-04-25T12:57:36.916Z T+47.1s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:36.916Z T+47.1s [buyer] Logs: 
+2026-04-25T12:57:36.916Z T+47.1s [buyer] [
+2026-04-25T12:57:36.916Z T+47.1s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:37.186Z T+47.4s [buyer] 2026-04-25T12:57:37.185Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:37.385Z T+47.6s [buyer] 2026-04-25T12:57:37.385Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:37.750Z T+48.0s [buyer] 2026-04-25T12:57:37.750Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:38.031Z T+48.2s [buyer] 2026-04-25T12:57:38.031Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:38.575Z T+48.8s [supplier] 2026-04-25T12:57:38.575Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:39.322Z T+49.5s [supplier] 2026-04-25T12:57:39.322Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:39.508Z T+49.7s [buyer] 2026-04-25T12:57:39.508Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:40.348Z T+50.6s [buyer] 2026-04-25T12:57:40.348Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:40.713Z T+50.9s [buyer] 2026-04-25T12:57:40.713Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:40.741Z T+50.9s [buyer] {"ts":"2026-04-25T12:57:40.740Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:40.742Z T+50.9s [buyer] 2026-04-25T12:57:40.741Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
+2026-04-25T12:57:40.742Z T+50.9s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:40.742Z T+50.9s [buyer] Logs: 
+2026-04-25T12:57:40.742Z T+50.9s [buyer] [
+2026-04-25T12:57:40.742Z T+50.9s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:41.060Z T+51.3s [buyer] 2026-04-25T12:57:41.060Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:41.205Z T+51.4s [buyer] 2026-04-25T12:57:41.205Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:41.434Z T+51.6s [buyer] 2026-04-25T12:57:41.434Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:42.430Z T+52.6s [buyer] {"ts":"2026-04-25T12:57:42.430Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:42.430Z T+52.6s [buyer] 2026-04-25T12:57:42.430Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
+2026-04-25T12:57:42.430Z T+52.6s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:42.430Z T+52.6s [buyer] Logs: 
+2026-04-25T12:57:42.430Z T+52.6s [buyer] [
+2026-04-25T12:57:42.430Z T+52.6s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:43.664Z T+53.9s [buyer] 2026-04-25T12:57:43.664Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:43.870Z T+54.1s [buyer] 2026-04-25T12:57:43.870Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:44.080Z T+54.3s [buyer] 2026-04-25T12:57:44.080Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:44.288Z T+54.5s [buyer] 2026-04-25T12:57:44.287Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:44.849Z T+55.1s [buyer] 2026-04-25T12:57:44.849Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:44.947Z T+55.2s [supplier] 2026-04-25T12:57:44.947Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:45.554Z T+55.8s [supplier] 2026-04-25T12:57:45.553Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:46.040Z T+56.2s [buyer] {"ts":"2026-04-25T12:57:46.040Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:46.040Z T+56.2s [buyer] 2026-04-25T12:57:46.040Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
+2026-04-25T12:57:46.040Z T+56.2s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:46.040Z T+56.2s [buyer] Logs: 
+2026-04-25T12:57:46.040Z T+56.2s [buyer] [
+2026-04-25T12:57:46.040Z T+56.2s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:46.313Z T+56.5s [buyer] 2026-04-25T12:57:46.313Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:46.515Z T+56.7s [buyer] 2026-04-25T12:57:46.515Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:46.747Z T+57.0s [buyer] 2026-04-25T12:57:46.747Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:46.955Z T+57.2s [buyer] 2026-04-25T12:57:46.955Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:47.169Z T+57.4s [buyer] 2026-04-25T12:57:47.169Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:47.512Z T+57.7s [buyer] {"ts":"2026-04-25T12:57:47.507Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:47.512Z T+57.7s [buyer] 2026-04-25T12:57:47.507Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
+2026-04-25T12:57:47.512Z T+57.7s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:47.512Z T+57.7s [buyer] Logs: 
+2026-04-25T12:57:47.512Z T+57.7s [buyer] [
+2026-04-25T12:57:47.512Z T+57.7s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:48.828Z T+59.0s [supplier] 2026-04-25T12:57:48.828Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:49.458Z T+59.7s [supplier] 2026-04-25T12:57:49.457Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:49.474Z T+59.7s [buyer] 2026-04-25T12:57:49.474Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:49.738Z T+59.9s [buyer] 2026-04-25T12:57:49.738Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:50.011Z T+60.2s [buyer] 2026-04-25T12:57:50.011Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:50.106Z T+60.3s [buyer] 2026-04-25T12:57:50.106Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:50.274Z T+60.5s [buyer] 2026-04-25T12:57:50.274Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:51.246Z T+61.5s [buyer] {"ts":"2026-04-25T12:57:51.245Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:51.246Z T+61.5s [buyer] 2026-04-25T12:57:51.246Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
+2026-04-25T12:57:51.246Z T+61.5s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:51.246Z T+61.5s [buyer] Logs: 
+2026-04-25T12:57:51.246Z T+61.5s [buyer] [
+2026-04-25T12:57:51.246Z T+61.5s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:51.535Z T+61.7s [buyer] 2026-04-25T12:57:51.535Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=5
+2026-04-25T12:57:52.472Z T+62.7s [buyer] 2026-04-25T12:57:52.472Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:52.731Z T+62.9s [supplier] 2026-04-25T12:57:52.731Z [supplier] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:52.735Z T+62.9s [buyer] 2026-04-25T12:57:52.735Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:52.763Z T+63.0s [buyer] {"ts":"2026-04-25T12:57:52.763Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:52.763Z T+63.0s [buyer] 2026-04-25T12:57:52.763Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
+2026-04-25T12:57:52.763Z T+63.0s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:52.763Z T+63.0s [buyer] Logs: 
+2026-04-25T12:57:52.763Z T+63.0s [buyer] [
+2026-04-25T12:57:52.763Z T+63.0s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:53.002Z T+63.2s [buyer] 2026-04-25T12:57:53.001Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:53.266Z T+63.5s [buyer] 2026-04-25T12:57:53.266Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:53.267Z T+63.5s [supplier] 2026-04-25T12:57:53.267Z [supplier] DELIVERY_SKIP_MISSING_SOURCE listing_id=6
+2026-04-25T12:57:53.961Z T+64.2s [buyer] 2026-04-25T12:57:53.961Z [buyer] RATING_SUBMITTED purchase=3bbqqyzFwwYgNyhVG314yZmRQBVnFukFVikbWxNEwgVi signal_id=sig-WHALE-0001 verdict=True tx=2RyjvyQd5LpgR7gGHSFesTnTUaJdNxqzvMNhAT9gxwxQCxaJkGh8dhwZLtm8QiVGdSnuxvQJskzeyQfS8P6ces9J
+2026-04-25T12:57:55.304Z T+65.5s [buyer] 2026-04-25T12:57:55.303Z [buyer] PURCHASE_RULE_MATCH listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv category=WHALE price_lamports=2400000000 supplier_rep_den=6
+2026-04-25T12:57:55.491Z T+65.7s [buyer] 2026-04-25T12:57:55.491Z [buyer] PURCHASES_FILTERED skipped=4
+2026-04-25T12:57:55.732Z T+65.9s [buyer] 2026-04-25T12:57:55.732Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=wy8sXrkw8FdMSW3cX5Eu85TMG4mLqbsLDrPrMPS9F8U path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-5.bin
+2026-04-25T12:57:55.860Z T+66.1s [main] all assertions pass at T+64.1s — early exit
+2026-04-25T12:57:55.860Z T+66.1s [main] tearing down children
+2026-04-25T12:57:55.860Z T+66.1s [main] sending SIGTERM to children
+2026-04-25T12:57:55.893Z T+66.1s [supplier] 2026-04-25T12:57:55.893Z [supplier] SHUTDOWN_REQUESTED
+2026-04-25T12:57:55.894Z T+66.1s [buyer] 2026-04-25T12:57:55.894Z [buyer] SHUTDOWN_REQUESTED
+2026-04-25T12:57:55.937Z T+66.1s [buyer] 2026-04-25T12:57:55.937Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=9YAG6jAuyGuWXRq31vCnhmr7wKoRmogf63AN6Bav81ai path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-4.bin
+2026-04-25T12:57:55.963Z T+66.2s [buyer] 2026-04-25T12:57:55.963Z [buyer] RATING_DISPATCHER_DONE
+2026-04-25T12:57:56.156Z T+66.4s [buyer] 2026-04-25T12:57:56.156Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=8STjgK3AwSxUjgLHvj2J9jzYBzJeQ72foTtNu3Z3Q9tq path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-7.bin
+2026-04-25T12:57:56.268Z T+66.5s [supplier] 2026-04-25T12:57:56.268Z [supplier] DELIVERY_LOOP_DONE
+2026-04-25T12:57:56.269Z T+66.5s [supplier] 2026-04-25T12:57:56.268Z [supplier] EXIT
+2026-04-25T12:57:56.303Z T+66.5s [main] supplier exited code=0 signal=null
+2026-04-25T12:57:56.466Z T+66.7s [buyer] {"ts":"2026-04-25T12:57:56.465Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:56.466Z T+66.7s [buyer] 2026-04-25T12:57:56.465Z [buyer] PURCHASE_VIA_ER_ERROR listing=3xMd8W6oNdEmgMybtDbLw3oNVrtWKjSaKGeMwmLLSzkv err=Error: Simulation failed. 
+2026-04-25T12:57:56.466Z T+66.7s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:56.466Z T+66.7s [buyer] Logs: 
+2026-04-25T12:57:56.466Z T+66.7s [buyer] [
+2026-04-25T12:57:56.466Z T+66.7s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:56.777Z T+67.0s [buyer] 2026-04-25T12:57:56.777Z [buyer] PURCHASE_RULE_MATCH listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk category=WHALE price_lamports=2400000000 supplier_rep_den=6
+2026-04-25T12:57:58.093Z T+68.3s [buyer] {"ts":"2026-04-25T12:57:58.092Z","actor":"buyer","kind":"PURCHASE_VIA_ER_FAIL","payload":{"step":"tx1","listing":"53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk","err":"Error: Simulation failed. \nMessage: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. \nLogs: \n[\n  \"Program 6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H invoke [1]\",\n  \"Program log: Instruction: Ini"}}
+2026-04-25T12:57:58.093Z T+68.3s [buyer] 2026-04-25T12:57:58.093Z [buyer] PURCHASE_VIA_ER_ERROR listing=53TBCB9LQAyzjA4AaACckkYibZokoVsVdQnPzPWmvuvk err=Error: Simulation failed. 
+2026-04-25T12:57:58.093Z T+68.3s [buyer] Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1770. 
+2026-04-25T12:57:58.093Z T+68.3s [buyer] Logs: 
+2026-04-25T12:57:58.093Z T+68.3s [buyer] [
+2026-04-25T12:57:58.093Z T+68.3s [buyer]   "Program 6ac2jbi5FM…
+2026-04-25T12:57:58.158Z T+68.4s [buyer] 2026-04-25T12:57:58.158Z [buyer] DELIVERY_WATCHER_DONE
+2026-04-25T12:57:58.874Z T+69.1s [main] SIGKILL pid=62111
+2026-04-25T12:57:58.874Z T+69.1s 
+2026-04-25T12:57:58.874Z T+69.1s === assertions ===
+2026-04-25T12:57:58.874Z T+69.1s   PASS  listing status == Rated  status=rated listing_id=8 pda=8ZRbB3QuiuuebQdnGPXRRGpFpQ1wrzNQnx3i31tmmCuz
+2026-04-25T12:57:58.874Z T+69.1s   PASS  purchase exists  pda=3bbqqyzFwwYgNyhVG314yZmRQBVnFukFVikbWxNEwgVi
+2026-04-25T12:57:58.874Z T+69.1s   PASS  purchase.delivered == true  delivered=true cid=local://P-8.bin
+2026-04-25T12:57:58.874Z T+69.1s   PASS  rating exists  pda=3YWcLcuf2tnZfM8HhvVH9WgrbCK1Gw5n1PHaXUnnK3Sr
+2026-04-25T12:57:58.874Z T+69.1s   PASS  rating.verdict == True  verdict=true
+2026-04-25T12:57:58.874Z T+69.1s   PASS  supplier.reputation_den incremented by exactly 1  num=6 den=6 (baseline num=5 den=5)
+2026-04-25T12:57:58.874Z T+69.1s === total wall-clock: 69.1s ===
+2026-04-25T12:57:58.874Z T+69.1s === result: PASS ===

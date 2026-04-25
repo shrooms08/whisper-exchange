@@ -332,11 +332,12 @@ async function purchase(
       log('LISTING_PURCHASED', {
         listing: key,
         purchase: purchase.toBase58(),
-        tx: result.tx3Sig, // settle is the final base-layer landing
+        tx: result.tx2Sig, // ER commit-back is the final base-visible landing of this helper
         path: 'private',
         tx1: result.tx1Sig,
         tx2: result.tx2Sig,
         total_ms: result.totalMs,
+        // settle handled by settleWatcher within ~5s
       });
     } catch (err) {
       const msg = String(err);

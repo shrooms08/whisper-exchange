@@ -1,21 +1,24 @@
-// Three-tx private-purchase flow via MagicBlock ephemeral rollup.
+// Two-tx private-purchase flow via MagicBlock ephemeral rollup.
 //
-// Sequence (per docs/magicblock-integration.md):
+// Sequence (per docs/magicblock-integration.md, refactored from the original
+// 3-tx form to eliminate a race with settleWatcher):
 //   Tx 1 (base): init_purchase_for_delegation + delegate_for_purchase
 //                — batched into one tx via Transaction.add().add().
 //   Tx 2 (ER):   purchase_listing_private — mutates delegated Listing/Purchase,
 //                then commit_and_undelegate bundles them back to base.
 //                Buyer polls base-layer Purchase until purchased_at_slot > 0
 //                to confirm the commit landed (timeout 15s).
-//   Tx 3 (base): settle_purchase — system_program::transfer(buyer→supplier)
-//                + purchase.settled = true.
+//
+// settle_purchase is NOT called inline. Once tx2 lands and the commit-back
+// completes, Listing.status=Sold and Purchase.settled=false — exactly the
+// shape buyer.ts:settleWatcher polls for. The watcher fires within
+// SETTLE_POLL_MS (5s) and runs settle_purchase; same code path as the
+// stranded-listing recovery, no special-case logic.
 //
 // Idempotency note: if tx1 succeeds but tx2 fails, the next purchase cycle will
 // re-detect the same Active listing; init_purchase_for_delegation will fail
 // because the Purchase PDA already exists. Buyer agent should swallow that
-// specific error and skip the listing for one cycle (TODO: detect in B.4), OR
-// invoke recover_stuck_purchase (deferred Sunday-AM nice-to-have per
-// decisions.md).
+// specific error (handled in buyer.ts:purchase()).
 
 import { Program, Wallet, web3 } from '@coral-xyz/anchor';
 import type { Idl } from '@coral-xyz/anchor';
@@ -36,7 +39,6 @@ export interface ChainBundle {
 export interface PurchaseResult {
   tx1Sig: string;
   tx2Sig: string;
-  tx3Sig: string;
   totalMs: number;
 }
 
@@ -179,39 +181,11 @@ export async function purchaseViaEr(
     throw err;
   }
 
-  // ---------- Tx 3: settle_purchase on base ----------
-  const tx3Start = Date.now();
-  let tx3Sig = '';
-  try {
-    const supplierAgent: any = await (chain.programBase.account as any).agent.fetch(
-      supplierAgentPda,
-    );
-    const supplierAuthority = supplierAgent.authority as web3.PublicKey;
-
-    tx3Sig = await (chain.programBase.methods as any)
-      .settlePurchase()
-      .accounts({
-        authority: buyerAuthority,
-        buyerAgent: buyerAgentPda,
-        listing: listingPda,
-        purchase: purchasePda,
-        supplierAgent: supplierAgentPda,
-        supplierAuthority,
-        systemProgram: web3.SystemProgram.programId,
-      })
-      .rpc();
-
-    logJson('PURCHASE_VIA_ER_TX3_OK', {
-      sig: tx3Sig,
-      ms: Date.now() - tx3Start,
-    });
-  } catch (err) {
-    logJson('PURCHASE_VIA_ER_FAIL', {
-      step: 'tx3',
-      err: String(err).slice(0, 240),
-    });
-    throw err;
-  }
+  // settle_purchase is owned by buyer.ts:settleWatcher — it polls every 5s
+  // for Purchases where !settled && !delivered && listing.status==Sold and
+  // calls settle_purchase from there. This avoids a race with the watcher
+  // and keeps settle in one place (also handles the stranded-listing
+  // recovery case).
 
   const totalMs = Date.now() - t0;
   logJson('PURCHASE_VIA_ER_DONE', {
@@ -219,5 +193,5 @@ export async function purchaseViaEr(
     listing: listingPda.toBase58(),
     purchase: purchasePda.toBase58(),
   });
-  return { tx1Sig, tx2Sig, tx3Sig, totalMs };
+  return { tx1Sig, tx2Sig, totalMs };
 }
