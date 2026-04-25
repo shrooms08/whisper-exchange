@@ -44,7 +44,9 @@ if (!DRY_RUN && !HELIUS_API_KEY) {
   );
   process.exit(1);
 }
-const RPC_URL = `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY ?? ''}`;
+const BASE_RPC =
+  process.env.BASE_RPC ?? `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY ?? ''}`;
+const ER_RPC = process.env.ER_RPC ?? 'https://devnet.magicblock.app/';
 const HANDLE = process.env.SUPPLIER_HANDLE ?? 'night-oracle';
 const PAYLOADS_DIR = resolve('payloads');
 const KEYSTORE_DIR = resolve('keys');
@@ -114,22 +116,40 @@ function loadOrCreateKeystore(): Keystore {
 // ---------- chain ----------
 
 interface Chain {
+  // Base layer (source of truth for all reads + supplier instructions).
   connection: web3.Connection;
-  program: Program<Idl>;
+  programBase: Program<Idl>;
   provider: AnchorProvider;
+  // Ephemeral rollup. Supplier doesn't currently use the ER (delivery + create
+  // run on base; Purchase only becomes visible post-commit), but kept here
+  // for symmetry with buyer.ts and as cheap insurance for future hardening.
+  erConnection: web3.Connection;
+  programEr: Program<Idl>;
+  // Shared.
   programId: web3.PublicKey;
   wallet: Wallet;
 }
 
 async function setupChain(solana: web3.Keypair): Promise<Chain> {
-  const connection = new web3.Connection(RPC_URL, 'confirmed');
+  const connection = new web3.Connection(BASE_RPC, 'confirmed');
+  const erConnection = new web3.Connection(ER_RPC, 'confirmed');
   const wallet = new Wallet(solana);
   const provider = new AnchorProvider(connection, wallet, { commitment: 'confirmed' });
+  const erProvider = new AnchorProvider(erConnection, wallet, { commitment: 'confirmed' });
   const idl = JSON.parse(
     readFileSync(resolve('..', 'target', 'idl', 'whisper.json'), 'utf8'),
   ) as Idl;
-  const program = new Program(idl, provider);
-  return { connection, program, provider, programId: program.programId, wallet };
+  const programBase = new Program(idl, provider);
+  const programEr = new Program(idl, erProvider);
+  return {
+    connection,
+    programBase,
+    provider,
+    erConnection,
+    programEr,
+    programId: programBase.programId,
+    wallet,
+  };
 }
 
 function agentPda(programId: web3.PublicKey, authority: web3.PublicKey): [web3.PublicKey, number] {
@@ -161,7 +181,7 @@ async function ensureRegistered(chain: Chain, x25519Pub: Uint8Array): Promise<we
   }
 
   log('REGISTERING_AGENT', { handle: HANDLE, pda: pda.toBase58() });
-  const sig = await (chain.program.methods as any)
+  const sig = await (chain.programBase.methods as any)
     .registerAgent(HANDLE, Array.from(x25519Pub))
     .accounts({
       agent: pda,
@@ -242,7 +262,7 @@ async function handleSignal(
   const currentSlot = BigInt(await ctx.chain.connection.getSlot('confirmed'));
   const ttlSlot = currentSlot + TTL_SLOTS;
 
-  const sig = await (ctx.chain.program.methods as any)
+  const sig = await (ctx.chain.programBase.methods as any)
     .createListing(
       new BN(listingId.toString()),
       { [signal.category.toLowerCase()]: {} },
@@ -269,7 +289,7 @@ async function handleSignal(
 }
 
 async function fetchListingsCreated(chain: Chain, supplierPda: web3.PublicKey): Promise<bigint> {
-  const agent = await (chain.program.account as any).agent.fetch(supplierPda);
+  const agent = await (chain.programBase.account as any).agent.fetch(supplierPda);
   return BigInt(agent.listingsCreated.toString());
 }
 
@@ -307,7 +327,7 @@ async function pollAndDeliver(
   x25519Priv: Uint8Array,
 ): Promise<void> {
   const { results: purchases, skipped: purchasesSkipped } = await fetchAllSafe<any>(
-    chain.program,
+    chain.programBase,
     'Purchase',
   );
   if (purchasesSkipped > 0) {
@@ -316,10 +336,10 @@ async function pollAndDeliver(
   for (const { publicKey: purchasePda, account: purchase } of purchases) {
     if (purchase.delivered) continue;
 
-    const listing = await (chain.program.account as any).listing.fetch(purchase.listing);
+    const listing = await (chain.programBase.account as any).listing.fetch(purchase.listing);
     if (!listing.supplier.equals(supplierPda)) continue;
 
-    const buyerAgent = await (chain.program.account as any).agent.fetch(purchase.buyer);
+    const buyerAgent = await (chain.programBase.account as any).agent.fetch(purchase.buyer);
 
     const listingId = BigInt(listing.listingId.toString());
     const ciphertextSelfPath = resolve(PAYLOADS_DIR, `L-${listingId}.bin`);
@@ -335,7 +355,7 @@ async function pollAndDeliver(
     const buyerCid = `local://P-${listingId}.bin`;
     writeFileSync(resolve(PAYLOADS_DIR, `P-${listingId}.bin`), ciphertextBuyer);
 
-    const sig = await (chain.program.methods as any)
+    const sig = await (chain.programBase.methods as any)
       .deliverPayload(buyerCid)
       .accounts({
         purchase: purchasePda,
@@ -360,7 +380,11 @@ function sleep(ms: number): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  log('STARTUP', { dry_run: DRY_RUN, rpc: DRY_RUN ? '(skipped)' : RPC_URL });
+  log('STARTUP', {
+    dry_run: DRY_RUN,
+    base_rpc: DRY_RUN ? '(skipped)' : BASE_RPC,
+    er_rpc: DRY_RUN ? '(skipped)' : ER_RPC,
+  });
 
   const keystore = loadOrCreateKeystore();
   log('KEYS_LOADED', {

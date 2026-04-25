@@ -33,6 +33,7 @@ import { x25519 } from '@noble/curves/ed25519';
 
 import { canonicalize, commit, openSealed, toHex } from './crypto.ts';
 import { fetchAllSafe } from './anchor-helpers.ts';
+import { purchaseViaEr } from './purchase-via-er.ts';
 import { MockFeed, type FeedEvent, type Resolution, type SignalCategory, type Verdict } from './signals.ts';
 
 loadDotenv();
@@ -47,7 +48,10 @@ if (!DRY_RUN && !HELIUS_API_KEY) {
   );
   process.exit(1);
 }
-const RPC_URL = `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY ?? ''}`;
+const BASE_RPC =
+  process.env.BASE_RPC ?? `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY ?? ''}`;
+const ER_RPC = process.env.ER_RPC ?? 'https://devnet.magicblock.app/';
+const USE_PRIVATE_PURCHASE = process.env.USE_PRIVATE_PURCHASE === 'true';
 const HANDLE = process.env.BUYER_HANDLE ?? 'alpha-hunter';
 const PAYLOADS_DIR = resolve('payloads');
 const KEYSTORE_DIR = resolve('keys');
@@ -55,6 +59,7 @@ const KEYSTORE_DIR = resolve('keys');
 const SCAN_POLL_MS = 2_000;
 const DELIVERY_POLL_MS = 2_000;
 const RATING_POLL_MS = 2_000;
+const SETTLE_POLL_MS = 5_000;
 const OUTCOME_WINDOW_MS = 30_000;
 
 const BUYER_MAX_PRICE_LAMPORTS = BigInt(
@@ -121,22 +126,38 @@ function loadOrCreateKeystore(): Keystore {
 // ---------- chain ----------
 
 interface Chain {
+  // Base layer (source of truth for all reads + non-ER instructions).
   connection: web3.Connection;
-  program: Program<Idl>;
+  programBase: Program<Idl>;
   provider: AnchorProvider;
+  // Ephemeral rollup (used for purchase_listing_private + commit_and_undelegate).
+  erConnection: web3.Connection;
+  programEr: Program<Idl>;
+  // Shared.
   programId: web3.PublicKey;
   wallet: Wallet;
 }
 
 async function setupChain(solana: web3.Keypair): Promise<Chain> {
-  const connection = new web3.Connection(RPC_URL, 'confirmed');
+  const connection = new web3.Connection(BASE_RPC, 'confirmed');
+  const erConnection = new web3.Connection(ER_RPC, 'confirmed');
   const wallet = new Wallet(solana);
   const provider = new AnchorProvider(connection, wallet, { commitment: 'confirmed' });
+  const erProvider = new AnchorProvider(erConnection, wallet, { commitment: 'confirmed' });
   const idl = JSON.parse(
     readFileSync(resolve('..', 'target', 'idl', 'whisper.json'), 'utf8'),
   ) as Idl;
-  const program = new Program(idl, provider);
-  return { connection, program, provider, programId: program.programId, wallet };
+  const programBase = new Program(idl, provider);
+  const programEr = new Program(idl, erProvider);
+  return {
+    connection,
+    programBase,
+    provider,
+    erConnection,
+    programEr,
+    programId: programBase.programId,
+    wallet,
+  };
 }
 
 function agentPda(programId: web3.PublicKey, authority: web3.PublicKey): [web3.PublicKey, number] {
@@ -162,7 +183,7 @@ async function ensureRegistered(chain: Chain, x25519Pub: Uint8Array): Promise<we
   }
 
   log('REGISTERING_AGENT', { handle: HANDLE, pda: pda.toBase58() });
-  const sig = await (chain.program.methods as any)
+  const sig = await (chain.programBase.methods as any)
     .registerAgent(HANDLE, Array.from(x25519Pub))
     .accounts({
       agent: pda,
@@ -190,6 +211,7 @@ interface State {
   ratedPurchases: Set<string>;
   openPurchases: Map<string, OpenPurchase>; // key = purchasePda.toBase58()
   resolutions: Map<string, Resolution>; // key = signal_id
+  underfundedSettleLogged: Set<string>; // purchase pubkeys we've already complained about
   stop: { flag: boolean };
 }
 
@@ -235,7 +257,7 @@ async function listingScanner(ctx: {
 
 async function scanOnce(chain: Chain, buyerPda: web3.PublicKey, state: State): Promise<void> {
   const { results: listings, skipped: listingsSkipped } = await withRetry(
-    () => fetchAllSafe<any>(chain.program, 'Listing'),
+    () => fetchAllSafe<any>(chain.programBase, 'Listing'),
     'listing.all',
   );
   if (listingsSkipped > 0) {
@@ -254,7 +276,7 @@ async function scanOnce(chain: Chain, buyerPda: web3.PublicKey, state: State): P
     if (priceLamports >= BUYER_MAX_PRICE_LAMPORTS) continue;
 
     const supplierAgent = await withRetry(
-      () => (chain.program.account as any).agent.fetch(listing.supplier),
+      () => (chain.programBase.account as any).agent.fetch(listing.supplier),
       'agent.fetch(supplier)',
     );
     const den = BigInt(supplierAgent.reputationDen.toString());
@@ -289,7 +311,7 @@ async function purchase(
   state.purchasedListings.add(key); // optimistic — re-check on-chain below
 
   const fresh = await withRetry(
-    () => (chain.program.account as any).listing.fetch(listingPda),
+    () => (chain.programBase.account as any).listing.fetch(listingPda),
     'listing.fetch(recheck)',
   );
   if (!isActive(fresh.status)) {
@@ -298,16 +320,52 @@ async function purchase(
   }
 
   const supplierAgent = await withRetry(
-    () => (chain.program.account as any).agent.fetch(listing.supplier),
+    () => (chain.programBase.account as any).agent.fetch(listing.supplier),
     'agent.fetch(supplier)',
   );
 
   const [purchase] = purchasePda(chain.programId, listingPda);
 
+  if (USE_PRIVATE_PURCHASE) {
+    try {
+      const result = await purchaseViaEr(chain, listingPda, listing);
+      log('LISTING_PURCHASED', {
+        listing: key,
+        purchase: purchase.toBase58(),
+        tx: result.tx3Sig, // settle is the final base-layer landing
+        path: 'private',
+        tx1: result.tx1Sig,
+        tx2: result.tx2Sig,
+        total_ms: result.totalMs,
+      });
+    } catch (err) {
+      const msg = String(err);
+      // init_purchase_for_delegation hits this when the Purchase PDA
+      // already exists on chain — typically because tx1 succeeded on a prior
+      // cycle but tx2 failed and the validator hasn't auto-undelegated yet.
+      // Skip without retrying this scan; let the next cycle find a fresh
+      // listing.
+      if (msg.includes('already in use') || msg.includes('0x0')) {
+        log('PURCHASE_VIA_ER_SKIP', {
+          listing: key,
+          reason: 'in_flight_or_orphan',
+        });
+        return;
+      }
+      state.purchasedListings.delete(key); // allow retry next scan
+      log('PURCHASE_VIA_ER_ERROR', {
+        listing: key,
+        err: shorten(msg),
+      });
+    }
+    return;
+  }
+
+  // Public escape-hatch path (USE_PRIVATE_PURCHASE=false).
   try {
     const sig = await withRetry(
       () =>
-        (chain.program.methods as any)
+        (chain.programBase.methods as any)
           .purchaseListingPublic()
           .accounts({
             listing: listingPda,
@@ -326,6 +384,7 @@ async function purchase(
       listing: key,
       purchase: purchase.toBase58(),
       tx: sig,
+      path: 'public',
     });
   } catch (err) {
     state.purchasedListings.delete(key); // allow retry next scan
@@ -339,6 +398,10 @@ function isActive(status: any): boolean {
 
 function isRated(status: any): boolean {
   return typeof status === 'object' && status !== null && 'rated' in status;
+}
+
+function isSold(status: any): boolean {
+  return typeof status === 'object' && status !== null && 'sold' in status;
 }
 
 function parseCategory(category: any): SignalCategory | null {
@@ -381,7 +444,7 @@ async function deliveryOnce(
   state: State,
 ): Promise<void> {
   const { results: purchases, skipped: purchasesSkipped } = await withRetry(
-    () => fetchAllSafe<any>(chain.program, 'Purchase'),
+    () => fetchAllSafe<any>(chain.programBase, 'Purchase'),
     'purchase.all',
   );
   if (purchasesSkipped > 0) {
@@ -395,7 +458,7 @@ async function deliveryOnce(
     if (state.openPurchases.has(key) || state.ratedPurchases.has(key)) continue;
 
     const listing = await withRetry(
-      () => (chain.program.account as any).listing.fetch(purchase.listing),
+      () => (chain.programBase.account as any).listing.fetch(purchase.listing),
       'listing.fetch(delivery)',
     );
 
@@ -510,7 +573,7 @@ async function ratingTick(
 
     // re-check on-chain status before submitting
     const listing = await withRetry(
-      () => (chain.program.account as any).listing.fetch(open.listingPda),
+      () => (chain.programBase.account as any).listing.fetch(open.listingPda),
       'listing.fetch(pre-rate)',
     );
     if (isRated(listing.status)) {
@@ -525,7 +588,7 @@ async function ratingTick(
       );
       const sig = await withRetry(
         () =>
-          (chain.program.methods as any)
+          (chain.programBase.methods as any)
             .submitRating(toAnchorVerdict(resolution.verdict))
             .accounts({
               purchase: open.purchasePda,
@@ -559,6 +622,112 @@ function toAnchorVerdict(v: Verdict): Record<string, Record<string, never>> {
   return { partial: {} };
 }
 
+// ---------- loop 4: settle watcher ----------
+
+// Idempotent retry for stranded settle_purchase calls. Catches the case where
+// purchase_listing_private (tx2 of the private path) succeeded but
+// settle_purchase (tx3) failed — Listing.status is now Sold, Purchase exists
+// with settled=false, and the buyer's main scan loop won't pick it up because
+// scanOnce only matches Active listings.
+async function settleWatcher(ctx: {
+  chain: Chain | null;
+  buyerPda: web3.PublicKey | null;
+  state: State;
+}): Promise<void> {
+  if (!ctx.chain || !ctx.buyerPda) {
+    log('SETTLE_WATCHER_DRY_RUN');
+    while (!ctx.state.stop.flag) await sleep(SETTLE_POLL_MS);
+    return;
+  }
+  while (!ctx.state.stop.flag) {
+    try {
+      await settleTick(ctx.chain, ctx.buyerPda, ctx.state);
+    } catch (err) {
+      log('SETTLE_TICK_ERROR', { err: shorten(String(err)) });
+    }
+    await sleep(SETTLE_POLL_MS);
+  }
+  log('SETTLE_WATCHER_DONE');
+}
+
+async function settleTick(
+  chain: Chain,
+  buyerPda: web3.PublicKey,
+  state: State,
+): Promise<void> {
+  const { results: purchases } = await withRetry(
+    () => fetchAllSafe<any>(chain.programBase, 'Purchase'),
+    'purchase.all(settle)',
+  );
+
+  for (const { publicKey: purchasePdaKey, account: purchase } of purchases) {
+    if (!purchase.buyer.equals(buyerPda)) continue;
+    if (purchase.settled) continue;
+    if (purchase.delivered) continue;
+
+    const listing = await withRetry(
+      () => (chain.programBase.account as any).listing.fetch(purchase.listing),
+      'listing.fetch(settle)',
+    );
+
+    // Only settle Listings whose ER round-trip already committed back as Sold.
+    // Active means tx1+tx2 haven't completed yet (scanOnce will handle).
+    // Rated would mean settle already ran (purchase.settled would be true).
+    if (!isSold(listing.status)) continue;
+
+    const supplierAgent = await withRetry(
+      () => (chain.programBase.account as any).agent.fetch(listing.supplier),
+      'agent.fetch(settle)',
+    );
+
+    const purchaseKey = purchasePdaKey.toBase58();
+
+    try {
+      const sig = await (chain.programBase.methods as any)
+        .settlePurchase()
+        .accounts({
+          authority: chain.wallet.publicKey,
+          buyerAgent: buyerPda,
+          listing: purchase.listing,
+          purchase: purchasePdaKey,
+          supplierAgent: listing.supplier,
+          supplierAuthority: supplierAgent.authority,
+          systemProgram: web3.SystemProgram.programId,
+        })
+        .rpc();
+      log('SETTLE_RETRY_OK', {
+        sig,
+        listing: purchase.listing.toBase58(),
+        purchase: purchaseKey,
+      });
+      state.underfundedSettleLogged.delete(purchaseKey);
+    } catch (err) {
+      const msg = String(err);
+      // AlreadySettled — race with another retry. Swallow silently.
+      if (msg.includes('AlreadySettled')) {
+        continue;
+      }
+      // SystemError::ResultWithNegativeLamports = Custom(1). Buyer underfunded.
+      // Log once per Purchase to avoid spamming every 5s while the wallet stays low.
+      if (msg.includes('custom program error: 0x1')) {
+        if (!state.underfundedSettleLogged.has(purchaseKey)) {
+          log('SETTLE_RETRY_UNDERFUNDED', {
+            listing: purchase.listing.toBase58(),
+            purchase: purchaseKey,
+          });
+          state.underfundedSettleLogged.add(purchaseKey);
+        }
+        continue;
+      }
+      log('SETTLE_RETRY_ERROR', {
+        listing: purchase.listing.toBase58(),
+        purchase: purchaseKey,
+        err: shorten(msg),
+      });
+    }
+  }
+}
+
 // ---------- feed consumer ----------
 
 async function feedConsumer(feed: AsyncIterable<FeedEvent>, state: State): Promise<void> {
@@ -583,7 +752,12 @@ function sleep(ms: number): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  log('STARTUP', { dry_run: DRY_RUN, rpc: DRY_RUN ? '(skipped)' : RPC_URL });
+  log('STARTUP', {
+    dry_run: DRY_RUN,
+    base_rpc: DRY_RUN ? '(skipped)' : BASE_RPC,
+    er_rpc: DRY_RUN ? '(skipped)' : ER_RPC,
+    use_private_purchase: USE_PRIVATE_PURCHASE,
+  });
 
   const keystore = loadOrCreateKeystore();
   log('KEYS_LOADED', {
@@ -606,6 +780,7 @@ async function main(): Promise<void> {
     ratedPurchases: new Set(),
     openPurchases: new Map(),
     resolutions: new Map(),
+    underfundedSettleLogged: new Set(),
     stop: { flag: false },
   };
 
@@ -621,6 +796,7 @@ async function main(): Promise<void> {
     listingScanner({ chain, buyerPda, state }),
     deliveryWatcher({ chain, buyerPda, x25519Priv: keystore.x25519Priv, state }),
     ratingDispatcher({ chain, buyerPda, state }),
+    settleWatcher({ chain, buyerPda, state }),
     feedConsumer(feed.start(), state),
   ]);
 
