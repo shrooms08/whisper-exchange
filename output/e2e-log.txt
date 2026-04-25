@@ -1,52 +1,48 @@
-2026-04-25T05:29:36.433Z T+0.0s [main] e2e start
-2026-04-25T05:29:36.468Z T+0.0s [main] supplier pubkey: F5fiicjPwG3d5ECoJVjWP3tMXF9GJM3UL7XSTVSPDvVU
-2026-04-25T05:29:36.468Z T+0.0s [main] buyer    pubkey: 7wjg795m3CGxg312NGTaXVTmWnZubKy3X3Tb1AG9rR8
-2026-04-25T05:29:37.722Z T+1.3s [setup] supplier agent already registered at H8gXQPyEJQLKuv41VceQjKrz1fhKWY1b41FFJmQzUjtg
-2026-04-25T05:29:38.381Z T+1.9s [setup] buyer agent already registered at HiVAwfLMvDv8x5fWeEEPYQ7XHYuSHPnNB1CWJLx1VanG
-2026-04-25T05:29:38.381Z T+1.9s [main] spawning supplier + buyer
-2026-04-25T05:29:38.976Z T+2.5s [supplier] 2026-04-25T05:29:38.974Z [supplier] STARTUP dry_run=false rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b
-2026-04-25T05:29:38.976Z T+2.5s [buyer] 2026-04-25T05:29:38.975Z [buyer] STARTUP dry_run=false rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b
-2026-04-25T05:29:39.008Z T+2.6s [supplier] 2026-04-25T05:29:39.008Z [supplier] KEYS_LOADED solana=F5fiicjPwG3d5ECoJVjWP3tMXF9GJM3UL7XSTVSPDvVU x25519=10afb96e50f44839…
-2026-04-25T05:29:39.008Z T+2.6s [buyer] 2026-04-25T05:29:39.008Z [buyer] KEYS_LOADED solana=7wjg795m3CGxg312NGTaXVTmWnZubKy3X3Tb1AG9rR8 x25519=ccded887e76686ae…
-2026-04-25T05:29:40.344Z T+3.9s [supplier] 2026-04-25T05:29:40.343Z [supplier] AGENT_EXISTS pda=H8gXQPyEJQLKuv41VceQjKrz1fhKWY1b41FFJmQzUjtg
-2026-04-25T05:29:40.346Z T+3.9s [buyer] 2026-04-25T05:29:40.346Z [buyer] AGENT_EXISTS pda=HiVAwfLMvDv8x5fWeEEPYQ7XHYuSHPnNB1CWJLx1VanG
-2026-04-25T05:29:43.982Z T+7.6s [buyer] {"ts":"2026-04-25T05:29:43.982Z","actor":"buyer","kind":"payload_decrypted","payload":{"purchase":"52CfJxCqHXtq8Va2xRfdfnz6LYBUdHMX952xbFqui878","listing":"47xRxSvoumfESLbm35RZsf25DPWr6qHuL4n17zhj5bqJ","signal_id":"sig-WHALE-0001","payload":{"signal_id":"sig-WHALE-0001","category":"WHALE","signal_ref":"slot 287491203, wallet 7xKXtg2CW87iF5RxC84LBu68kAr7GhvsqxNWwUPHhQh9","claim":"WHALE_SWAP predicted within 6 blocks","evidence":[{"kind":"balance_delta","wallet":"7xKX…Qh9","pool":"Raydium JUP/SOL","sol":120}],"recommended_action":"short JUP/SOL, size ≤ 120 SOL"}}}
-2026-04-25T05:29:43.983Z T+7.6s [buyer] 2026-04-25T05:29:43.982Z [buyer] OUTCOME_WINDOW_OPENED purchase=52CfJxCqHXtq8Va2xRfdfnz6LYBUdHMX952xbFqui878 signal_id=sig-WHALE-0001 window_ms=30000
-2026-04-25T05:29:44.132Z T+7.7s [supplier] 2026-04-25T05:29:44.132Z [supplier] PAYLOAD_DELIVERED listing_id=0 buyer_cid=local://P-0.bin tx=N2JEw6gYZG8vvBcvgt4gHuj653YNKqmaiiFLmQwpivsSeoKGz5eCnU1mPGXvUoDvZorF83roBovDM1j6BsKpvbj
-2026-04-25T05:29:45.346Z T+8.9s [supplier] 2026-04-25T05:29:45.346Z [supplier] SIGNAL_DETECTED id=sig-WHALE-0001 category=WHALE
-2026-04-25T05:29:45.351Z T+8.9s [buyer] 2026-04-25T05:29:45.351Z [buyer] FEED_SIGNAL_OBSERVED signal_id=sig-WHALE-0001
-2026-04-25T05:29:45.733Z T+9.3s [supplier] 2026-04-25T05:29:45.732Z [supplier] PAYLOAD_SEALED listing_id=1 commitment=5fe61513dfedfb3f… cid=local://L-1.bin ciphertext_bytes=389
-2026-04-25T05:29:48.024Z T+11.6s [supplier] 2026-04-25T05:29:48.023Z [supplier] LISTING_CREATED listing_id=1 listing_pda=5kUwgpPnLqkxNgLgj3DMTLb5hL5NLYzcDtd846SL6rtY price_lamports=2400000000 ttl_slot=457911061 tx=5pt31DcrtYbECGpCeL9uNfbH8PjwQcx1vKvwZgGQmr9gEuEt4r8Zkr4cpJek3AXo36PQvNNtFepqKaQRo27pkSpr
-2026-04-25T05:29:49.281Z T+12.8s [buyer] 2026-04-25T05:29:49.281Z [buyer] PURCHASE_RULE_MATCH listing=5kUwgpPnLqkxNgLgj3DMTLb5hL5NLYzcDtd846SL6rtY category=WHALE price_lamports=2400000000 supplier_rep_den=0
-2026-04-25T05:29:52.428Z T+16.0s [buyer] 2026-04-25T05:29:52.428Z [buyer] LISTING_PURCHASED listing=5kUwgpPnLqkxNgLgj3DMTLb5hL5NLYzcDtd846SL6rtY purchase=CfT5S1j2gg4gnN7b9uvwVRJDwKbuYF4UyBEo4228KUjp tx=3ioXBFe9pRimYDCVR4UkREJtcMkF5xfesiUCSRzQdCwZyzgXatUNCKeNWQsJSRsfocEE1WbdKzX3kwetXxDuGpB
-2026-04-25T05:29:59.387Z T+23.0s [supplier] 2026-04-25T05:29:59.387Z [supplier] PAYLOAD_DELIVERED listing_id=1 buyer_cid=local://P-1.bin tx=4zyQJbCQK5TTyCUE6QuYEVyTfQR8qjDAQMSUntQtKexBE8jCxTnU3Yq455Gu2tGzd64oxcVdY2tZdJzudbWn99UY
-2026-04-25T05:29:59.547Z T+23.1s [buyer] {"ts":"2026-04-25T05:29:59.547Z","actor":"buyer","kind":"payload_decrypted","payload":{"purchase":"CfT5S1j2gg4gnN7b9uvwVRJDwKbuYF4UyBEo4228KUjp","listing":"5kUwgpPnLqkxNgLgj3DMTLb5hL5NLYzcDtd846SL6rtY","signal_id":"sig-WHALE-0001","payload":{"signal_id":"sig-WHALE-0001","category":"WHALE","signal_ref":"slot 287491203, wallet 7xKXtg2CW87iF5RxC84LBu68kAr7GhvsqxNWwUPHhQh9","claim":"WHALE_SWAP predicted within 6 blocks","evidence":[{"kind":"balance_delta","wallet":"7xKX…Qh9","pool":"Raydium JUP/SOL","sol":120}],"recommended_action":"short JUP/SOL, size ≤ 120 SOL"}}}
-2026-04-25T05:29:59.548Z T+23.1s [buyer] 2026-04-25T05:29:59.547Z [buyer] OUTCOME_WINDOW_OPENED purchase=CfT5S1j2gg4gnN7b9uvwVRJDwKbuYF4UyBEo4228KUjp signal_id=sig-WHALE-0001 window_ms=30000
-2026-04-25T05:30:15.352Z T+38.9s [buyer] 2026-04-25T05:30:15.352Z [buyer] RESOLUTION_RECEIVED signal_id=sig-WHALE-0001 verdict=True
-2026-04-25T05:30:16.347Z T+39.9s [supplier] 2026-04-25T05:30:16.346Z [supplier] SIGNAL_LOOP_DONE
-2026-04-25T05:30:16.353Z T+39.9s [buyer] 2026-04-25T05:30:16.353Z [buyer] FEED_CONSUMER_DONE
-2026-04-25T05:30:18.869Z T+42.4s [buyer] 2026-04-25T05:30:18.869Z [buyer] RATING_SUBMITTED purchase=52CfJxCqHXtq8Va2xRfdfnz6LYBUdHMX952xbFqui878 signal_id=sig-WHALE-0001 verdict=True tx=J6fkhSYXF1ZD13VTrNcRjUZGZA38GyxP8MGyqrStXzAV74628ScLvVRhwE3nUu9owrJPQWTT1ZxbKF7cd8oyAnF
-2026-04-25T05:30:33.968Z T+57.5s [buyer] 2026-04-25T05:30:33.967Z [buyer] RATING_SUBMITTED purchase=CfT5S1j2gg4gnN7b9uvwVRJDwKbuYF4UyBEo4228KUjp signal_id=sig-WHALE-0001 verdict=True tx=2E1F3LgP55LAQrgHwA4ZcPBk91hR6szxWLBcYFcuv6ZfXURS5LQqJEjvDuKvgUDEXWwCMF8aL3ay2LGaq6rm2xGb
-2026-04-25T05:30:34.632Z T+58.2s [main] all assertions pass — early exit
-2026-04-25T05:30:34.632Z T+58.2s [main] tearing down children
-2026-04-25T05:30:34.633Z T+58.2s [main] sending SIGTERM to children
-2026-04-25T05:30:34.668Z T+58.2s [buyer] 2026-04-25T05:30:34.667Z [buyer] SHUTDOWN_REQUESTED
-2026-04-25T05:30:34.668Z T+58.2s [supplier] 2026-04-25T05:30:34.667Z [supplier] SHUTDOWN_REQUESTED
-2026-04-25T05:30:34.991Z T+58.6s [buyer] 2026-04-25T05:30:34.990Z [buyer] LISTING_SCANNER_DONE
-2026-04-25T05:30:35.968Z T+59.5s [buyer] 2026-04-25T05:30:35.968Z [buyer] RATING_DISPATCHER_DONE
-2026-04-25T05:30:36.677Z T+60.2s [buyer] 2026-04-25T05:30:36.677Z [buyer] DELIVERY_WATCHER_DONE
-2026-04-25T05:30:36.677Z T+60.2s [buyer] 2026-04-25T05:30:36.677Z [buyer] EXIT
-2026-04-25T05:30:36.722Z T+60.3s [main] buyer exited code=0 signal=null
-2026-04-25T05:30:36.932Z T+60.5s [supplier] 2026-04-25T05:30:36.932Z [supplier] DELIVERY_LOOP_DONE
-2026-04-25T05:30:36.932Z T+60.5s [supplier] 2026-04-25T05:30:36.932Z [supplier] EXIT
-2026-04-25T05:30:36.968Z T+60.5s [main] supplier exited code=0 signal=null
-2026-04-25T05:30:37.045Z T+60.6s 
-2026-04-25T05:30:37.045Z T+60.6s === assertions ===
-2026-04-25T05:30:37.046Z T+60.6s   PASS  listing status == Rated  status=rated listing_id=1 pda=5kUwgpPnLqkxNgLgj3DMTLb5hL5NLYzcDtd846SL6rtY
-2026-04-25T05:30:37.046Z T+60.6s   PASS  purchase exists  pda=CfT5S1j2gg4gnN7b9uvwVRJDwKbuYF4UyBEo4228KUjp
-2026-04-25T05:30:37.046Z T+60.6s   PASS  purchase.delivered == true  delivered=true cid=local://P-1.bin
-2026-04-25T05:30:37.046Z T+60.6s   PASS  rating exists  pda=3WJyFU3d4r2Nv4eqWqMDtRKDAvPHYweTkUwK9gQ9L52L
-2026-04-25T05:30:37.046Z T+60.6s   PASS  rating.verdict == True  verdict=true
-2026-04-25T05:30:37.046Z T+60.6s   PASS  supplier.reputation_den incremented  num=2 den=2
-2026-04-25T05:30:37.046Z T+60.6s === total wall-clock: 60.6s ===
-2026-04-25T05:30:37.046Z T+60.6s === result: PASS ===
+2026-04-25T05:43:10.874Z T+0.0s [main] e2e start
+2026-04-25T05:43:10.910Z T+0.0s [main] supplier pubkey: 4hKCYECqV2DiyQDZHvtTYK6pyugqUip8VeN5eWX2PUYH
+2026-04-25T05:43:10.911Z T+0.0s [main] buyer    pubkey: 2Rpgzgmtp6x4Pz7G4fUtMw3JqPS75WuiQTJV4DCRnB5F
+2026-04-25T05:43:12.530Z T+1.7s [setup] registering supplier agent (handle=night-oracle) at 2xxUeqqqrTb9AsuxSdrmMFJfmsXpoP3vsKgsbkA2GXQF
+2026-04-25T05:43:15.272Z T+4.4s [setup] supplier registered tx=5EXpM6cjutj8Ni52ME5drSJ7rFTA2VLu915edaepVtwLt2aewMZvLMNxaCjt1X6RW6tjXEQ1UVYn2WVhR5VQsxei
+2026-04-25T05:43:16.597Z T+5.7s [setup] registering buyer agent (handle=alpha-hunter) at F4LEohnS4BWpneCEKW4DqJZ2vR8dn2nAzvxErAXkiNEE
+2026-04-25T05:43:20.276Z T+9.4s [setup] buyer registered tx=3MHhJ2j5X6iZsQuwwrbUeFhyf64BxoH6pwknSu4cwiLA5McvTJYNfJXWHmLKqroijzygqTx2MpzCikEGNPfzdbdn
+2026-04-25T05:43:20.276Z T+9.4s [main] spawning supplier + buyer
+2026-04-25T05:43:20.989Z T+10.1s [buyer] 2026-04-25T05:43:20.987Z [buyer] STARTUP dry_run=false rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b
+2026-04-25T05:43:20.989Z T+10.1s [supplier] 2026-04-25T05:43:20.987Z [supplier] STARTUP dry_run=false rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b
+2026-04-25T05:43:21.022Z T+10.1s [buyer] 2026-04-25T05:43:21.022Z [buyer] KEYS_LOADED solana=2Rpgzgmtp6x4Pz7G4fUtMw3JqPS75WuiQTJV4DCRnB5F x25519=8ee0af91733e2bd4…
+2026-04-25T05:43:21.022Z T+10.1s [supplier] 2026-04-25T05:43:21.022Z [supplier] KEYS_LOADED solana=4hKCYECqV2DiyQDZHvtTYK6pyugqUip8VeN5eWX2PUYH x25519=d1c1c5402bb64b18…
+2026-04-25T05:43:22.513Z T+11.6s [buyer] 2026-04-25T05:43:22.513Z [buyer] AGENT_EXISTS pda=F4LEohnS4BWpneCEKW4DqJZ2vR8dn2nAzvxErAXkiNEE
+2026-04-25T05:43:22.513Z T+11.6s [supplier] 2026-04-25T05:43:22.513Z [supplier] AGENT_EXISTS pda=2xxUeqqqrTb9AsuxSdrmMFJfmsXpoP3vsKgsbkA2GXQF
+2026-04-25T05:43:27.516Z T+16.6s [supplier] 2026-04-25T05:43:27.515Z [supplier] SIGNAL_DETECTED id=sig-WHALE-0001 category=WHALE
+2026-04-25T05:43:27.517Z T+16.6s [buyer] 2026-04-25T05:43:27.517Z [buyer] FEED_SIGNAL_OBSERVED signal_id=sig-WHALE-0001
+2026-04-25T05:43:28.014Z T+17.1s [supplier] 2026-04-25T05:43:28.014Z [supplier] PAYLOAD_SEALED listing_id=0 commitment=5fe61513dfedfb3f… cid=local://L-0.bin ciphertext_bytes=389
+2026-04-25T05:43:30.718Z T+19.8s [buyer] 2026-04-25T05:43:30.718Z [buyer] PURCHASE_RULE_MATCH listing=EYF7x3K1ae8TNAKC8vkBXYvVhFkfUfTBnXg6P2iDJz9U category=WHALE price_lamports=2400000000 supplier_rep_den=0
+2026-04-25T05:43:30.945Z T+20.1s [supplier] 2026-04-25T05:43:30.945Z [supplier] LISTING_CREATED listing_id=0 listing_pda=EYF7x3K1ae8TNAKC8vkBXYvVhFkfUfTBnXg6P2iDJz9U price_lamports=2400000000 ttl_slot=457913230 tx=LMY6A8GmBiXb9r3ZJecHvXTa4Es7RV1fRoJisAiceuFeQeLCMVznUiCxh6AsWRE7QaYj4WU39icP7V4bGF1s5vn
+2026-04-25T05:43:34.718Z T+23.8s [buyer] 2026-04-25T05:43:34.717Z [buyer] LISTING_PURCHASED listing=EYF7x3K1ae8TNAKC8vkBXYvVhFkfUfTBnXg6P2iDJz9U purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL tx=4gHS1rAa2VcBFUhqdWRiL8fVFuhM6JNvd5sNBPgrTLNHYMSNArJQWRMSUGaqYH7kLKjMqcrXgheDJRLx5tfVv3rP
+2026-04-25T05:43:40.556Z T+29.7s [supplier] 2026-04-25T05:43:40.556Z [supplier] PAYLOAD_DELIVERED listing_id=0 buyer_cid=local://P-0.bin tx=4SXUUXo2zMV4RaqtC9AySzCrjLLkc73hHTj2Wvo7V2zk3gStn2nYUJGMvRYUTnJoYzdbK2nGWJvoa9cKMJuS1e7a
+2026-04-25T05:43:41.425Z T+30.6s [buyer] {"ts":"2026-04-25T05:43:41.424Z","actor":"buyer","kind":"payload_decrypted","payload":{"purchase":"5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL","listing":"EYF7x3K1ae8TNAKC8vkBXYvVhFkfUfTBnXg6P2iDJz9U","signal_id":"sig-WHALE-0001","payload":{"signal_id":"sig-WHALE-0001","category":"WHALE","signal_ref":"slot 287491203, wallet 7xKXtg2CW87iF5RxC84LBu68kAr7GhvsqxNWwUPHhQh9","claim":"WHALE_SWAP predicted within 6 blocks","evidence":[{"kind":"balance_delta","wallet":"7xKX…Qh9","pool":"Raydium JUP/SOL","sol":120}],"recommended_action":"short JUP/SOL, size ≤ 120 SOL"}}}
+2026-04-25T05:43:41.425Z T+30.6s [buyer] 2026-04-25T05:43:41.425Z [buyer] OUTCOME_WINDOW_OPENED purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL signal_id=sig-WHALE-0001 window_ms=30000
+2026-04-25T05:43:57.518Z T+46.6s [buyer] 2026-04-25T05:43:57.517Z [buyer] RESOLUTION_RECEIVED signal_id=sig-WHALE-0001 verdict=True
+2026-04-25T05:43:58.518Z T+47.6s [buyer] 2026-04-25T05:43:58.517Z [buyer] FEED_CONSUMER_DONE
+2026-04-25T05:43:58.519Z T+47.6s [supplier] 2026-04-25T05:43:58.518Z [supplier] SIGNAL_LOOP_DONE
+2026-04-25T05:44:16.071Z T+65.2s [buyer] 2026-04-25T05:44:16.071Z [buyer] RATING_SUBMITTED purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL signal_id=sig-WHALE-0001 verdict=True tx=45CiJdNaBiGnboH8BU8m9Ta8mq87siqABLD7ebk82bUnQeYcKNRLtnKY8GQmTYGuQ9zb22d63uNuuGPagCtH7YaW
+2026-04-25T05:44:18.505Z T+67.6s [main] all assertions pass — early exit
+2026-04-25T05:44:18.505Z T+67.6s [main] tearing down children
+2026-04-25T05:44:18.505Z T+67.6s [main] sending SIGTERM to children
+2026-04-25T05:44:18.539Z T+67.7s [supplier] 2026-04-25T05:44:18.539Z [supplier] SHUTDOWN_REQUESTED
+2026-04-25T05:44:18.539Z T+67.7s [buyer] 2026-04-25T05:44:18.539Z [buyer] SHUTDOWN_REQUESTED
+2026-04-25T05:44:18.870Z T+68.0s [buyer] 2026-04-25T05:44:18.869Z [buyer] LISTING_SCANNER_DONE
+2026-04-25T05:44:19.415Z T+68.5s [buyer] 2026-04-25T05:44:19.414Z [buyer] DELIVERY_WATCHER_DONE
+2026-04-25T05:44:20.075Z T+69.2s [buyer] 2026-04-25T05:44:20.074Z [buyer] RATING_DISPATCHER_DONE
+2026-04-25T05:44:20.075Z T+69.2s [buyer] 2026-04-25T05:44:20.075Z [buyer] EXIT
+2026-04-25T05:44:20.118Z T+69.2s [main] buyer exited code=0 signal=null
+2026-04-25T05:44:21.524Z T+70.7s [main] SIGKILL pid=50790
+2026-04-25T05:44:21.527Z T+70.7s 
+2026-04-25T05:44:21.527Z T+70.7s === assertions ===
+2026-04-25T05:44:21.527Z T+70.7s   PASS  listing status == Rated  status=rated listing_id=0 pda=EYF7x3K1ae8TNAKC8vkBXYvVhFkfUfTBnXg6P2iDJz9U
+2026-04-25T05:44:21.527Z T+70.7s   PASS  purchase exists  pda=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL
+2026-04-25T05:44:21.527Z T+70.7s   PASS  purchase.delivered == true  delivered=true cid=local://P-0.bin
+2026-04-25T05:44:21.527Z T+70.7s   PASS  rating exists  pda=EWZLzrJRMet4xdS6L65eWEaXQDHqMBiTZdtyzNzrjUvQ
+2026-04-25T05:44:21.527Z T+70.7s   PASS  rating.verdict == True  verdict=true
+2026-04-25T05:44:21.527Z T+70.7s   PASS  supplier.reputation_den incremented  num=1 den=1
+2026-04-25T05:44:21.527Z T+70.7s === total wall-clock: 70.7s ===
+2026-04-25T05:44:21.527Z T+70.7s === result: PASS ===
