@@ -330,14 +330,22 @@ Buyer detects via timeout on `purchase_on_er`. Aborts the cycle, logs ER_UNREACH
 
 ---
 
-## Open questions for you (please answer before I start implementation)
+## Open questions — RESOLVED 2026-04-25
 
-1. **Anchor version**: try anchor-lang 1.0 first (recommended) vs preemptive downgrade to 0.32.1?
-2. **Purchase init path**: pre-init Purchase on base inside `delegate_for_purchase` (cleanest, matches anchor-counter pattern) vs init on ER via ephemeral-accounts?
-3. **Rename or keep both**: rename `purchase_listing` → `purchase_on_er` (single semantics, ER-or-base routing decided by client) vs keep both as separate instructions?
-4. **SOL transfer on ER**: live `system_program::transfer` inside `purchase_on_er` (works if SystemAccounts are well-handled in ER; needs hands-on confirm) vs switch the price flow to USDC via Private Payments API for true privacy?
-5. **TTL constant on Listing**: today supplier sets `ttl_slot = current_slot + 60`. Once Listing is delegated, does ttl still tick? Validator slot vs base slot — confirm we don't need to extend the constant.
-6. **Failure recovery: stuck listings**: age out `state.purchasedListings` entries older than 90s (recommended) vs stricter "never retry until confirmed undelegated"?
+1. **Anchor version** — RESOLVED: tried anchor-lang 1.0 first; SDK incompatible at lib level (borsh + AccountInfo::realloc + Pubkey type mismatches). **Downgraded to anchor-lang 0.32.1.** ER SDK 0.11.2 + #[ephemeral] + #[delegate] all compile + link clean. E2E green-from-fresh on the redeployed program. See commit `4052149`.
+
+2. **Purchase init path** — RESOLVED: **pre-init Purchase on base, in the same tx as `delegate_for_purchase`**. Sequence is `init Purchase → delegate Listing → delegate Purchase`, all atomic in one base-layer instruction. Matches anchor-counter precedent. No ephemeral-accounts feature needed.
+
+3. **Rename or keep both** — RESOLVED: **keep both, side-by-side.**
+   - Existing `purchase_listing` → renamed to `purchase_listing_public` (escape-hatch fallback, identical behavior to today's code).
+   - New `purchase_listing_private` runs the ER path.
+   - Buyer picks via env var `USE_PRIVATE_PURCHASE` (default `false` during integration; flip `true` once green).
+
+4. **SOL transfer on ER** — RESOLVED: **stay on SOL.** Validation gate before integration: a tiny isolated test (`scripts/test-sol-on-er.ts`) — delegate one throwaway PDA, on the ER send a tx that does `system_program::transfer(sender → receiver, 0.1 SOL)`, commit/undelegate, verify balance diff on base. If the transfer survives the round-trip, today's `purchase_listing` body works verbatim in `purchase_listing_private`. If it doesn't, the SOL leg moves to a base-layer post-commit step (less elegant, still works). **Test runs before any `purchase_listing_private` code.**
+
+5. **TTL constant on Listing** — RESOLVED: **unchanged.** `Clock::get()` works on the ER. ER session is ~5–10s end-to-end, so the 60-slot TTL is effectively irrelevant inside the session, but the check stays in `purchase_listing_private` as a sanity gate. No widening needed.
+
+6. **Failure recovery: stuck listings** — RESOLVED: **rely on validator-side default lifetime** for the auto-recovery path. As post-happy-path hardening, add a `recover_stuck_purchase` instruction (calls `commit_and_undelegate_accounts` for the orphaned listing/purchase pair). Buyer agent invokes it on startup if it sees a `Purchase` with `delivered=false` AND the matching `Listing.status` is still `Active`. **Build only after the happy path is green and only if time permits Sunday.**
 
 ---
 

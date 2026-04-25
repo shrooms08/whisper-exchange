@@ -63,4 +63,15 @@ pub mod whisper {
     pub fn delegate_test(ctx: Context<DelegateTest>) -> Result<()> {
         instructions::delegate_test::handler(ctx)
     }
+
+    pub fn commit_and_undelegate_test(ctx: Context<CommitAndUndelegateTest>) -> Result<()> {
+        instructions::commit_and_undelegate_test::handler(ctx)
+    }
+
+    pub fn delegate_test_with_transfer(
+        ctx: Context<DelegateTestWithTransfer>,
+        lamports: u64,
+    ) -> Result<()> {
+        instructions::delegate_test_with_transfer::handler(ctx, lamports)
+    }
 }
