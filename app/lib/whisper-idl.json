@@ -1,0 +1,1993 @@
+{
+  "address": "6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H",
+  "metadata": {
+    "name": "whisper",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "commit_and_undelegate_test",
+      "discriminator": [
+        10,
+        201,
+        178,
+        176,
+        91,
+        11,
+        207,
+        100
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "agent"
+          ]
+        },
+        {
+          "name": "agent",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "magic_program",
+          "address": "Magic11111111111111111111111111111111111111"
+        },
+        {
+          "name": "magic_context",
+          "writable": true,
+          "address": "MagicContext1111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_listing",
+      "discriminator": [
+        18,
+        168,
+        45,
+        24,
+        191,
+        31,
+        117,
+        54
+      ],
+      "accounts": [
+        {
+          "name": "supplier_agent",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "listing",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  115,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "supplier_agent"
+              },
+              {
+                "kind": "arg",
+                "path": "listing_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "supplier_agent"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "listing_id",
+          "type": "u64"
+        },
+        {
+          "name": "category",
+          "type": {
+            "defined": {
+              "name": "Category"
+            }
+          }
+        },
+        {
+          "name": "price_lamports",
+          "type": "u64"
+        },
+        {
+          "name": "payload_commitment",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "supplier_payload_cid",
+          "type": "string"
+        },
+        {
+          "name": "ttl_slot",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "delegate_for_purchase",
+      "discriminator": [
+        137,
+        147,
+        118,
+        200,
+        163,
+        14,
+        224,
+        255
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "buyer_agent"
+          ]
+        },
+        {
+          "name": "buyer_agent",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "buffer_listing",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                82,
+                230,
+                53,
+                179,
+                131,
+                174,
+                153,
+                161,
+                206,
+                210,
+                68,
+                98,
+                51,
+                219,
+                76,
+                157,
+                43,
+                211,
+                31,
+                106,
+                147,
+                76,
+                135,
+                86,
+                52,
+                167,
+                72,
+                2,
+                246,
+                157,
+                70,
+                152
+              ]
+            }
+          }
+        },
+        {
+          "name": "delegation_record_listing",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "delegation_metadata_listing",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "listing",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  115,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing_supplier"
+              },
+              {
+                "kind": "arg",
+                "path": "listing_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "listing_supplier"
+        },
+        {
+          "name": "buffer_purchase",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "purchase"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                82,
+                230,
+                53,
+                179,
+                131,
+                174,
+                153,
+                161,
+                206,
+                210,
+                68,
+                98,
+                51,
+                219,
+                76,
+                157,
+                43,
+                211,
+                31,
+                106,
+                147,
+                76,
+                135,
+                86,
+                52,
+                167,
+                72,
+                2,
+                246,
+                157,
+                70,
+                152
+              ]
+            }
+          }
+        },
+        {
+          "name": "delegation_record_purchase",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "purchase"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "delegation_metadata_purchase",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "purchase"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "purchase",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  117,
+                  114,
+                  99,
+                  104,
+                  97,
+                  115,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner_program",
+          "address": "6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H"
+        },
+        {
+          "name": "delegation_program",
+          "address": "DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "listing_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "delegate_test",
+      "discriminator": [
+        222,
+        26,
+        91,
+        203,
+        49,
+        99,
+        157,
+        160
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "buffer_agent",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "agent"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                82,
+                230,
+                53,
+                179,
+                131,
+                174,
+                153,
+                161,
+                206,
+                210,
+                68,
+                98,
+                51,
+                219,
+                76,
+                157,
+                43,
+                211,
+                31,
+                106,
+                147,
+                76,
+                135,
+                86,
+                52,
+                167,
+                72,
+                2,
+                246,
+                157,
+                70,
+                152
+              ]
+            }
+          }
+        },
+        {
+          "name": "delegation_record_agent",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "agent"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "delegation_metadata_agent",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "agent"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "agent",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner_program",
+          "address": "6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H"
+        },
+        {
+          "name": "delegation_program",
+          "address": "DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "delegate_test_with_transfer",
+      "discriminator": [
+        140,
+        10,
+        157,
+        46,
+        168,
+        24,
+        45,
+        67
+      ],
+      "accounts": [
+        {
+          "name": "agent",
+          "docs": [
+            "The delegated test PDA (delegated via delegate_test prior to this call).",
+            "Marked mut so the tx is recognized as ER-routable."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "agent"
+          ]
+        },
+        {
+          "name": "receiver",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "lamports",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "deliver_payload",
+      "discriminator": [
+        7,
+        71,
+        231,
+        79,
+        172,
+        241,
+        139,
+        104
+      ],
+      "accounts": [
+        {
+          "name": "purchase",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  117,
+                  114,
+                  99,
+                  104,
+                  97,
+                  115,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "listing",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  115,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing.supplier",
+                "account": "Listing"
+              },
+              {
+                "kind": "account",
+                "path": "listing.listing_id",
+                "account": "Listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "supplier_agent",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "supplier_agent"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "buyer_payload_cid",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "init_purchase_for_delegation",
+      "discriminator": [
+        218,
+        44,
+        206,
+        223,
+        251,
+        110,
+        26,
+        215
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "buyer_agent"
+          ]
+        },
+        {
+          "name": "buyer_agent",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "listing",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  115,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing_supplier"
+              },
+              {
+                "kind": "arg",
+                "path": "listing_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "listing_supplier",
+          "docs": [
+            "Read-only ref used to derive listing seeds. listing.supplier == listing_supplier.key()."
+          ]
+        },
+        {
+          "name": "purchase",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  117,
+                  114,
+                  99,
+                  104,
+                  97,
+                  115,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "listing_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "process_undelegation",
+      "discriminator": [
+        196,
+        28,
+        41,
+        206,
+        48,
+        37,
+        51,
+        167
+      ],
+      "accounts": [
+        {
+          "name": "base_account",
+          "writable": true
+        },
+        {
+          "name": "buffer"
+        },
+        {
+          "name": "payer",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "account_seeds",
+          "type": {
+            "vec": "bytes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "purchase_listing_private",
+      "discriminator": [
+        74,
+        131,
+        23,
+        233,
+        17,
+        173,
+        27,
+        104
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "buyer_agent"
+          ]
+        },
+        {
+          "name": "listing",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  115,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing.supplier",
+                "account": "Listing"
+              },
+              {
+                "kind": "account",
+                "path": "listing.listing_id",
+                "account": "Listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "purchase",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  117,
+                  114,
+                  99,
+                  104,
+                  97,
+                  115,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "buyer_agent",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "magic_program",
+          "address": "Magic11111111111111111111111111111111111111"
+        },
+        {
+          "name": "magic_context",
+          "writable": true,
+          "address": "MagicContext1111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "purchase_listing_public",
+      "discriminator": [
+        52,
+        98,
+        23,
+        61,
+        132,
+        203,
+        243,
+        199
+      ],
+      "accounts": [
+        {
+          "name": "listing",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  115,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing.supplier",
+                "account": "Listing"
+              },
+              {
+                "kind": "account",
+                "path": "listing.listing_id",
+                "account": "Listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "purchase",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  117,
+                  114,
+                  99,
+                  104,
+                  97,
+                  115,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "buyer_agent",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "supplier_agent",
+          "docs": [
+            "Supplier Agent (read) — used to resolve the supplier's wallet."
+          ]
+        },
+        {
+          "name": "supplier_authority",
+          "docs": [
+            "Supplier wallet — receives lamports. Must match supplier_agent.authority."
+          ],
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "buyer_agent"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "register_agent",
+      "discriminator": [
+        135,
+        157,
+        66,
+        195,
+        2,
+        113,
+        175,
+        30
+      ],
+      "accounts": [
+        {
+          "name": "agent",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "handle",
+          "type": "string"
+        },
+        {
+          "name": "pubkey_x25519",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "settle_purchase",
+      "discriminator": [
+        96,
+        123,
+        151,
+        42,
+        186,
+        39,
+        84,
+        111
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "buyer_agent"
+          ]
+        },
+        {
+          "name": "buyer_agent",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "listing",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  115,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing.supplier",
+                "account": "Listing"
+              },
+              {
+                "kind": "account",
+                "path": "listing.listing_id",
+                "account": "Listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "purchase",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  117,
+                  114,
+                  99,
+                  104,
+                  97,
+                  115,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "supplier_agent",
+          "docs": [
+            "Supplier's Agent (read) — used to resolve supplier_authority."
+          ]
+        },
+        {
+          "name": "supplier_authority",
+          "docs": [
+            "Supplier's wallet — receives lamports."
+          ],
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "submit_rating",
+      "discriminator": [
+        238,
+        207,
+        253,
+        243,
+        170,
+        69,
+        73,
+        199
+      ],
+      "accounts": [
+        {
+          "name": "purchase",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  117,
+                  114,
+                  99,
+                  104,
+                  97,
+                  115,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "listing",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  115,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "listing.supplier",
+                "account": "Listing"
+              },
+              {
+                "kind": "account",
+                "path": "listing.listing_id",
+                "account": "Listing"
+              }
+            ]
+          }
+        },
+        {
+          "name": "rating",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  97,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "purchase"
+              }
+            ]
+          }
+        },
+        {
+          "name": "supplier_agent",
+          "writable": true
+        },
+        {
+          "name": "buyer_agent",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "buyer_agent"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "verdict",
+          "type": {
+            "defined": {
+              "name": "Verdict"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Agent",
+      "discriminator": [
+        47,
+        166,
+        112,
+        147,
+        155,
+        197,
+        86,
+        7
+      ]
+    },
+    {
+      "name": "Listing",
+      "discriminator": [
+        218,
+        32,
+        50,
+        73,
+        43,
+        134,
+        26,
+        58
+      ]
+    },
+    {
+      "name": "Purchase",
+      "discriminator": [
+        33,
+        203,
+        1,
+        252,
+        231,
+        228,
+        8,
+        67
+      ]
+    },
+    {
+      "name": "Rating",
+      "discriminator": [
+        203,
+        130,
+        231,
+        178,
+        120,
+        130,
+        70,
+        17
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "ListingExpired",
+      "msg": "Listing has expired (past ttl_slot)"
+    },
+    {
+      "code": 6001,
+      "name": "ListingNotActive",
+      "msg": "Listing is not in Active status"
+    },
+    {
+      "code": 6002,
+      "name": "NotBuyer",
+      "msg": "Signer is not the buyer of this purchase"
+    },
+    {
+      "code": 6003,
+      "name": "NotSupplier",
+      "msg": "Signer is not the supplier of this listing"
+    },
+    {
+      "code": 6004,
+      "name": "AlreadyDelivered",
+      "msg": "Payload has already been delivered"
+    },
+    {
+      "code": 6005,
+      "name": "ListingIdMismatch",
+      "msg": "listing_id does not match supplier's counter"
+    },
+    {
+      "code": 6006,
+      "name": "UnauthorizedSupplier",
+      "msg": "Supplier authority wallet does not match supplier agent"
+    },
+    {
+      "code": 6007,
+      "name": "HandleTooLong",
+      "msg": "Handle exceeds 32 characters"
+    },
+    {
+      "code": 6008,
+      "name": "CidTooLong",
+      "msg": "CID exceeds 64 characters"
+    },
+    {
+      "code": 6009,
+      "name": "NotDelivered",
+      "msg": "Payload has not been delivered yet"
+    },
+    {
+      "code": 6010,
+      "name": "AlreadySettled",
+      "msg": "Purchase has already been settled"
+    },
+    {
+      "code": 6011,
+      "name": "NotSettled",
+      "msg": "Purchase has not been settled — buyer must pay before delivery"
+    },
+    {
+      "code": 6012,
+      "name": "PurchaseListingMismatch",
+      "msg": "Purchase.listing does not match the Listing PDA passed"
+    },
+    {
+      "code": 6013,
+      "name": "PriceMismatch",
+      "msg": "Purchase.price_paid_lamports does not match Listing.price_lamports"
+    }
+  ],
+  "types": [
+    {
+      "name": "Agent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "handle",
+            "type": "string"
+          },
+          {
+            "name": "pubkey_x25519",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "reputation_num",
+            "type": "u64"
+          },
+          {
+            "name": "reputation_den",
+            "type": "u64"
+          },
+          {
+            "name": "listings_created",
+            "type": "u64"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Category",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Whale"
+          },
+          {
+            "name": "Mev"
+          },
+          {
+            "name": "Mint"
+          },
+          {
+            "name": "Imbal"
+          },
+          {
+            "name": "Insdr"
+          },
+          {
+            "name": "Bridge"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Listing",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "supplier",
+            "type": "pubkey"
+          },
+          {
+            "name": "listing_id",
+            "type": "u64"
+          },
+          {
+            "name": "category",
+            "type": {
+              "defined": {
+                "name": "Category"
+              }
+            }
+          },
+          {
+            "name": "price_lamports",
+            "type": "u64"
+          },
+          {
+            "name": "payload_commitment",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "supplier_payload_cid",
+            "type": "string"
+          },
+          {
+            "name": "ttl_slot",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "ListingStatus"
+              }
+            }
+          },
+          {
+            "name": "buyer",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "purchase_slot",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ListingStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Active"
+          },
+          {
+            "name": "Sold"
+          },
+          {
+            "name": "Expired"
+          },
+          {
+            "name": "Rated"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Purchase",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "listing",
+            "type": "pubkey"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "price_paid_lamports",
+            "type": "u64"
+          },
+          {
+            "name": "buyer_payload_cid",
+            "type": "string"
+          },
+          {
+            "name": "purchased_at_slot",
+            "type": "u64"
+          },
+          {
+            "name": "delivered",
+            "type": "bool"
+          },
+          {
+            "name": "settled",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rating",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "purchase",
+            "type": "pubkey"
+          },
+          {
+            "name": "rater",
+            "type": "pubkey"
+          },
+          {
+            "name": "verdict",
+            "type": {
+              "defined": {
+                "name": "Verdict"
+              }
+            }
+          },
+          {
+            "name": "rated_at",
+            "type": "i64"
+          },
+          {
+            "name": "weight",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Verdict",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "True"
+          },
+          {
+            "name": "False"
+          },
+          {
+            "name": "Partial"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "SEED",
+      "type": "string",
+      "value": "\"anchor\""
+    }
+  ]
+}

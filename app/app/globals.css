@@ -1,26 +1,413 @@
 @import "tailwindcss";
 
+/* ============================================================
+ * V3 Triptych design tokens + wireframe primitives.
+ * Verbatim from design-reference/Whisper Exchange/. Do not redesign.
+ * ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0b0b0e;
+  --paper: #141418;
+  --ink: #e8e8ec;
+  --ink-2: #a0a0aa;
+  --ink-3: #5a5a66;
+  --rule: #2a2a32;
+  --rule-2: #1e1e26;
+  --accent: oklch(0.68 0.25 300);
+  --accent-soft: oklch(0.68 0.25 300 / 0.18);
+  --accent-dim: oklch(0.68 0.25 300 / 0.45);
+  --danger: oklch(0.72 0.22 25);
+  --ok: oklch(0.78 0.18 160);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-space), 'Space Grotesk', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.wf {
+  background: var(--paper);
+  border: 1.5px solid var(--rule);
+  border-radius: 3px;
+}
+.wf-dashed {
+  border: 1.5px dashed var(--rule);
+  border-radius: 3px;
+  background: transparent;
+}
+.mono {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+}
+.label {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.h {
+  font-family: var(--font-space), 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 10px;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  color: var(--ink-2);
+}
+.pill.accent {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 6px var(--ok);
+}
+.dot.v {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.dot.r {
+  background: var(--danger);
+  box-shadow: 0 0 6px var(--danger);
+}
+.redacted {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--ink);
+  border-radius: 1px;
+  user-select: none;
+}
+.glow {
+  box-shadow: 0 0 0 1px var(--accent-dim), 0 0 18px var(--accent-soft);
+}
+
+.screen {
+  width: 100%;
+  height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.topbar {
+  height: 36px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 12px;
+  background: linear-gradient(180deg, #101014, #0b0b0e);
+  flex-shrink: 0;
+}
+.topbar .brand {
+  font-family: var(--font-space), 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-size: 12px;
+}
+.topbar .brand span {
+  color: var(--accent);
+}
+.topbar .crumbs {
+  display: flex;
+  gap: 10px;
+  color: var(--ink-3);
+  font-size: 10px;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+}
+.topbar .spacer {
+  flex: 1;
+}
+.topbar .status {
+  display: flex;
+  gap: 10px;
+  color: var(--ink-2);
+  font-size: 10px;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  align-items: center;
+}
+
+.logbar {
+  height: 34px;
+  border-top: 1px solid var(--rule);
+  background: #0d0d12;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-2);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.panel {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+}
+.panel-head {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.panel-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.panel-sub {
+  font-size: 10px;
+  color: var(--ink-3);
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+}
+.panel-body {
+  padding: 12px 14px;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--rule-2);
+  border-radius: 2px;
+  background: #101014;
+}
+.row:hover {
+  border-color: var(--rule);
+}
+.row .cell {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+.rep {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.rep i {
+  width: 4px;
+  height: 10px;
+  background: var(--rule);
+  border-radius: 1px;
+}
+.rep i.on {
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent-soft);
+}
+
+.envelope {
+  stroke: var(--ink-2);
+  fill: none;
+  stroke-width: 1.2;
+}
+.envelope .seal {
+  fill: var(--accent);
+  stroke: none;
+  filter: drop-shadow(0 0 4px var(--accent-soft));
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field label {
+  font-size: 9px;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+}
+.field .inp {
+  border: 1px dashed var(--rule);
+  background: #0d0d12;
+  height: 26px;
+  border-radius: 2px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-2);
+}
+.btn {
+  border: 1px solid var(--accent-dim);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 7px 12px;
+  border-radius: 2px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn.ghost {
+  background: transparent;
+  border-color: var(--rule);
+  color: var(--ink-2);
+}
+.btn:hover {
+  box-shadow: 0 0 12px var(--accent-soft);
+}
+
+@keyframes scroll-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ticker {
+  white-space: nowrap;
+  display: inline-block;
+  animation: scroll-x 45s linear infinite;
+}
+
+@keyframes envslide {
+  0% { transform: translateX(-20px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(160px); opacity: 0; }
+}
+.env-anim {
+  animation: envslide 6s ease-in-out infinite;
+}
+
+/* Triggered when a new Purchase is detected between polls. Single instance,
+ * mounted by page.tsx for 2000ms then unmounted. */
+@keyframes purchase-fly {
+  0%   { left: 0%;  opacity: 1; }
+  75%  { left: 90%; opacity: 1; }
+  100% { left: 90%; opacity: 0; }
+}
+.purchase-fly {
+  position: absolute;
+  top: 50%;
+  margin-top: -8px;
+  animation: purchase-fly 2000ms ease-out forwards;
+  pointer-events: none;
+  z-index: 10;
+  filter: drop-shadow(0 0 8px var(--accent-soft));
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ob {
+  display: grid;
+  grid-template-columns: 60px 1fr 70px 60px 30px;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 8px;
+  border-bottom: 1px dashed var(--rule-2);
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-2);
+}
+.ob .cat {
+  color: var(--ink);
+}
+.ob .price {
+  color: var(--accent);
+}
+.ob:hover {
+  background: #101014;
+}
+
+.payload {
+  border: 1px dashed var(--accent-dim);
+  padding: 10px 12px;
+  background: linear-gradient(180deg, rgba(157, 78, 221, 0.05), transparent);
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink);
+  border-radius: 2px;
+}
+.payload .line {
+  color: var(--ink-2);
+}
+.payload .kw {
+  color: var(--accent);
+}
+
+.signal {
+  padding: 9px 10px;
+  border-left: 2px solid var(--accent);
+  background: #101014;
+  border-radius: 0 2px 2px 0;
+}
+.signal h5 {
+  margin: 0 0 3px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.signal .meta {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-3);
+}
+
+.split-3 {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr 1fr;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  padding: 12px;
+}
+
+.scan::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0 2px,
+    rgba(255, 255, 255, 0.012) 2px 3px
+  );
+}
+
+.arena {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(157, 78, 221, 0.1), transparent 60%),
+    #0d0d12;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
 }
