@@ -4,6 +4,7 @@ pub mod instructions;
 pub mod state;
 
 use anchor_lang::prelude::*;
+use ephemeral_rollups_sdk::anchor::ephemeral;
 
 pub use constants::*;
 pub use instructions::*;
@@ -11,6 +12,7 @@ pub use state::*;
 
 declare_id!("6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H");
 
+#[ephemeral]
 #[program]
 pub mod whisper {
     use super::*;
@@ -56,5 +58,9 @@ pub mod whisper {
 
     pub fn submit_rating(ctx: Context<SubmitRating>, verdict: Verdict) -> Result<()> {
         instructions::submit_rating::handler(ctx, verdict)
+    }
+
+    pub fn delegate_test(ctx: Context<DelegateTest>) -> Result<()> {
+        instructions::delegate_test::handler(ctx)
     }
 }

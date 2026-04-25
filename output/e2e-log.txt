@@ -1,48 +1,69 @@
-2026-04-25T05:43:10.874Z T+0.0s [main] e2e start
-2026-04-25T05:43:10.910Z T+0.0s [main] supplier pubkey: 4hKCYECqV2DiyQDZHvtTYK6pyugqUip8VeN5eWX2PUYH
-2026-04-25T05:43:10.911Z T+0.0s [main] buyer    pubkey: 2Rpgzgmtp6x4Pz7G4fUtMw3JqPS75WuiQTJV4DCRnB5F
-2026-04-25T05:43:12.530Z T+1.7s [setup] registering supplier agent (handle=night-oracle) at 2xxUeqqqrTb9AsuxSdrmMFJfmsXpoP3vsKgsbkA2GXQF
-2026-04-25T05:43:15.272Z T+4.4s [setup] supplier registered tx=5EXpM6cjutj8Ni52ME5drSJ7rFTA2VLu915edaepVtwLt2aewMZvLMNxaCjt1X6RW6tjXEQ1UVYn2WVhR5VQsxei
-2026-04-25T05:43:16.597Z T+5.7s [setup] registering buyer agent (handle=alpha-hunter) at F4LEohnS4BWpneCEKW4DqJZ2vR8dn2nAzvxErAXkiNEE
-2026-04-25T05:43:20.276Z T+9.4s [setup] buyer registered tx=3MHhJ2j5X6iZsQuwwrbUeFhyf64BxoH6pwknSu4cwiLA5McvTJYNfJXWHmLKqroijzygqTx2MpzCikEGNPfzdbdn
-2026-04-25T05:43:20.276Z T+9.4s [main] spawning supplier + buyer
-2026-04-25T05:43:20.989Z T+10.1s [buyer] 2026-04-25T05:43:20.987Z [buyer] STARTUP dry_run=false rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b
-2026-04-25T05:43:20.989Z T+10.1s [supplier] 2026-04-25T05:43:20.987Z [supplier] STARTUP dry_run=false rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b
-2026-04-25T05:43:21.022Z T+10.1s [buyer] 2026-04-25T05:43:21.022Z [buyer] KEYS_LOADED solana=2Rpgzgmtp6x4Pz7G4fUtMw3JqPS75WuiQTJV4DCRnB5F x25519=8ee0af91733e2bd4…
-2026-04-25T05:43:21.022Z T+10.1s [supplier] 2026-04-25T05:43:21.022Z [supplier] KEYS_LOADED solana=4hKCYECqV2DiyQDZHvtTYK6pyugqUip8VeN5eWX2PUYH x25519=d1c1c5402bb64b18…
-2026-04-25T05:43:22.513Z T+11.6s [buyer] 2026-04-25T05:43:22.513Z [buyer] AGENT_EXISTS pda=F4LEohnS4BWpneCEKW4DqJZ2vR8dn2nAzvxErAXkiNEE
-2026-04-25T05:43:22.513Z T+11.6s [supplier] 2026-04-25T05:43:22.513Z [supplier] AGENT_EXISTS pda=2xxUeqqqrTb9AsuxSdrmMFJfmsXpoP3vsKgsbkA2GXQF
-2026-04-25T05:43:27.516Z T+16.6s [supplier] 2026-04-25T05:43:27.515Z [supplier] SIGNAL_DETECTED id=sig-WHALE-0001 category=WHALE
-2026-04-25T05:43:27.517Z T+16.6s [buyer] 2026-04-25T05:43:27.517Z [buyer] FEED_SIGNAL_OBSERVED signal_id=sig-WHALE-0001
-2026-04-25T05:43:28.014Z T+17.1s [supplier] 2026-04-25T05:43:28.014Z [supplier] PAYLOAD_SEALED listing_id=0 commitment=5fe61513dfedfb3f… cid=local://L-0.bin ciphertext_bytes=389
-2026-04-25T05:43:30.718Z T+19.8s [buyer] 2026-04-25T05:43:30.718Z [buyer] PURCHASE_RULE_MATCH listing=EYF7x3K1ae8TNAKC8vkBXYvVhFkfUfTBnXg6P2iDJz9U category=WHALE price_lamports=2400000000 supplier_rep_den=0
-2026-04-25T05:43:30.945Z T+20.1s [supplier] 2026-04-25T05:43:30.945Z [supplier] LISTING_CREATED listing_id=0 listing_pda=EYF7x3K1ae8TNAKC8vkBXYvVhFkfUfTBnXg6P2iDJz9U price_lamports=2400000000 ttl_slot=457913230 tx=LMY6A8GmBiXb9r3ZJecHvXTa4Es7RV1fRoJisAiceuFeQeLCMVznUiCxh6AsWRE7QaYj4WU39icP7V4bGF1s5vn
-2026-04-25T05:43:34.718Z T+23.8s [buyer] 2026-04-25T05:43:34.717Z [buyer] LISTING_PURCHASED listing=EYF7x3K1ae8TNAKC8vkBXYvVhFkfUfTBnXg6P2iDJz9U purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL tx=4gHS1rAa2VcBFUhqdWRiL8fVFuhM6JNvd5sNBPgrTLNHYMSNArJQWRMSUGaqYH7kLKjMqcrXgheDJRLx5tfVv3rP
-2026-04-25T05:43:40.556Z T+29.7s [supplier] 2026-04-25T05:43:40.556Z [supplier] PAYLOAD_DELIVERED listing_id=0 buyer_cid=local://P-0.bin tx=4SXUUXo2zMV4RaqtC9AySzCrjLLkc73hHTj2Wvo7V2zk3gStn2nYUJGMvRYUTnJoYzdbK2nGWJvoa9cKMJuS1e7a
-2026-04-25T05:43:41.425Z T+30.6s [buyer] {"ts":"2026-04-25T05:43:41.424Z","actor":"buyer","kind":"payload_decrypted","payload":{"purchase":"5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL","listing":"EYF7x3K1ae8TNAKC8vkBXYvVhFkfUfTBnXg6P2iDJz9U","signal_id":"sig-WHALE-0001","payload":{"signal_id":"sig-WHALE-0001","category":"WHALE","signal_ref":"slot 287491203, wallet 7xKXtg2CW87iF5RxC84LBu68kAr7GhvsqxNWwUPHhQh9","claim":"WHALE_SWAP predicted within 6 blocks","evidence":[{"kind":"balance_delta","wallet":"7xKX…Qh9","pool":"Raydium JUP/SOL","sol":120}],"recommended_action":"short JUP/SOL, size ≤ 120 SOL"}}}
-2026-04-25T05:43:41.425Z T+30.6s [buyer] 2026-04-25T05:43:41.425Z [buyer] OUTCOME_WINDOW_OPENED purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL signal_id=sig-WHALE-0001 window_ms=30000
-2026-04-25T05:43:57.518Z T+46.6s [buyer] 2026-04-25T05:43:57.517Z [buyer] RESOLUTION_RECEIVED signal_id=sig-WHALE-0001 verdict=True
-2026-04-25T05:43:58.518Z T+47.6s [buyer] 2026-04-25T05:43:58.517Z [buyer] FEED_CONSUMER_DONE
-2026-04-25T05:43:58.519Z T+47.6s [supplier] 2026-04-25T05:43:58.518Z [supplier] SIGNAL_LOOP_DONE
-2026-04-25T05:44:16.071Z T+65.2s [buyer] 2026-04-25T05:44:16.071Z [buyer] RATING_SUBMITTED purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL signal_id=sig-WHALE-0001 verdict=True tx=45CiJdNaBiGnboH8BU8m9Ta8mq87siqABLD7ebk82bUnQeYcKNRLtnKY8GQmTYGuQ9zb22d63uNuuGPagCtH7YaW
-2026-04-25T05:44:18.505Z T+67.6s [main] all assertions pass — early exit
-2026-04-25T05:44:18.505Z T+67.6s [main] tearing down children
-2026-04-25T05:44:18.505Z T+67.6s [main] sending SIGTERM to children
-2026-04-25T05:44:18.539Z T+67.7s [supplier] 2026-04-25T05:44:18.539Z [supplier] SHUTDOWN_REQUESTED
-2026-04-25T05:44:18.539Z T+67.7s [buyer] 2026-04-25T05:44:18.539Z [buyer] SHUTDOWN_REQUESTED
-2026-04-25T05:44:18.870Z T+68.0s [buyer] 2026-04-25T05:44:18.869Z [buyer] LISTING_SCANNER_DONE
-2026-04-25T05:44:19.415Z T+68.5s [buyer] 2026-04-25T05:44:19.414Z [buyer] DELIVERY_WATCHER_DONE
-2026-04-25T05:44:20.075Z T+69.2s [buyer] 2026-04-25T05:44:20.074Z [buyer] RATING_DISPATCHER_DONE
-2026-04-25T05:44:20.075Z T+69.2s [buyer] 2026-04-25T05:44:20.075Z [buyer] EXIT
-2026-04-25T05:44:20.118Z T+69.2s [main] buyer exited code=0 signal=null
-2026-04-25T05:44:21.524Z T+70.7s [main] SIGKILL pid=50790
-2026-04-25T05:44:21.527Z T+70.7s 
-2026-04-25T05:44:21.527Z T+70.7s === assertions ===
-2026-04-25T05:44:21.527Z T+70.7s   PASS  listing status == Rated  status=rated listing_id=0 pda=EYF7x3K1ae8TNAKC8vkBXYvVhFkfUfTBnXg6P2iDJz9U
-2026-04-25T05:44:21.527Z T+70.7s   PASS  purchase exists  pda=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL
-2026-04-25T05:44:21.527Z T+70.7s   PASS  purchase.delivered == true  delivered=true cid=local://P-0.bin
-2026-04-25T05:44:21.527Z T+70.7s   PASS  rating exists  pda=EWZLzrJRMet4xdS6L65eWEaXQDHqMBiTZdtyzNzrjUvQ
-2026-04-25T05:44:21.527Z T+70.7s   PASS  rating.verdict == True  verdict=true
-2026-04-25T05:44:21.527Z T+70.7s   PASS  supplier.reputation_den incremented  num=1 den=1
-2026-04-25T05:44:21.527Z T+70.7s === total wall-clock: 70.7s ===
-2026-04-25T05:44:21.527Z T+70.7s === result: PASS ===
+2026-04-25T07:24:35.452Z T+0.0s [main] e2e start
+2026-04-25T07:24:35.486Z T+0.0s [main] supplier pubkey: 4hKCYECqV2DiyQDZHvtTYK6pyugqUip8VeN5eWX2PUYH
+2026-04-25T07:24:35.486Z T+0.0s [main] buyer    pubkey: 2Rpgzgmtp6x4Pz7G4fUtMw3JqPS75WuiQTJV4DCRnB5F
+2026-04-25T07:24:36.492Z T+1.0s [setup] supplier agent already registered at 2xxUeqqqrTb9AsuxSdrmMFJfmsXpoP3vsKgsbkA2GXQF
+2026-04-25T07:24:36.844Z T+1.4s [setup] buyer agent already registered at F4LEohnS4BWpneCEKW4DqJZ2vR8dn2nAzvxErAXkiNEE
+2026-04-25T07:24:37.176Z T+1.7s [main] baseline supplier state: listings_created=1 rep=1/1 (this run must produce listing_id=1)
+2026-04-25T07:24:37.176Z T+1.7s [main] spawning supplier + buyer
+2026-04-25T07:24:37.729Z T+2.3s [buyer] 2026-04-25T07:24:37.726Z [buyer] STARTUP dry_run=false rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b
+2026-04-25T07:24:37.729Z T+2.3s [supplier] 2026-04-25T07:24:37.728Z [supplier] STARTUP dry_run=false rpc=https://devnet.helius-rpc.com/?api-key=24723246-7b95-4e7f-a936-467a88d99c0b
+2026-04-25T07:24:37.763Z T+2.3s [supplier] 2026-04-25T07:24:37.763Z [supplier] KEYS_LOADED solana=4hKCYECqV2DiyQDZHvtTYK6pyugqUip8VeN5eWX2PUYH x25519=d1c1c5402bb64b18…
+2026-04-25T07:24:37.763Z T+2.3s [buyer] 2026-04-25T07:24:37.763Z [buyer] KEYS_LOADED solana=2Rpgzgmtp6x4Pz7G4fUtMw3JqPS75WuiQTJV4DCRnB5F x25519=8ee0af91733e2bd4…
+2026-04-25T07:24:38.713Z T+3.3s [supplier] 2026-04-25T07:24:38.712Z [supplier] AGENT_EXISTS pda=2xxUeqqqrTb9AsuxSdrmMFJfmsXpoP3vsKgsbkA2GXQF
+2026-04-25T07:24:38.782Z T+3.3s [buyer] 2026-04-25T07:24:38.782Z [buyer] AGENT_EXISTS pda=F4LEohnS4BWpneCEKW4DqJZ2vR8dn2nAzvxErAXkiNEE
+2026-04-25T07:24:40.740Z T+5.3s [buyer] 2026-04-25T07:24:40.739Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:24:43.715Z T+8.3s [supplier] 2026-04-25T07:24:43.714Z [supplier] SIGNAL_DETECTED id=sig-WHALE-0001 category=WHALE
+2026-04-25T07:24:43.735Z T+8.3s [buyer] 2026-04-25T07:24:43.734Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:24:43.785Z T+8.3s [buyer] 2026-04-25T07:24:43.785Z [buyer] FEED_SIGNAL_OBSERVED signal_id=sig-WHALE-0001
+2026-04-25T07:24:43.909Z T+8.5s [supplier] 2026-04-25T07:24:43.909Z [supplier] PAYLOAD_SEALED listing_id=1 commitment=5fe61513dfedfb3f… cid=local://L-1.bin ciphertext_bytes=389
+2026-04-25T07:24:46.405Z T+11.0s [buyer] 2026-04-25T07:24:46.405Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:24:46.508Z T+11.1s [supplier] 2026-04-25T07:24:46.508Z [supplier] LISTING_CREATED listing_id=1 listing_pda=7evmK9dSmZDfiqY62CzSj8i32h4Z2RfCz593xGTNy84J price_lamports=2400000000 ttl_slot=457929297 tx=66WF65BqGB1vBQq928jzZdnUVmX4GJHUdJn6YSZUNL12YFHr45QB62SvCZvEEBP3UHBA3HiEyZq2eeyfumX5Ruuh
+2026-04-25T07:24:47.559Z T+12.1s [buyer] 2026-04-25T07:24:47.558Z [buyer] PURCHASE_RULE_MATCH listing=7evmK9dSmZDfiqY62CzSj8i32h4Z2RfCz593xGTNy84J category=WHALE price_lamports=2400000000 supplier_rep_den=1
+2026-04-25T07:24:49.609Z T+14.2s [buyer] 2026-04-25T07:24:49.609Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:24:49.719Z T+14.3s [buyer] 2026-04-25T07:24:49.719Z [buyer] LISTING_PURCHASED listing=7evmK9dSmZDfiqY62CzSj8i32h4Z2RfCz593xGTNy84J purchase=B7EEAkcpF6fq4cF4zySn8CavPnRqMe8VALeuye9Gn228 tx=3coummnzcMsm52UrEVXmhMDA6iCGCPyCn3ywZVV9rCPxHGmVqysrQK5Z1WtwoeEYzSE7nV2KxnAdXJbYWGu8wq8F
+2026-04-25T07:24:52.071Z T+16.6s [buyer] 2026-04-25T07:24:52.071Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:24:54.906Z T+19.5s [buyer] 2026-04-25T07:24:54.905Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:24:55.106Z T+19.7s [supplier] 2026-04-25T07:24:55.105Z [supplier] PAYLOAD_DELIVERED listing_id=1 buyer_cid=local://P-1.bin tx=5TW4W6YmbmoyWDZekMuEuDNiHbfsHKURTi4hgXQGGCRSU6fUvwFuZdzfShXy3f2h3an2EAW76oR7T2Gw8QSidVJq
+2026-04-25T07:24:57.670Z T+22.2s [buyer] 2026-04-25T07:24:57.667Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:24:57.963Z T+22.5s [buyer] {"ts":"2026-04-25T07:24:57.962Z","actor":"buyer","kind":"payload_decrypted","payload":{"purchase":"B7EEAkcpF6fq4cF4zySn8CavPnRqMe8VALeuye9Gn228","listing":"7evmK9dSmZDfiqY62CzSj8i32h4Z2RfCz593xGTNy84J","signal_id":"sig-WHALE-0001","payload":{"signal_id":"sig-WHALE-0001","category":"WHALE","signal_ref":"slot 287491203, wallet 7xKXtg2CW87iF5RxC84LBu68kAr7GhvsqxNWwUPHhQh9","claim":"WHALE_SWAP predicted within 6 blocks","evidence":[{"kind":"balance_delta","wallet":"7xKX…Qh9","pool":"Raydium JUP/SOL","sol":120}],"recommended_action":"short JUP/SOL, size ≤ 120 SOL"}}}
+2026-04-25T07:24:57.963Z T+22.5s [buyer] 2026-04-25T07:24:57.963Z [buyer] OUTCOME_WINDOW_OPENED purchase=B7EEAkcpF6fq4cF4zySn8CavPnRqMe8VALeuye9Gn228 signal_id=sig-WHALE-0001 window_ms=30000
+2026-04-25T07:25:00.510Z T+25.1s [buyer] 2026-04-25T07:25:00.510Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:02.986Z T+27.5s [buyer] 2026-04-25T07:25:02.986Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:05.597Z T+30.1s [buyer] 2026-04-25T07:25:05.596Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:08.227Z T+32.8s [buyer] 2026-04-25T07:25:08.226Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:10.861Z T+35.4s [buyer] 2026-04-25T07:25:10.860Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:13.546Z T+38.1s [buyer] 2026-04-25T07:25:13.545Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:13.785Z T+38.3s [buyer] 2026-04-25T07:25:13.785Z [buyer] RESOLUTION_RECEIVED signal_id=sig-WHALE-0001 verdict=True
+2026-04-25T07:25:14.714Z T+39.3s [supplier] 2026-04-25T07:25:14.714Z [supplier] SIGNAL_LOOP_DONE
+2026-04-25T07:25:14.784Z T+39.3s [buyer] 2026-04-25T07:25:14.784Z [buyer] FEED_CONSUMER_DONE
+2026-04-25T07:25:16.143Z T+40.7s [buyer] 2026-04-25T07:25:16.143Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:18.983Z T+43.5s [buyer] 2026-04-25T07:25:18.983Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:21.618Z T+46.2s [buyer] 2026-04-25T07:25:21.616Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:24.303Z T+48.9s [buyer] 2026-04-25T07:25:24.303Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:26.930Z T+51.5s [buyer] 2026-04-25T07:25:26.930Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:29.707Z T+54.3s [buyer] 2026-04-25T07:25:29.706Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:31.662Z T+56.2s [buyer] 2026-04-25T07:25:31.662Z [buyer] RATING_SUBMITTED purchase=B7EEAkcpF6fq4cF4zySn8CavPnRqMe8VALeuye9Gn228 signal_id=sig-WHALE-0001 verdict=True tx=4aYABTmgZkhPSNRp7DdyBZXzrxBQQhABrC9T4QocdzDk1Z339RdDjYi9nHJ6PX8NeNGPUpvSiptrwAge3SVnxjNq
+2026-04-25T07:25:32.676Z T+57.2s [main] all assertions pass at T+55.5s — early exit
+2026-04-25T07:25:32.676Z T+57.2s [main] tearing down children
+2026-04-25T07:25:32.676Z T+57.2s [main] sending SIGTERM to children
+2026-04-25T07:25:32.714Z T+57.3s [buyer] 2026-04-25T07:25:32.710Z [buyer] SHUTDOWN_REQUESTED
+2026-04-25T07:25:32.714Z T+57.3s [supplier] 2026-04-25T07:25:32.711Z [supplier] SHUTDOWN_REQUESTED
+2026-04-25T07:25:33.201Z T+57.8s [buyer] 2026-04-25T07:25:33.200Z [buyer] DELIVERY_MISSING_CIPHERTEXT purchase=5CXefcCiApzCsu1qY151tscSAWAp2LSrJpxT6CvukLqL path=/Users/minos/Projects/whisper-exchange/agents/payloads/P-0.bin
+2026-04-25T07:25:33.663Z T+58.2s [buyer] 2026-04-25T07:25:33.663Z [buyer] RATING_DISPATCHER_DONE
+2026-04-25T07:25:33.848Z T+58.4s [buyer] 2026-04-25T07:25:33.848Z [buyer] LISTING_SCANNER_DONE
+2026-04-25T07:25:34.889Z T+59.4s [supplier] 2026-04-25T07:25:34.888Z [supplier] DELIVERY_LOOP_DONE
+2026-04-25T07:25:34.889Z T+59.4s [supplier] 2026-04-25T07:25:34.889Z [supplier] EXIT
+2026-04-25T07:25:34.941Z T+59.5s [main] supplier exited code=0 signal=null
+2026-04-25T07:25:35.202Z T+59.8s [buyer] 2026-04-25T07:25:35.202Z [buyer] DELIVERY_WATCHER_DONE
+2026-04-25T07:25:35.203Z T+59.8s [buyer] 2026-04-25T07:25:35.202Z [buyer] EXIT
+2026-04-25T07:25:35.244Z T+59.8s [main] buyer exited code=0 signal=null
+2026-04-25T07:25:35.291Z T+59.8s 
+2026-04-25T07:25:35.291Z T+59.8s === assertions ===
+2026-04-25T07:25:35.291Z T+59.8s   PASS  listing status == Rated  status=rated listing_id=1 pda=7evmK9dSmZDfiqY62CzSj8i32h4Z2RfCz593xGTNy84J
+2026-04-25T07:25:35.291Z T+59.8s   PASS  purchase exists  pda=B7EEAkcpF6fq4cF4zySn8CavPnRqMe8VALeuye9Gn228
+2026-04-25T07:25:35.291Z T+59.8s   PASS  purchase.delivered == true  delivered=true cid=local://P-1.bin
+2026-04-25T07:25:35.291Z T+59.8s   PASS  rating exists  pda=C5ewAM5ADritfJyd3dEsYk5zbWZ7cu5xLcQQRU46Vy9j
+2026-04-25T07:25:35.291Z T+59.8s   PASS  rating.verdict == True  verdict=true
+2026-04-25T07:25:35.291Z T+59.8s   PASS  supplier.reputation_den incremented by exactly 1  num=2 den=2 (baseline num=1 den=1)
+2026-04-25T07:25:35.291Z T+59.8s === total wall-clock: 59.8s ===
+2026-04-25T07:25:35.291Z T+59.8s === result: PASS ===

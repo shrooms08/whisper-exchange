@@ -241,6 +241,7 @@ function pickVariant(v: any): string {
 async function runAssertions(
   supplierPda: web3.PublicKey,
   supplierKeypair: web3.Keypair,
+  baseline: { listingsCreated: bigint; reputationDen: bigint; reputationNum: bigint },
 ): Promise<Result[]> {
   const { program } = makeProgram(supplierKeypair);
   const results: Result[] = [];
@@ -250,8 +251,12 @@ async function runAssertions(
   const ratingDen = BigInt(supplierAgent.reputationDen.toString());
   const ratingNum = BigInt(supplierAgent.reputationNum.toString());
 
-  if (listingsCreated < 1n) {
-    results.push({ name: 'listing created', pass: false, detail: `listings_created=${listingsCreated}` });
+  if (listingsCreated <= baseline.listingsCreated) {
+    results.push({
+      name: 'fresh listing produced this run',
+      pass: false,
+      detail: `listings_created=${listingsCreated} (baseline=${baseline.listingsCreated})`,
+    });
     return results;
   }
 
@@ -302,9 +307,9 @@ async function runAssertions(
   });
 
   results.push({
-    name: 'supplier.reputation_den incremented',
-    pass: ratingDen >= 1n,
-    detail: `num=${ratingNum} den=${ratingDen}`,
+    name: 'supplier.reputation_den incremented by exactly 1',
+    pass: ratingDen === baseline.reputationDen + 1n && ratingNum >= baseline.reputationNum,
+    detail: `num=${ratingNum} den=${ratingDen} (baseline num=${baseline.reputationNum} den=${baseline.reputationDen})`,
   });
 
   return results;
@@ -327,19 +332,44 @@ async function main(): Promise<number> {
   const supplierPda = await ensureRegistered('supplier', supplierKs, 'night-oracle');
   await ensureRegistered('buyer', buyerKs, 'alpha-hunter');
 
+  // Snapshot supplier's pre-run state so assertions can require fresh activity
+  // rather than greenlighting on stale terminal state from a prior run.
+  const { program: baselineProgram } = makeProgram(supplierKs.solana);
+  const baselineAgent: any = await (baselineProgram.account as any).agent.fetch(supplierPda);
+  const baseline = {
+    listingsCreated: BigInt(baselineAgent.listingsCreated.toString()),
+    reputationDen: BigInt(baselineAgent.reputationDen.toString()),
+    reputationNum: BigInt(baselineAgent.reputationNum.toString()),
+  };
+  log(
+    `[main] baseline supplier state: listings_created=${baseline.listingsCreated} ` +
+      `rep=${baseline.reputationNum}/${baseline.reputationDen} ` +
+      `(this run must produce listing_id=${baseline.listingsCreated})`,
+  );
+
   log('[main] spawning supplier + buyer');
   const supplier = spawnAgent('supplier');
   const buyer = spawnAgent('buyer');
   const children = [supplier, buyer];
 
-  const deadline = Date.now() + TIMEOUT_MS;
+  const ASSERTION_FLOOR_MS = 30_000;
+  const startedAt = Date.now();
+  const deadline = startedAt + TIMEOUT_MS;
   let lastResults: Result[] = [];
   while (Date.now() < deadline) {
     await sleep(POLL_MS);
     try {
-      lastResults = await runAssertions(supplierPda, supplierKs.solana);
+      lastResults = await runAssertions(supplierPda, supplierKs.solana, baseline);
+      const elapsed = Date.now() - startedAt;
       if (await allPass(lastResults)) {
-        log('[main] all assertions pass — early exit');
+        if (elapsed < ASSERTION_FLOOR_MS) {
+          log(
+            `[main] assertions pass at T+${(elapsed / 1000).toFixed(1)}s but floor is ` +
+              `${ASSERTION_FLOOR_MS / 1000}s — continuing to confirm`,
+          );
+          continue;
+        }
+        log(`[main] all assertions pass at T+${(elapsed / 1000).toFixed(1)}s — early exit`);
         break;
       }
     } catch (err) {

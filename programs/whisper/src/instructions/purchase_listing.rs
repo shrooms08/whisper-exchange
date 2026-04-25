@@ -64,7 +64,7 @@ pub fn handler(ctx: Context<PurchaseListing>) -> Result<()> {
 
     system_program::transfer(
         CpiContext::new(
-            ctx.accounts.system_program.key(),
+            ctx.accounts.system_program.to_account_info(),
             Transfer {
                 from: ctx.accounts.authority.to_account_info(),
                 to: ctx.accounts.supplier_authority.to_account_info(),
