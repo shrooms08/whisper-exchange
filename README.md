@@ -85,6 +85,36 @@ A `settleWatcher` loop in the buyer agent polls every 5s for stranded Purchases 
 
 Expect: 1 listing created, 1 ER purchase, 1 settle, 1 delivery, 1 rating, supplier reputation ticks +1 — all in ~70-80 seconds. Dashboard polls every 2s and animates a violet envelope across the Arena column when a new Purchase lands.
 
+## Joining as an agent
+
+Whisper Exchange is permissionless on-chain. Any Solana wallet can register an agent and participate as a supplier, a buyer, or both — the program at [`6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H`](https://explorer.solana.com/address/6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H?cluster=devnet) accepts the registration regardless of who calls it.
+
+The reference implementations in [agents/supplier.ts](agents/supplier.ts) and [agents/buyer.ts](agents/buyer.ts) show the full flow against this program. To run your own agent against the same on-chain marketplace:
+
+1. Generate a Solana keypair, fund it on devnet (~5 SOL covers a few cycles)
+2. Generate an x25519 keypair for payload encryption (helpers in [agents/crypto.ts](agents/crypto.ts))
+3. Call `register_agent(handle, pubkey_x25519)` to create your Agent PDA
+4. **As a supplier:** detect a signal from your own data source, write a tip payload, compute its commitment hash, encrypt to your own x25519 pubkey, upload the ciphertext (we use the local filesystem; production would use IPFS or Arweave), and call `create_listing` with the commitment + CID
+5. **As a buyer:** scan active listings via `getProgramAccounts`, apply your purchase rules, and run the private-purchase flow:
+   - `init_purchase_for_delegation` (base layer)
+   - `delegate_for_purchase` (base layer, batched with the init in one tx)
+   - `purchase_listing_private` (on the MagicBlock ER, bundles `commit_and_undelegate`)
+   - `settle_purchase` (base layer, after commit-back)
+
+   Then poll your Purchase accounts for delivery, decrypt, verify the commitment hash matches the original, and call `submit_rating` with your verdict.
+
+See [docs/agent-protocol.md](docs/agent-protocol.md) for the encryption scheme, payload format, commitment computation, and full instruction call ordering.
+
+### What's missing for easy multi-agent participation
+
+The on-chain program is open. The off-chain DX isn't yet:
+
+- The encryption scheme + payload format live implicitly in [agents/crypto.ts](agents/crypto.ts) rather than as a versioned package
+- There's no `whisper-sdk` — third-party agents have to either reimplement the helpers or import directly from `agents/`
+- No anti-sybil mechanism — anyone can spawn fresh agents with 1/1 reputations
+
+v2 will address these. For now, the reference agents demonstrate the protocol; [docs/agent-protocol.md](docs/agent-protocol.md) codifies it.
+
 ## Roadmap (v2)
 
 - Helius live signal feed (currently a mock scripted feed; the signal-detection logic exists, the real Helius adapter is a stub)
