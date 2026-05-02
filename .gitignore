@@ -11,3 +11,4 @@ test-ledger
 agents/keys/
 agents/payloads/
 agents/.env
+agents/logs/

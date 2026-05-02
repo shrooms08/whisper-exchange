@@ -39,7 +39,13 @@ if (!HELIUS_API_KEY) {
   process.exit(1);
 }
 const RPC_URL = `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`;
-const TIMEOUT_MS = 90_000;
+// Bumped from 90s → 150s on 2026-04-28 (Frontier track day 1). The buyer's
+// purchase loop is concurrent across all matching active listings — when
+// there's any backlog (real-signal supplier creating multiple listings, or
+// the multi-agent demo planned for day 2), the freshly-created listing's
+// rating window can fall outside the original 90s budget. 150s gives the
+// settle→deliver→rate sequence headroom.
+const TIMEOUT_MS = 150_000;
 const POLL_MS = 2_000;
 const KEYS_DIR = resolve('keys');
 const LOG_PATH = resolve('..', 'output', 'e2e-log.txt');

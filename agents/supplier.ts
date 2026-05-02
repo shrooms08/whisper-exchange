@@ -53,6 +53,22 @@ const KEYSTORE_DIR = resolve('keys');
 const TTL_SLOTS = 200n;
 const DELIVERY_POLL_MS = 3_000;
 
+// Frontier track — when true, supplier polls the webhook receiver for
+// real Helius-derived whale signals instead of running the scripted mock.
+// Defaults to false so cold E2E reproducibility is preserved.
+const USE_REAL_SIGNALS = process.env.USE_REAL_SIGNALS === 'true';
+const RECEIVER_URL = process.env.RECEIVER_URL ?? 'http://localhost:4000';
+const REAL_POLL_MS = 5_000;
+const REAL_POLL_BACKOFF_MS = 30_000;
+const RECEIVER_UNREACHABLE_THRESHOLD = 6; // consecutive errors → backoff
+
+// Test-mode helper: when true, the real-signal loop creates exactly one
+// listing then idles. Used by the cold E2E harness, which assumes a
+// single-listing-per-run cadence inherited from the mock feed. In normal
+// operation (demo / dashboard), leave false — supplier should create one
+// listing per qualifying whale.
+const HALT_AFTER_FIRST_LISTING = process.env.HALT_AFTER_FIRST_LISTING === 'true';
+
 // Hardcoded price table (SOL). Matches the design mock for the dashboard order book.
 const PRICES_SOL: Record<SignalCategory, number> = {
   WHALE: 2.4,
@@ -207,18 +223,78 @@ async function signalLoop(
 
   for await (const event of feed) {
     if (event.kind !== 'signal') continue;
-    await handleSignal(event.signal, ctx, localCounter);
+    await handleSignal(event.signal, 'mock', ctx, localCounter);
     localCounter += 1n;
   }
   log('SIGNAL_LOOP_DONE');
 }
 
+// Real-source loop — polls the webhook receiver for Helius-normalized signals.
+// Runs in place of signalLoop when USE_REAL_SIGNALS=true. Same downstream
+// evaluator (handleSignal) — only the source changes.
+async function realSignalLoop(
+  ctx: {
+    chain: Chain | null;
+    supplierPda: web3.PublicKey | null;
+    x25519Pub: Uint8Array;
+    stop: { flag: boolean };
+  },
+): Promise<void> {
+  log('REAL_SIGNAL_LOOP_STARTED', { receiver_url: RECEIVER_URL });
+  let localCounter = 0n;
+  let consecutiveErrors = 0;
+  let backoff = false;
+
+  while (!ctx.stop.flag) {
+    try {
+      const res = await fetch(`${RECEIVER_URL}/signals/next`);
+      if (res.status === 200) {
+        const sig = (await res.json()) as Signal;
+        log('SIGNAL_RECEIVED', { source: 'helius', id: sig.id });
+        consecutiveErrors = 0;
+        if (backoff) {
+          log('RECEIVER_RECOVERED');
+          backoff = false;
+        }
+        await handleSignal(sig, 'helius', ctx, localCounter);
+        localCounter += 1n;
+        if (HALT_AFTER_FIRST_LISTING) {
+          log('HALT_AFTER_FIRST_LISTING_REACHED', { listings: localCounter.toString() });
+          while (!ctx.stop.flag) await sleep(REAL_POLL_BACKOFF_MS);
+          break;
+        }
+      } else if (res.status === 204) {
+        consecutiveErrors = 0;
+        if (backoff) {
+          log('RECEIVER_RECOVERED');
+          backoff = false;
+        }
+      } else {
+        consecutiveErrors += 1;
+        log('RECEIVER_FETCH_ERROR', { status: res.status, reason: 'unexpected_status' });
+      }
+    } catch (err) {
+      consecutiveErrors += 1;
+      log('RECEIVER_FETCH_ERROR', { reason: String(err).slice(0, 120) });
+    }
+
+    if (!backoff && consecutiveErrors >= RECEIVER_UNREACHABLE_THRESHOLD) {
+      log('RECEIVER_UNREACHABLE_30S', { consecutive_errors: consecutiveErrors });
+      backoff = true;
+    }
+
+    await sleep(backoff ? REAL_POLL_BACKOFF_MS : REAL_POLL_MS);
+  }
+  log('REAL_SIGNAL_LOOP_DONE');
+}
+
 async function handleSignal(
   signal: Signal,
+  source: 'mock' | 'helius',
   ctx: { chain: Chain | null; supplierPda: web3.PublicKey | null; x25519Pub: Uint8Array },
   localCounter: bigint,
 ): Promise<void> {
-  log('SIGNAL_DETECTED', { id: signal.id, category: signal.category });
+  log('SIGNAL_DETECTED', { source, id: signal.id, category: signal.category });
 
   const payload = {
     signal_id: signal.id,
@@ -243,6 +319,7 @@ async function handleSignal(
   const priceLamports = BigInt(Math.round(PRICES_SOL[signal.category] * LAMPORTS_PER_SOL));
 
   log('PAYLOAD_SEALED', {
+    source,
     listing_id: listingId,
     commitment: commitment,
     cid,
@@ -251,6 +328,8 @@ async function handleSignal(
 
   if (!ctx.chain || !ctx.supplierPda) {
     log('LISTING_CREATED_DRY_RUN', {
+      source,
+      signal_id: signal.id,
       listing_id: listingId,
       category: signal.category,
       price_sol: PRICES_SOL[signal.category],
@@ -280,6 +359,8 @@ async function handleSignal(
     .rpc();
 
   log('LISTING_CREATED', {
+    source,
+    signal_id: signal.id,
     listing_id: listingId,
     listing_pda: listing.toBase58(),
     price_lamports: priceLamports,
@@ -384,6 +465,7 @@ async function main(): Promise<void> {
     dry_run: DRY_RUN,
     base_rpc: DRY_RUN ? '(skipped)' : BASE_RPC,
     er_rpc: DRY_RUN ? '(skipped)' : ER_RPC,
+    use_real_signals: USE_REAL_SIGNALS,
   });
 
   const keystore = loadOrCreateKeystore();
@@ -417,7 +499,11 @@ async function main(): Promise<void> {
     stop,
   };
 
-  await Promise.all([signalLoop(feed.start(), ctx), deliveryLoop(ctx)]);
+  const signalTask = USE_REAL_SIGNALS
+    ? realSignalLoop(ctx)
+    : signalLoop(feed.start(), ctx);
+
+  await Promise.all([signalTask, deliveryLoop(ctx)]);
 
   log('EXIT');
 }
