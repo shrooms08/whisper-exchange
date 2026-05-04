@@ -12,16 +12,30 @@ export const PROGRAM_ID = new web3.PublicKey(
   '6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H',
 );
 
+// RPC selection: prefer QuickNode (active provider, Day 1.5+), fall back to
+// Helius if its API key is set (will become primary again when free-tier
+// credits reset May 21), then the public devnet endpoint as last resort.
+// The public endpoint will 429 under any real gPA load.
+const QUICKNODE_RPC_URL = process.env.QUICKNODE_RPC_URL;
 const HELIUS_API_KEY = process.env.HELIUS_API_KEY;
-if (!HELIUS_API_KEY) {
+
+let RPC_URL: string;
+let rpcProvider: 'quicknode' | 'helius' | 'public';
+if (QUICKNODE_RPC_URL) {
+  RPC_URL = QUICKNODE_RPC_URL;
+  rpcProvider = 'quicknode';
+} else if (HELIUS_API_KEY) {
+  RPC_URL = `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`;
+  rpcProvider = 'helius';
+} else {
+  RPC_URL = 'https://api.devnet.solana.com';
+  rpcProvider = 'public';
   console.warn(
-    '[chain] HELIUS_API_KEY missing in env; falling back to public devnet RPC. ' +
-      'gPA calls will likely 429.',
+    '[chain] no QUICKNODE_RPC_URL or HELIUS_API_KEY in env; falling back to ' +
+      'public devnet RPC. gPA calls will likely 429.',
   );
 }
-const RPC_URL = HELIUS_API_KEY
-  ? `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`
-  : 'https://api.devnet.solana.com';
+console.log(`[chain] rpc provider=${rpcProvider}`);
 
 const connection = new web3.Connection(RPC_URL, 'confirmed');
 

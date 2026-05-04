@@ -65,7 +65,28 @@ Tasks:
 
 **Why this matters:** The "agentic" claim is much stronger when the supplier is making decisions on real chain data. It's also what every privacy-track judge will check first.
 
+### Day 1.5 — DONE (2026-05-04) — Helius quota exhaustion + RPC fallback
+
+**Status:** Dashboard swapped to QuickNode devnet. Webhook receiver remains in repo but stays paused; supplier falls back to mock signals for the Frontier window.
+
+**What happened:** Helius free-tier credits exhausted on May 4 (resets May 21 — after the Frontier deadline). Both webhook delivery and RPC reads were blocked. `/health` reported 0 events received in 5+ min during US Monday peak, confirming the quota wall.
+
+**Deliverables shipped:**
+- RPC provider precedence chain in [app/lib/chain.ts](../app/lib/chain.ts): `QUICKNODE_RPC_URL > HELIUS_API_KEY > public api.devnet.solana.com`. Single-line boot log (`[chain] rpc provider=quicknode|helius|public`) so the active source is visible in any environment.
+- `app/.env.local` now carries `QUICKNODE_RPC_URL` (active) plus `HELIUS_API_KEY` retained for the May 21 reset.
+- [app/.env.example](../app/.env.example) added, documents both vars and the precedence order. `app/.gitignore` updated with `!.env.example` so the file is trackable while real `.env*` files remain ignored.
+- Vercel production redeployed and verified — `/api/chain` returns real on-chain reads via QuickNode (18 listings, 31 purchases, slot advancing).
+
+**What stays paused:**
+- `agents/webhook-receiver.ts` and the ngrok tunnel — both come back online May 21 when Helius credits reset. No code change needed; just re-enable.
+- Day 1's real signal pipeline (commit `0ce1767`) is still valid — listing 50 (`DfPBr43oWyEGY8tc2ZhQb2eVGdPpxurNmqXKRkVocQE1`) carries permanent on-chain proof of the May 1 Jupiter mainnet provenance.
+
+**Out of scope for Day 1.5:**
+- Agent RPC swap. `agents/buyer.ts:52` and `agents/supplier.ts:48` already honor `process.env.BASE_RPC` — set this in `agents/.env` for Day 2 instead of editing code. The `HELIUS_API_KEY` fatal-check still gates the agents but it's satisfied by leaving the existing key populated (no calls are made when `BASE_RPC` overrides). A code-level cleanup to gate on `BASE_RPC || HELIUS_API_KEY` is a Day 9 buffer task.
+
 ### Day 2 — Multi-agent demo (2 suppliers, 2 buyers)
+
+**Prep (carry-over from Day 1.5):** Set `BASE_RPC=<quicknode-url>` in `agents/.env` before running E2E. Keep `HELIUS_API_KEY` populated for the gate check (it's free even with credits exhausted — only outgoing requests are blocked).
 
 **Goal:** Demonstrate the marketplace with multiple parties so it's visibly a market, not a 1:1 channel.
 
