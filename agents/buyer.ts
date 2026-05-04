@@ -52,7 +52,9 @@ const BASE_RPC =
   process.env.BASE_RPC ?? `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY ?? ''}`;
 const ER_RPC = process.env.ER_RPC ?? 'https://devnet.magicblock.app/';
 const USE_PRIVATE_PURCHASE = process.env.USE_PRIVATE_PURCHASE === 'true';
-const HANDLE = process.env.BUYER_HANDLE ?? 'alpha-hunter';
+// AGENT_HANDLE is the new multi-agent name. BUYER_HANDLE is honoured for
+// backwards compatibility with the single-agent scripts/run-e2e.sh.
+const HANDLE = process.env.AGENT_HANDLE ?? process.env.BUYER_HANDLE ?? 'alpha-hunter';
 const PAYLOADS_DIR = resolve('payloads');
 const KEYSTORE_DIR = resolve('keys');
 
@@ -62,21 +64,51 @@ const RATING_POLL_MS = 2_000;
 const SETTLE_POLL_MS = 5_000;
 const OUTCOME_WINDOW_MS = 30_000;
 
-const BUYER_MAX_PRICE_LAMPORTS = BigInt(
-  Math.round(Number(process.env.BUYER_MAX_PRICE ?? '6') * 1_000_000_000),
-);
-const MIN_REP = Number(process.env.MIN_REP ?? '0.5');
+// AGENT_SOLANA_KEYPAIR / AGENT_X25519_KEYPAIR override the default keystore
+// paths so multiple buyers can share this binary. Defaults preserve
+// single-agent behaviour for legacy callers.
+const AGENT_SOLANA_KEYPAIR = process.env.AGENT_SOLANA_KEYPAIR
+  ? resolve(process.env.AGENT_SOLANA_KEYPAIR)
+  : resolve(KEYSTORE_DIR, 'buyer-solana.json');
+const AGENT_X25519_KEYPAIR = process.env.AGENT_X25519_KEYPAIR
+  ? resolve(process.env.AGENT_X25519_KEYPAIR)
+  : resolve(KEYSTORE_DIR, 'buyer-x25519.json');
+
+// AGENT_MAX_PRICE_LAMPORTS overrides the legacy BUYER_MAX_PRICE (SOL float).
+// New env wins when set; falls back to the existing default otherwise.
+const BUYER_MAX_PRICE_LAMPORTS = process.env.AGENT_MAX_PRICE_LAMPORTS
+  ? BigInt(process.env.AGENT_MAX_PRICE_LAMPORTS)
+  : BigInt(Math.round(Number(process.env.BUYER_MAX_PRICE ?? '6') * 1_000_000_000));
+
+// AGENT_BUY_CATEGORIES overrides legacy BUYER_CATEGORIES.
 const BUYER_CATEGORIES = new Set<SignalCategory>(
-  (process.env.BUYER_CATEGORIES?.split(',').map((s) => s.trim().toUpperCase()) as SignalCategory[]) ??
+  (
+    process.env.AGENT_BUY_CATEGORIES?.split(',').map((s) => s.trim().toUpperCase()) ??
+    process.env.BUYER_CATEGORIES?.split(',').map((s) => s.trim().toUpperCase())
+  ) as SignalCategory[] ??
     ['WHALE', 'MEV', 'MINT', 'IMBAL', 'INSDR', 'BRIDGE'],
 );
+
+// AGENT_MIN_REPUTATION (integer numerator threshold). New gate semantics:
+//   - 0 ⇒ no gate (default — preserves legacy behaviour when env unset)
+//   - >0 ⇒ skip listing if supplier.den === 0 (fresh, rep unknown)
+//          OR supplier.num < min_reputation
+// When AGENT_MIN_REPUTATION is unset, we fall back to the legacy MIN_REP
+// fractional gate (default 0.5) which only gates on suppliers with den>0.
+const AGENT_MIN_REPUTATION =
+  process.env.AGENT_MIN_REPUTATION !== undefined
+    ? BigInt(process.env.AGENT_MIN_REPUTATION)
+    : null;
+const MIN_REP = Number(process.env.MIN_REP ?? '0.5');
 
 // ---------- logging ----------
 
 function log(event: string, fields: Record<string, unknown> = {}): void {
-  const parts = Object.entries(fields).map(([k, v]) => `${k}=${fmt(v)}`);
+  // handle= prefix on every line so multi-agent logs are filterable.
+  const merged = { handle: HANDLE, ...fields };
+  const parts = Object.entries(merged).map(([k, v]) => `${k}=${fmt(v)}`);
   const ts = new Date().toISOString();
-  console.log(`${ts} [buyer] ${event}${parts.length ? ' ' + parts.join(' ') : ''}`);
+  console.log(`${ts} [buyer] ${event} ${parts.join(' ')}`);
 }
 
 function logJson(kind: string, payload: unknown): void {
@@ -100,8 +132,8 @@ interface Keystore {
 
 function loadOrCreateKeystore(): Keystore {
   mkdirSync(KEYSTORE_DIR, { recursive: true });
-  const solPath = resolve(KEYSTORE_DIR, 'buyer-solana.json');
-  const xPath = resolve(KEYSTORE_DIR, 'buyer-x25519.json');
+  const solPath = AGENT_SOLANA_KEYPAIR;
+  const xPath = AGENT_X25519_KEYPAIR;
 
   let solana: web3.Keypair;
   if (existsSync(solPath)) {
@@ -281,7 +313,31 @@ async function scanOnce(chain: Chain, buyerPda: web3.PublicKey, state: State): P
     );
     const den = BigInt(supplierAgent.reputationDen.toString());
     const num = BigInt(supplierAgent.reputationNum.toString());
-    if (den > 0n) {
+
+    if (AGENT_MIN_REPUTATION !== null) {
+      // New gate (multi-agent profiles): integer numerator threshold.
+      // Fresh agents (den === 0) are rep-unknown — skip when threshold > 0.
+      if (AGENT_MIN_REPUTATION > 0n) {
+        if (den === 0n || num < AGENT_MIN_REPUTATION) {
+          // Defensive: some legacy listing accounts on devnet decode with
+          // listing.id missing. Fall back to "?" rather than crashing the
+          // scan loop.
+          const listingIdStr =
+            listing.id !== undefined && listing.id !== null
+              ? BigInt(listing.id.toString()).toString()
+              : '?';
+          log('LISTING_SKIPPED', {
+            reason: 'below_min_rep',
+            listing_id: listingIdStr,
+            listing_pda: key,
+            supplier_rep: `${num}/${den}`,
+            min_reputation: AGENT_MIN_REPUTATION.toString(),
+          });
+          continue;
+        }
+      }
+    } else if (den > 0n) {
+      // Legacy gate: fractional rep threshold, only checked when den>0.
       const rep = Number(num) / Number(den);
       if (rep < MIN_REP) {
         log('SCAN_SKIP_LOW_REP', { listing: key, rep });
@@ -293,6 +349,7 @@ async function scanOnce(chain: Chain, buyerPda: web3.PublicKey, state: State): P
       listing: key,
       category,
       price_lamports: priceLamports,
+      supplier_rep_num: num,
       supplier_rep_den: den,
     });
 
@@ -753,6 +810,16 @@ function sleep(ms: number): Promise<void> {
 }
 
 async function main(): Promise<void> {
+  log('AGENT_STARTED', {
+    role: 'buyer',
+    buy_categories: [...BUYER_CATEGORIES].join(','),
+    max_price_lamports: BUYER_MAX_PRICE_LAMPORTS,
+    min_reputation:
+      AGENT_MIN_REPUTATION !== null
+        ? AGENT_MIN_REPUTATION.toString()
+        : `(legacy MIN_REP=${MIN_REP})`,
+    solana_keypair: AGENT_SOLANA_KEYPAIR,
+  });
   log('STARTUP', {
     dry_run: DRY_RUN,
     base_rpc: DRY_RUN ? '(skipped)' : BASE_RPC,

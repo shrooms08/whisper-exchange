@@ -47,9 +47,36 @@ if (!DRY_RUN && !HELIUS_API_KEY) {
 const BASE_RPC =
   process.env.BASE_RPC ?? `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY ?? ''}`;
 const ER_RPC = process.env.ER_RPC ?? 'https://devnet.magicblock.app/';
-const HANDLE = process.env.SUPPLIER_HANDLE ?? 'night-oracle';
+// AGENT_HANDLE is the new multi-agent name. SUPPLIER_HANDLE is honoured
+// for backwards compatibility with the single-agent scripts/run-e2e.sh.
+const HANDLE = process.env.AGENT_HANDLE ?? process.env.SUPPLIER_HANDLE ?? 'night-oracle';
 const PAYLOADS_DIR = resolve('payloads');
 const KEYSTORE_DIR = resolve('keys');
+// AGENT_SOLANA_KEYPAIR / AGENT_X25519_KEYPAIR override the default
+// keystore paths so multiple suppliers can share this binary. Default
+// paths preserve single-agent behaviour for legacy callers.
+const AGENT_SOLANA_KEYPAIR = process.env.AGENT_SOLANA_KEYPAIR
+  ? resolve(process.env.AGENT_SOLANA_KEYPAIR)
+  : resolve(KEYSTORE_DIR, 'supplier-solana.json');
+const AGENT_X25519_KEYPAIR = process.env.AGENT_X25519_KEYPAIR
+  ? resolve(process.env.AGENT_X25519_KEYPAIR)
+  : resolve(KEYSTORE_DIR, 'supplier-x25519.json');
+// AGENT_SIGNAL_CATEGORIES (CSV) — when set, supplier ignores any signal
+// whose category is not in the list. When unset, all categories pass
+// through (legacy behaviour).
+const AGENT_SIGNAL_CATEGORIES: Set<SignalCategory> | null =
+  process.env.AGENT_SIGNAL_CATEGORIES
+    ? new Set(
+        process.env.AGENT_SIGNAL_CATEGORIES.split(',')
+          .map((s) => s.trim().toUpperCase()) as SignalCategory[],
+      )
+    : null;
+// AGENT_PRICE_LAMPORTS — when set, every listing is created at this price
+// regardless of category. When unset, the per-category PRICES_SOL table
+// below is used (legacy behaviour).
+const AGENT_PRICE_LAMPORTS: bigint | null = process.env.AGENT_PRICE_LAMPORTS
+  ? BigInt(process.env.AGENT_PRICE_LAMPORTS)
+  : null;
 const TTL_SLOTS = 200n;
 const DELIVERY_POLL_MS = 3_000;
 
@@ -84,9 +111,11 @@ const LAMPORTS_PER_SOL = 1_000_000_000;
 // ---------- logging ----------
 
 function log(event: string, fields: Record<string, unknown> = {}): void {
-  const parts = Object.entries(fields).map(([k, v]) => `${k}=${fmt(v)}`);
+  // handle= prefix on every line so multi-agent logs are filterable.
+  const merged = { handle: HANDLE, ...fields };
+  const parts = Object.entries(merged).map(([k, v]) => `${k}=${fmt(v)}`);
   const ts = new Date().toISOString();
-  console.log(`${ts} [supplier] ${event}${parts.length ? ' ' + parts.join(' ') : ''}`);
+  console.log(`${ts} [supplier] ${event} ${parts.join(' ')}`);
 }
 
 function fmt(v: unknown): string {
@@ -106,8 +135,8 @@ interface Keystore {
 
 function loadOrCreateKeystore(): Keystore {
   mkdirSync(KEYSTORE_DIR, { recursive: true });
-  const solPath = resolve(KEYSTORE_DIR, 'supplier-solana.json');
-  const xPath = resolve(KEYSTORE_DIR, 'supplier-x25519.json');
+  const solPath = AGENT_SOLANA_KEYPAIR;
+  const xPath = AGENT_X25519_KEYPAIR;
 
   let solana: web3.Keypair;
   if (existsSync(solPath)) {
@@ -223,7 +252,19 @@ async function signalLoop(
 
   for await (const event of feed) {
     if (event.kind !== 'signal') continue;
-    await handleSignal(event.signal, 'mock', ctx, localCounter);
+    // Defensive: a single failure in handleSignal (typically a
+    // TransactionExpiredTimeoutError on devnet RPC) used to bubble up
+    // and kill the agent. Catch + log + continue so the supplier
+    // keeps processing future signals.
+    try {
+      await handleSignal(event.signal, 'mock', ctx, localCounter);
+    } catch (err) {
+      log('SIGNAL_HANDLE_ERROR', {
+        signal_id: event.signal.id,
+        category: event.signal.category,
+        err: String(err).slice(0, 240),
+      });
+    }
     localCounter += 1n;
   }
   log('SIGNAL_LOOP_DONE');
@@ -296,6 +337,18 @@ async function handleSignal(
 ): Promise<void> {
   log('SIGNAL_DETECTED', { source, id: signal.id, category: signal.category });
 
+  // AGENT_SIGNAL_CATEGORIES gate — drop signals whose category isn't in the
+  // configured set. Multi-agent profiles use this to specialize suppliers
+  // per category cluster (e.g. night-oracle: WHALE,MEV; dawn-watcher: MINT,INSDR,IMBAL).
+  if (AGENT_SIGNAL_CATEGORIES && !AGENT_SIGNAL_CATEGORIES.has(signal.category)) {
+    log('SIGNAL_SKIPPED', {
+      reason: 'category_not_in_profile',
+      signal_id: signal.id,
+      category: signal.category,
+    });
+    return;
+  }
+
   const payload = {
     signal_id: signal.id,
     category: signal.category,
@@ -316,7 +369,11 @@ async function handleSignal(
   writeFileSync(ciphertextPath, ciphertext);
   const cid = `local://L-${listingId}.bin`;
 
-  const priceLamports = BigInt(Math.round(PRICES_SOL[signal.category] * LAMPORTS_PER_SOL));
+  // AGENT_PRICE_LAMPORTS overrides the per-category table when set; this is
+  // how multi-agent profiles set differentiated price ceilings without
+  // forking the price table.
+  const priceLamports = AGENT_PRICE_LAMPORTS ??
+    BigInt(Math.round(PRICES_SOL[signal.category] * LAMPORTS_PER_SOL));
 
   log('PAYLOAD_SEALED', {
     source,
@@ -332,7 +389,7 @@ async function handleSignal(
       signal_id: signal.id,
       listing_id: listingId,
       category: signal.category,
-      price_sol: PRICES_SOL[signal.category],
+      price_lamports: priceLamports,
     });
     return;
   }
@@ -461,6 +518,14 @@ function sleep(ms: number): Promise<void> {
 }
 
 async function main(): Promise<void> {
+  log('AGENT_STARTED', {
+    role: 'supplier',
+    categories: AGENT_SIGNAL_CATEGORIES
+      ? [...AGENT_SIGNAL_CATEGORIES].join(',')
+      : 'all',
+    price_lamports: AGENT_PRICE_LAMPORTS ?? '(per-category table)',
+    solana_keypair: AGENT_SOLANA_KEYPAIR,
+  });
   log('STARTUP', {
     dry_run: DRY_RUN,
     base_rpc: DRY_RUN ? '(skipped)' : BASE_RPC,

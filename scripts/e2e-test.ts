@@ -31,14 +31,19 @@ import { x25519 } from '@noble/curves/ed25519';
 
 loadDotenv();
 
+// Day 1.5: same precedence chain as app/lib/chain.ts and agents/supplier.ts.
+// BASE_RPC (typically QuickNode after the Helius quota wall) wins; Helius is
+// the fallback for when its credits return; public devnet is last resort.
 const HELIUS_API_KEY = process.env.HELIUS_API_KEY;
-if (!HELIUS_API_KEY) {
+if (!HELIUS_API_KEY && !process.env.BASE_RPC) {
   console.error(
-    '[e2e] FATAL: HELIUS_API_KEY env var is required. Get one at https://dashboard.helius.dev/ and put it in agents/.env',
+    '[e2e] FATAL: BASE_RPC or HELIUS_API_KEY env var is required.',
   );
   process.exit(1);
 }
-const RPC_URL = `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`;
+const RPC_URL =
+  process.env.BASE_RPC ??
+  `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY ?? ''}`;
 // Bumped from 90s → 150s on 2026-04-28 (Frontier track day 1). The buyer's
 // purchase loop is concurrent across all matching active listings — when
 // there's any backlog (real-signal supplier creating multiple listings, or
@@ -195,7 +200,10 @@ async function ensureRegistered(
 function spawnAgent(role: 'supplier' | 'buyer'): ChildProcess {
   const child = spawn('npx', ['tsx', `${role}.ts`], {
     cwd: process.cwd(),
-    env: { ...process.env, RPC_URL },
+    // Propagate as BASE_RPC so the agent's existing precedence chain
+     // (BASE_RPC > Helius) picks it up. RPC_URL is kept for any legacy
+     // consumer; agents themselves only read BASE_RPC.
+    env: { ...process.env, BASE_RPC: RPC_URL, RPC_URL },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
   if (child.stdout) {
