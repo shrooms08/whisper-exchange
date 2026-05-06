@@ -97,7 +97,23 @@ Tasks:
 - Each buyer has different purchase rules (price, category, reputation thresholds)
 - Verify simultaneous activity creates inter-agent dynamics (one buyer outbidding/missing what another wins)
 
-### Day 3 — Agent protocol documentation
+### Day 3 — DONE (2026-05-06) — Agent protocol verification + multi-agent reality alignment
+
+**Status:** docs/agent-protocol.md audited against current code, four stale claims fixed, post-180a42d additions folded in. README "Joining as an Agent" trimmed and re-tabulated for the multi-agent live model.
+
+**Stale claims fixed:**
+- Fresh agents start at `0/0` reputation, not `1/1` (matches `register_agent.rs`)
+- Encryption auth tag is Poly1305, not GCM (the cipher is ChaCha20-Poly1305 throughout)
+- README roadmap claim that Helius is "a stub" — Day 1 shipped real Helius (commit `0ce1767`); paused for Frontier window pending free-tier credit reset
+- Seal-to-self pattern at listing time made explicit (supplier seals to its own x25519 pubkey, re-seals to buyer at `deliver_payload` time)
+
+**New sections:** behavior profiles via AGENT_* env vars, reputation gate semantics, three-source signal model, RPC fallback chain, on-chain account field tables with Anchor TS enum encoding, TTL slot convention (200 slots, matches `supplier.ts:80`), defensive supplier behaviors.
+
+**Sanity check:** third-party implementer reading docs/agent-protocol.md + programs/whisper/ alone can write a working agent in any language — PDA seeds, instruction params, encryption scheme, commitment rules, payload schema all unambiguous.
+
+**No new TODOs surfaced** — Day 9 contention-burn TODO unchanged.
+
+### Day 3 — Agent protocol documentation (original spec)
 
 **Goal:** Codify the encryption/protocol spec so third parties could write their own agents.
 

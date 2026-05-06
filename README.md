@@ -87,37 +87,44 @@ Expect: 1 listing created, 1 ER purchase, 1 settle, 1 delivery, 1 rating, suppli
 
 ## Joining as an agent
 
-Whisper Exchange is permissionless on-chain. Any Solana wallet can register an agent and participate as a supplier, a buyer, or both — the program at [`6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H`](https://explorer.solana.com/address/6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H?cluster=devnet) accepts the registration regardless of who calls it.
+Whisper Exchange is permissionless on-chain. Any Solana wallet can register an agent and participate as a supplier, a buyer, or both — the program at [`6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H`](https://explorer.solana.com/address/6ac2jbi5FMSj9NQRxzWPgWjbd6WJR7CiaPXxeTW2SW7H?cluster=devnet) accepts registration regardless of caller.
 
-The reference implementations in [agents/supplier.ts](agents/supplier.ts) and [agents/buyer.ts](agents/buyer.ts) show the full flow against this program. To run your own agent against the same on-chain marketplace:
+**The full protocol — encryption scheme, payload format, account derivation, instruction call ordering, behavior-profile env vars, reputation gate semantics — is in [docs/agent-protocol.md](docs/agent-protocol.md).** This section is a pointer.
 
-1. Generate a Solana keypair, fund it on devnet (~5 SOL covers a few cycles)
-2. Generate an x25519 keypair for payload encryption (helpers in [agents/crypto.ts](agents/crypto.ts))
-3. Call `register_agent(handle, pubkey_x25519)` to create your Agent PDA
-4. **As a supplier:** detect a signal from your own data source, write a tip payload, compute its commitment hash, encrypt to your own x25519 pubkey, upload the ciphertext (we use the local filesystem; production would use IPFS or Arweave), and call `create_listing` with the commitment + CID
-5. **As a buyer:** scan active listings via `getProgramAccounts`, apply your purchase rules, and run the private-purchase flow:
-   - `init_purchase_for_delegation` (base layer)
-   - `delegate_for_purchase` (base layer, batched with the init in one tx)
-   - `purchase_listing_private` (on the MagicBlock ER, bundles `commit_and_undelegate`)
-   - `settle_purchase` (base layer, after commit-back)
+### Multi-agent is the live model
 
-   Then poll your Purchase accounts for delivery, decrypt, verify the commitment hash matches the original, and call `submit_rating` with your verdict.
+The reference agents at [agents/supplier.ts](agents/supplier.ts) and [agents/buyer.ts](agents/buyer.ts) are **single binaries** parameterized via env vars. Behavior is configuration, not code forks. The current devnet demo runs four concurrent profiles from this same source:
 
-See [docs/agent-protocol.md](docs/agent-protocol.md) for the encryption scheme, payload format, commitment computation, and full instruction call ordering.
+| Handle | Role | Profile |
+|---|---|---|
+| `night-oracle` | supplier | `WHALE,MEV` @ 2.4 SOL |
+| `dawn-watcher` | supplier | `MINT,INSDR,IMBAL` @ 1.8 SOL |
+| `alpha-hunter` | buyer | `WHALE,MEV,IMBAL`, max 3.0 SOL, no rep gate |
+| `cipher-rook` | buyer | `MINT,INSDR,WHALE`, max 2.5 SOL, requires `min_reputation ≥ 8` |
 
-### What's missing for easy multi-agent participation
+Launcher: [`scripts/launch-multi.sh`](scripts/launch-multi.sh). Multi-agent E2E harness: [`scripts/multi-e2e.ts`](scripts/multi-e2e.ts).
 
-The on-chain program is open. The off-chain DX isn't yet:
+### Standing up a fresh agent
 
-- The encryption scheme + payload format live implicitly in [agents/crypto.ts](agents/crypto.ts) rather than as a versioned package
-- There's no `whisper-sdk` — third-party agents have to either reimplement the helpers or import directly from `agents/`
-- No anti-sybil mechanism — anyone can spawn fresh agents with 1/1 reputations
+1. **Bootstrap keys.** `npx tsx scripts/generate-agent.ts <handle>` creates `agents/keys/<handle>-solana.json` + `<handle>-x25519.json`. Idempotent.
+2. **Fund the wallet** on devnet (~5 SOL for a buyer, ~3 SOL for a supplier, per E2E cycle). `scripts/fund-agent.ts` handles transfers between agents.
+3. **Set the env profile** in `agents/.env` (see [agents/.env.example](agents/.env.example) for the full list). At minimum: `AGENT_HANDLE`, `AGENT_SOLANA_KEYPAIR`, `AGENT_X25519_KEYPAIR`, plus role-specific category/price/reputation vars.
+4. **Run the agent:** `cd agents && npx tsx supplier.ts` (or `buyer.ts`). The agent will `register_agent` itself on first run, then start the signal loop (supplier) or scan loop (buyer).
+5. **Implementing in another language?** docs/agent-protocol.md is exhaustive — Anchor instruction shapes, x25519+ChaCha20-Poly1305 wire format, canonical-JSON commitment rules, PDA seeds. The reference code in `agents/` is one reading of that spec, not the only one.
 
-v2 will address these. For now, the reference agents demonstrate the protocol; [docs/agent-protocol.md](docs/agent-protocol.md) codifies it.
+### What's missing for frictionless multi-agent participation
+
+The on-chain program is open and stable. The off-chain DX has known gaps:
+
+- The encryption helpers + payload format live implicitly in [`agents/crypto.ts`](agents/crypto.ts) rather than as a versioned `whisper-sdk` package.
+- No anti-sybil mechanism — anyone can spawn fresh agents with `0/0` reputation; cost of a sybil identity = transaction fees only.
+- The reputation gate is count-based (`AGENT_MIN_REPUTATION` is a numerator threshold); v2 will switch to ratio + minimum-total-ratings.
+
+v2 also covers oracle-based outcome resolution, multi-buyer listings, and mainnet deployment with an audit. See [docs/agent-protocol.md § Deferred to v2](docs/agent-protocol.md#deferred-to-v2) for the full list.
 
 ## Roadmap (v2)
 
-- Helius live signal feed (currently a mock scripted feed; the signal-detection logic exists, the real Helius adapter is a stub)
+- Helius live signal feed reactivation (shipped Day 1, paused for the Frontier window pending free-tier credit reset; mock generator covers all 6 categories in the meantime)
 - Metaplex agent identity tokens
 - Real outcome resolution oracle (currently buyer-rates-only)
 - `recover_stuck_purchase` instruction for client-side recovery without waiting for validator auto-undelegate
