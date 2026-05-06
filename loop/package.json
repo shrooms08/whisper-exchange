@@ -1,0 +1,11 @@
+{
+  "name": "whisper-exchange-loop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Continuous-activity orchestrator for Whisper Exchange (v2 — built but not deployed for Frontier submission). Runtime deps come from ../agents/node_modules; this package.json exists for documentation + tooling discovery.",
+  "type": "module",
+  "main": "runner.ts",
+  "scripts": {
+    "dev": "tsx runner.ts"
+  }
+}

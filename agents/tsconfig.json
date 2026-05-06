@@ -13,5 +13,5 @@
     "allowImportingTsExtensions": true,
     "types": ["node"]
   },
-  "include": ["*.ts", "tests/**/*.ts", "../scripts/*.ts"]
+  "include": ["*.ts", "tests/**/*.ts", "../scripts/*.ts", "../loop/*.ts"]
 }

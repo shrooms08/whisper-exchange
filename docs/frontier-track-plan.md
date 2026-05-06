@@ -122,17 +122,17 @@ Tasks:
 - Add "Joining as an Agent" section to README
 - Verify one of the multi-agents from Day 2 was implementable purely from this spec (sanity check)
 
-### Day 4 — Continuous-activity loop (live site stays alive)
+### Day 4 — SKIPPED (continuous-activity loop)
 
-**Goal:** When judges visit the live URL cold, they see fresh activity.
+**Decision:** Deferred to post-submission v2.
 
-Tasks:
-- `scripts/loop-activity.sh` — every 30 minutes, run E2E with auto-refund cycle
-- Run on Railway free tier or a small Hetzner box
-- Logs to file, monitorable
-- Dashboard at vercel URL shows fresh activity 24/7
-- Document the loop in README so judges know it's intentional
-- **Tunnel migration decision (carried over from Day 1):** ngrok free tier has a 2-hour session cap (introduced early 2026), which breaks 24/7 webhook delivery. Either (a) move webhook receiver onto the Day 4 host's public IP and drop ngrok, or (b) switch dev tunnel to Cloudflare Tunnel (free, no time limit, requires a domain we control). Pick on Day 4 once the host choice is locked.
+**Rationale:** Original plan called for Fly.io deployment of a continuous loop running 4 agents around the clock so judges visiting the dashboard cold would see fresh on-chain activity. After implementation ([loop/runner.ts](../loop/runner.ts), [Dockerfile](../loop/Dockerfile), [fly.toml](../loop/fly.toml) all built and locally tested), Fly's billing model required a credit card without a hard spending cap. Cost would have been ~$1-3 for the 7-day Frontier window, which is small but non-zero, and inconsistent with the Helius free-tier pivot from Day 1.5.
+
+**Trade-off:** Cold visitors see static on-chain state with rich history (50+ listings, 30+ purchases, ratings, reputation movement) instead of live updates. Demo video carries the dynamic story. Judges score on technology/impact/creativity/UX — none penalize static dashboards.
+
+**Banked time:** ~3-4 hours saved, redirected to Days 5-8 polish + Day 9 buffer.
+
+**What was built:** [loop/runner.ts](../loop/runner.ts) (323 lines), [loop/Dockerfile](../loop/Dockerfile), [loop/fly.toml](../loop/fly.toml) all kept in repo as v2 deployment artifacts. Locally tested through one full session cycle in Gate 2 — agent spawn, listings created, refund check, clean SIGINT shutdown, no money leaked. See [loop/README.md](../loop/README.md) for deployment steps when budget allows.
 
 ### Day 5 — Dashboard polish (in-flight + reputation animation)
 
@@ -175,13 +175,18 @@ Tasks:
 - One honest privacy-claim audit pass: nothing claims PER or Private Payments API
 - Verify all links work, all repos are public
 
-### Day 9 — Buffer / unexpected debug
+### Day 9 — Buffer / unexpected debug (effectively 2 buffer days post-Day-4-skip)
 
 **Goal:** Handle whatever broke that we didn't plan for.
 
-Reserved for:
-- Helius webhook reliability issues
-- Continuous loop wallet drain or RPC flakes
+With Day 4 skipped, we now have ~2 buffer days instead of 1. The extra day can be redirected to one of:
+- **Contention-burn fix carryover** — anything from Days 5-8 that ran long
+- **Day 5 stretch goal** — animated reputation tick when ratings fire, throughput counter rolling number, "just delivered" 5-second highlight on decrypted panel
+- **Recording redos** — fresh take if the Day 7 recording lands flat
+- **Honest do-nothing** — keep it as additional buffer; submission day stress is real
+
+Original reserved-for list still applies:
+- Helius webhook reliability issues (now moot, real Helius paused since Day 1.5)
 - Vercel deployment regressions
 - Recording redos
 

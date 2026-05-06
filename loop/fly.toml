@@ -1,0 +1,34 @@
+# fly.toml — Whisper Exchange continuous-activity loop.
+#
+# Single shared-cpu-1x VM (free tier) running the orchestrator. No HTTP
+# service, no public port — this is a worker process that spawns 4 agent
+# children, runs them for ~25 min, idles ~5 min, repeats.
+#
+# Secrets set via `fly secrets set` (NOT in this file):
+#   NIGHT_ORACLE_SOLANA, NIGHT_ORACLE_X25519
+#   DAWN_WATCHER_SOLANA, DAWN_WATCHER_X25519
+#   ALPHA_HUNTER_SOLANA, ALPHA_HUNTER_X25519
+#   CIPHER_ROOK_SOLANA,  CIPHER_ROOK_X25519
+#   BASE_RPC, HELIUS_API_KEY, PROGRAM_ID
+
+app = "whisper-exchange-loop"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  SESSION_DURATION_MS = "1500000"        # 25 min
+  IDLE_BETWEEN_SESSIONS_MS = "300000"    # 5 min
+  SHUTDOWN_GRACE_MS = "45000"            # 45s for SIGINT before SIGTERM (buyer 429-backoff lag)
+  USE_PRIVATE_PURCHASE = "true"
+
+[[vm]]
+  memory_mb = 512
+  cpu_kind = "shared"
+  cpus = 1
+
+# Single worker process — no [http_service]. Fly will keep it alive and
+# restart on crash. SIGINT/SIGTERM during deploys is handled by the runner.
+[processes]
+  app = "npx tsx /app/loop/runner.ts"
