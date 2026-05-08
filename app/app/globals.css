@@ -411,3 +411,141 @@ body {
   border: 1px solid var(--rule);
   border-radius: 2px;
 }
+
+/* ============================================================
+ * Day 5 polish — small animations layered onto the existing dashboard.
+ * Each is opt-in via a class set by page.tsx in response to data diffs;
+ * none change layout, all degrade gracefully if disabled.
+ * ============================================================ */
+
+/* A.1 — Reputation tick. The rightmost active rep bar bounces + flashes
+ * when a Rating account against this listing's seller surfaces in the
+ * latest poll. Trigger key on the inner <i> remounts the element so the
+ * keyframe re-fires even if the same seller is rated again next cycle. */
+@keyframes rep-tick {
+  0%   { transform: scale(1);    box-shadow: 0 0 6px var(--accent-soft); }
+  35%  { transform: scale(1.30); box-shadow: 0 0 12px var(--accent); background: #fff; }
+  100% { transform: scale(1);    box-shadow: 0 0 6px var(--accent-soft); }
+}
+.rep i.tick {
+  /* Smooth ease-out, no overshoot — fits the restrained dashboard aesthetic
+   * better than the spring-y cubic-bezier(0.34, 1.56, 0.64, 1) we drafted
+   * with first. Peak scale also dialed back from 1.45 → 1.30. */
+  animation: rep-tick 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center;
+}
+
+/* A.2 — Throughput counter cross-fade. RollingNumber wraps the digit;
+ * the inner span is keyed on `value` so React mounts a new node per
+ * change, and this keyframe slides + fades it in over 350ms. */
+.rolling-number {
+  display: inline-block;
+  position: relative;
+  min-width: 1ch;
+}
+@keyframes rolling-number-in {
+  0%   { opacity: 0; transform: translateY(8px); }
+  60%  { opacity: 1; transform: translateY(-1px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.rolling-number-inner {
+  display: inline-block;
+  animation: rolling-number-in 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* A.3 — Just-delivered pulse on the DECRYPTED panel. Ticks in once,
+ * settles back. Class is mounted by page.tsx for 5s after a new
+ * delivered=true purchase is observed. */
+@keyframes payload-pulse {
+  0%   { background:
+           linear-gradient(180deg, rgba(157, 78, 221, 0.05), transparent);
+         box-shadow: 0 0 0 1px var(--accent-dim), 0 0 0 transparent;
+         transform: scale(1); }
+  6%   { background:
+           linear-gradient(180deg, rgba(157, 78, 221, 0.30), rgba(157, 78, 221, 0.10));
+         box-shadow: 0 0 0 1px var(--accent), 0 0 24px var(--accent-soft);
+         transform: scale(1.012); }
+  35%  { background:
+           linear-gradient(180deg, rgba(157, 78, 221, 0.18), rgba(157, 78, 221, 0.04));
+         box-shadow: 0 0 0 1px var(--accent-dim), 0 0 12px var(--accent-soft);
+         transform: scale(1.004); }
+  100% { background:
+           linear-gradient(180deg, rgba(157, 78, 221, 0.05), transparent);
+         box-shadow: 0 0 0 1px var(--accent-dim), 0 0 0 transparent;
+         transform: scale(1); }
+}
+.payload.pulse-just-delivered {
+  animation: payload-pulse 5000ms ease-out;
+  transform-origin: center;
+}
+
+/* A.4 — Drift-line motion in Arena column. The three SVG paths use a
+ * dashed stroke with `stroke-dasharray="2 4"` (period = 6px). Animating
+ * `stroke-dashoffset` over 12s gives ~0.5 px/s drift left-to-right —
+ * subtle enough to register as ambient motion, slow enough not to
+ * compete with the envelope animation. */
+@keyframes drift-line {
+  0%   { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -120; }
+}
+.drift-line {
+  animation: drift-line 12s linear infinite;
+}
+
+/* ============================================================
+ * Day 5 Stream B — onboarding flow at /become-an-agent.
+ * Overrides for @solana/wallet-adapter-react-ui's <WalletMultiButton>
+ * so it doesn't clash with the V3 Triptych aesthetic. The library
+ * ships with a Material UI-ish dark blue; we re-skin to electric
+ * violet on paper-2 with the same border radius + JetBrains Mono.
+ * ============================================================ */
+.onboarding-wallet-button .wallet-adapter-button {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 8px 14px !important;
+  border-radius: 2px !important;
+  background: var(--accent-soft) !important;
+  border: 1px solid var(--accent-dim) !important;
+  color: var(--accent) !important;
+  height: auto !important;
+  line-height: 1.2 !important;
+  transition: box-shadow 150ms ease, background 150ms ease !important;
+}
+.onboarding-wallet-button .wallet-adapter-button:hover {
+  background: var(--accent-soft) !important;
+  box-shadow: 0 0 12px var(--accent-soft) !important;
+}
+.onboarding-wallet-button .wallet-adapter-button-trigger {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: white !important;
+}
+.onboarding-wallet-button .wallet-adapter-button-end-icon,
+.onboarding-wallet-button .wallet-adapter-button-start-icon {
+  margin: 0 6px 0 0 !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+/* Modal container — match dark theme */
+.wallet-adapter-modal-wrapper {
+  background: var(--paper) !important;
+  border: 1px solid var(--rule) !important;
+  border-radius: 3px !important;
+}
+.wallet-adapter-modal-title {
+  font-family: var(--font-space), 'Space Grotesk', sans-serif !important;
+  color: var(--ink) !important;
+}
+.wallet-adapter-modal-list .wallet-adapter-button {
+  background: var(--paper-2, #1a1a22) !important;
+  border: 1px solid var(--rule-2) !important;
+  color: var(--ink) !important;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace !important;
+}
+.wallet-adapter-modal-list .wallet-adapter-button:hover {
+  border-color: var(--accent) !important;
+  background: var(--accent-soft) !important;
+}

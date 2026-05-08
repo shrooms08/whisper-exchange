@@ -15,6 +15,7 @@ import {
   OrderBookRow,
   PanelHead,
   Rep,
+  RollingNumber,
   SignalCard,
   TopBar,
   type ListingLite,
@@ -44,6 +45,10 @@ interface DashboardPayload {
   fetchedAt: string;
   currentSlot: number;
   purchaseSummaries: PurchaseSummary[];
+  // Day 5 — diff signals for animation triggers
+  ratingsCount: number;
+  lastRatedSeller: string | null;
+  deliveredPurchases: string[];
 }
 
 const INITIAL: DashboardPayload = {
@@ -55,6 +60,9 @@ const INITIAL: DashboardPayload = {
   fetchedAt: '',
   currentSlot: 0,
   purchaseSummaries: [],
+  ratingsCount: 0,
+  lastRatedSeller: null,
+  deliveredPurchases: [],
 };
 
 const POLL_MS = 2_000;
@@ -64,10 +72,21 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [animating, setAnimating] = useState<PurchaseSummary | null>(null);
+  // Day 5 — supplier handle to bounce + counter so repeated rating fires
+  // against the same supplier still re-trigger the CSS animation.
+  const [tickingSeller, setTickingSeller] = useState<string | null>(null);
+  const [tickCounter, setTickCounter] = useState(0);
+  // Day 5 — when true, DECRYPTED panel pulses for 5s.
+  const [pulsingDecrypted, setPulsingDecrypted] = useState(false);
   // null until first poll completes; then holds the set of pubkeys we already
   // knew about, so subsequent polls only animate genuinely-new purchases.
   const seenPurchases = useRef<Set<string> | null>(null);
   const animationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Day 5 — equivalents for ratings + deliveries.
+  const prevRatingsCount = useRef<number | null>(null);
+  const seenDelivered = useRef<Set<string> | null>(null);
+  const tickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pulseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -105,6 +124,48 @@ export default function Page() {
           }
           seenPurchases.current = currentSet;
         }
+
+        // Day 5 — diff for reputation tick animation. Rating count goes up
+        // → bounce the rep stars on every listing whose seller matches
+        // lastRatedSeller. Seed prev count on first poll so historical
+        // ratings don't all fire at once.
+        if (prevRatingsCount.current === null) {
+          prevRatingsCount.current = payload.ratingsCount;
+        } else if (
+          payload.ratingsCount > prevRatingsCount.current &&
+          payload.lastRatedSeller
+        ) {
+          setTickingSeller(payload.lastRatedSeller);
+          setTickCounter((c) => c + 1);
+          if (tickTimer.current) clearTimeout(tickTimer.current);
+          tickTimer.current = setTimeout(() => {
+            setTickingSeller(null);
+            tickTimer.current = null;
+          }, 700);
+          prevRatingsCount.current = payload.ratingsCount;
+        } else {
+          prevRatingsCount.current = payload.ratingsCount;
+        }
+
+        // Day 5 — diff for just-delivered pulse on DECRYPTED panel. Seed on
+        // first poll so existing deliveries don't pulse on reload.
+        const deliveredSet = new Set(payload.deliveredPurchases);
+        if (seenDelivered.current === null) {
+          seenDelivered.current = deliveredSet;
+        } else {
+          const novelDelivered = payload.deliveredPurchases.filter(
+            (p) => !seenDelivered.current!.has(p),
+          );
+          if (novelDelivered.length > 0) {
+            setPulsingDecrypted(true);
+            if (pulseTimer.current) clearTimeout(pulseTimer.current);
+            pulseTimer.current = setTimeout(() => {
+              setPulsingDecrypted(false);
+              pulseTimer.current = null;
+            }, 5000);
+          }
+          seenDelivered.current = deliveredSet;
+        }
       } catch (e) {
         if (cancelled) return;
         setError(String(e).slice(0, 200));
@@ -118,6 +179,14 @@ export default function Page() {
       if (animationTimer.current) {
         clearTimeout(animationTimer.current);
         animationTimer.current = null;
+      }
+      if (tickTimer.current) {
+        clearTimeout(tickTimer.current);
+        tickTimer.current = null;
+      }
+      if (pulseTimer.current) {
+        clearTimeout(pulseTimer.current);
+        pulseTimer.current = null;
       }
     };
   }, []);
@@ -188,7 +257,14 @@ export default function Page() {
                   {loaded ? 'no active listings' : 'loading…'}
                 </div>
               ) : (
-                myListings.map((l) => <ListingRow key={l.id} l={l} />)
+                myListings.map((l) => (
+                  <ListingRow
+                    key={l.id}
+                    l={l}
+                    tick={tickingSeller === l.seller}
+                    tickKey={tickCounter}
+                  />
+                ))
               )}
             </div>
           </div>
@@ -248,9 +324,9 @@ export default function Page() {
                     <stop offset="1" stopColor="oklch(0.68 0.25 300)" stopOpacity="0" />
                   </linearGradient>
                 </defs>
-                <path d="M0 80 Q 150 40 300 100" stroke="url(#flow)" strokeWidth="1" fill="none" strokeDasharray="2 4" />
-                <path d="M0 160 Q 150 200 300 140" stroke="url(#flow)" strokeWidth="1" fill="none" strokeDasharray="2 4" />
-                <path d="M0 240 Q 150 220 300 220" stroke="url(#flow)" strokeWidth="1" fill="none" strokeDasharray="2 4" />
+                <path className="drift-line" d="M0 80 Q 150 40 300 100" stroke="url(#flow)" strokeWidth="1" fill="none" strokeDasharray="2 4" />
+                <path className="drift-line" d="M0 160 Q 150 200 300 140" stroke="url(#flow)" strokeWidth="1" fill="none" strokeDasharray="2 4" />
+                <path className="drift-line" d="M0 240 Q 150 220 300 220" stroke="url(#flow)" strokeWidth="1" fill="none" strokeDasharray="2 4" />
               </svg>
 
               {[0, 1, 2].map((i) => (
@@ -310,7 +386,7 @@ export default function Page() {
                     className="mono h"
                     style={{ fontSize: 28, color: 'var(--ink)', letterSpacing: '-0.02em' }}
                   >
-                    {data.throughputPerMin}
+                    <RollingNumber value={data.throughputPerMin} />
                     <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>/min</span>
                   </div>
                   <div className="mono" style={{ fontSize: 10, color: 'var(--ink-3)', marginTop: 4 }}>
@@ -340,7 +416,11 @@ export default function Page() {
                   >
                     <span className="cat">{l.cat}</span>
                     <span className="redacted" style={{ height: 8 }}>&nbsp;</span>
-                    <Rep score={l.rep} />
+                    <Rep
+                      score={l.rep}
+                      tick={tickingSeller === l.seller}
+                      tickKey={tickCounter}
+                    />
                     <span className="price">{l.price} ◎</span>
                     <Envelope size={14} />
                   </div>
@@ -368,7 +448,14 @@ export default function Page() {
                   {loaded ? 'order book empty' : 'loading…'}
                 </div>
               ) : (
-                orderBook.map((l) => <OrderBookRow key={l.id} l={l} />)
+                orderBook.map((l) => (
+                  <OrderBookRow
+                    key={l.id}
+                    l={l}
+                    tick={tickingSeller === l.seller}
+                    tickKey={tickCounter}
+                  />
+                ))
               )}
             </div>
             <button className="btn glow" style={{ width: '100%' }}>
@@ -377,7 +464,7 @@ export default function Page() {
             <div className="label" style={{ marginTop: 4 }}>
               DECRYPTED
             </div>
-            <DecryptedPayload />
+            <DecryptedPayload pulsing={pulsingDecrypted} />
 
             <div className="label" style={{ marginTop: 4 }}>
               RATE OUTCOME

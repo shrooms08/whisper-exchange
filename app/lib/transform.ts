@@ -90,6 +90,7 @@ export interface EnrichedListing extends ListingLite {
   pda: string;
   status: string;
   createdAt: number;
+  supplierPda: string;
 }
 
 export function toListingRows(
@@ -111,6 +112,7 @@ export function toListingRows(
       seller: shortHandle(supplierAgent?.handle, supplierPda),
       status: variantName(account.status),
       createdAt: Number(account.createdAt?.toString?.() ?? 0),
+      supplierPda,
     };
   });
   rows.sort((a, b) => b.createdAt - a.createdAt);
@@ -260,6 +262,15 @@ export interface DashboardPayload {
   // Used by the client to detect new Purchases between polls and trigger the
   // envelope animation.
   purchaseSummaries: PurchaseSummary[];
+  // Day 5 — diff signals for animation:
+  //   ratingsCount    — total Rating accounts; client diffs to detect new ratings
+  //   lastRatedSeller — handle of the supplier rated by the most recent Rating;
+  //                     used to find which listing rows to bounce on a tick
+  //   deliveredPurchases — pubkeys of purchases with delivered=true; client diffs
+  //                     to detect new deliveries and pulse the DECRYPTED panel
+  ratingsCount: number;
+  lastRatedSeller: string | null;
+  deliveredPurchases: string[];
 }
 
 export function buildDashboard(
@@ -282,6 +293,37 @@ export function buildDashboard(
     price: lamportsToSol(p.account.pricePaidLamports),
   }));
 
+  // Day 5 — rating diff signal. The most recently rated purchase points to
+  // a Listing → Supplier (Agent), whose handle becomes the `lastRatedSeller`
+  // tag the client uses to find rep-bar rows to bounce.
+  const sortedRatings = [...ratings].sort((a, b) => {
+    const ta = Number(a.account.ratedAt?.toString?.() ?? 0);
+    const tb = Number(b.account.ratedAt?.toString?.() ?? 0);
+    return tb - ta;
+  });
+  let lastRatedSeller: string | null = null;
+  if (sortedRatings.length > 0) {
+    const top = sortedRatings[0]!;
+    const purchasePda = top.account.purchase?.toBase58?.() ?? '';
+    const purchase = purchases.find((p) => p.publicKey.toBase58() === purchasePda);
+    if (purchase) {
+      const listingPda = purchase.account.listing?.toBase58?.() ?? '';
+      const listing = listings.find((l) => l.publicKey.toBase58() === listingPda);
+      if (listing) {
+        const supplierPda = listing.account.supplier?.toBase58?.() ?? '';
+        const supplierAgent = agentMap.get(supplierPda);
+        lastRatedSeller = shortHandle(supplierAgent?.handle, supplierPda);
+      }
+    }
+  }
+
+  // Day 5 — delivery diff signal. Just the pubkeys of delivered purchases;
+  // the client diffs against its own seen-set to fire the just-delivered
+  // pulse on novel ones.
+  const deliveredPurchases: string[] = purchases
+    .filter((p) => p.account.delivered)
+    .map((p) => p.publicKey.toBase58());
+
   return {
     myListings: activeRows,
     inFlight: toInFlight(listings, purchases, agentMap, currentSlot),
@@ -291,5 +333,8 @@ export function buildDashboard(
     fetchedAt: new Date().toISOString(),
     currentSlot,
     purchaseSummaries,
+    ratingsCount: ratings.length,
+    lastRatedSeller,
+    deliveredPurchases,
   };
 }

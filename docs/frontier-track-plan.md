@@ -134,7 +134,74 @@ Tasks:
 
 **What was built:** [loop/runner.ts](../loop/runner.ts) (323 lines), [loop/Dockerfile](../loop/Dockerfile), [loop/fly.toml](../loop/fly.toml) all kept in repo as v2 deployment artifacts. Locally tested through one full session cycle in Gate 2 — agent spawn, listings created, refund check, clean SIGINT shutdown, no money leaked. See [loop/README.md](../loop/README.md) for deployment steps when budget allows.
 
-### Day 5 — Dashboard polish (in-flight + reputation animation)
+### Day 5 — DONE (2026-05-08) — Dashboard polish + wallet onboarding foundation (Level 3)
+
+**Status:** Both streams shipped. Gates A + B both approved.
+
+**Stream A — dashboard polish (4 items):**
+- Reputation tick: 600ms ease-out keyframe on the rated supplier's rep bars; `tickKey` re-mount fires on every rating, even repeated ones for the same supplier. Easing dialed back from spring to smooth ease-out per Gate-A note.
+- Throughput counter: `<RollingNumber>` cross-fade on every digit change, 350ms.
+- Just-delivered pulse: 5s violet bloom on the DECRYPTED panel when a Purchase transitions `delivered=false→true`. `seenDelivered` ref seeded on first poll so historical deliveries don't re-fire on reload.
+- Drift-line motion: Arena's three flow paths drift left-to-right at ~10 px/s via `stroke-dashoffset` keyframe.
+
+**Stream B — wallet onboarding foundation (Level 3 part 1):**
+- **Linchpin interop test PASSED.** Signature-derived x25519 → byte-compatible with `agents/crypto.ts` `sealTo`/`openSealed`. Test at [`scripts/verify-wallet-x25519-interop.ts`](../scripts/verify-wallet-x25519-interop.ts).
+- Solana Wallet Adapter integrated (Phantom-first; wallet-standard auto-detects others).
+- New route `/become-an-agent` with 4-step state machine. Step 1 (wallet connect + genesis-hash network detection + 0.01 SOL balance gate) functional. Steps 2-4 placeholders for Days 6-7.
+- `<WalletMultiButton>` re-skinned to V3 Triptych aesthetic.
+- Design doc at [`docs/wallet-onboarding-design.md`](wallet-onboarding-design.md) — full byte-level scheme, trade-offs, alternatives rejected.
+
+**Existing dashboard at `/` unchanged.** Typecheck clean. No agent code changed.
+
+**Note (resolved Day 6):** Day 5 was originally pushed as commit `c6cb9b8`,
+then force-rolled back from origin at `24e12e1` after a network-detection
+bug surfaced (Solflare on mainnet showed green "devnet"). Day 6 morning
+shipped the fix; Days 5+6 commit together below.
+
+### Day 6 — DONE (2026-05-09) — Network fix + Step 2 (signature → x25519 in browser)
+
+**Status:** Network detection corrected, Solflare adapter added, Step 2 of
+onboarding wired live and verified.
+
+**Network detection bug — fix shipped:**
+- Original `connection.getGenesisHash()` always returned the app's hardwired
+  RPC genesis hash, not the wallet's selected network. False positive on
+  Solflare-mainnet showing green devnet.
+- Wallet Standard's `chains[]` doesn't help — Phantom + Solflare both
+  advertise support for `['solana:mainnet','solana:devnet','solana:testnet']`
+  regardless of the user's actual UI selection (privacy/security choice).
+  No cross-wallet way to read the *active* network from a dapp.
+- **Fix:** explicit `☐ I confirm my wallet is set to Solana devnet`
+  checkbox. Resets on disconnect/reconnect. Per-wallet help text
+  (Phantom Settings → Developer Settings → Testnet Mode → Devnet;
+  Solflare Settings → Network → Devnet). Bulletproof, no false positives,
+  honest about the constraint.
+- User verified live: Solflare on mainnet → checkbox unticked → Continue
+  disabled. Solflare on devnet + ticked → Continue enabled. Untick →
+  re-disable.
+- Solflare adapter explicitly registered alongside Phantom in `WalletProvider`.
+
+**Step 2 — signature → x25519 derivation in browser — shipped:**
+- Shared helper at [`app/lib/wallet-onboarding.ts`](../app/lib/wallet-onboarding.ts)
+  exports `ONBOARDING_MESSAGE`, `onboardingMessageBytes`,
+  `deriveX25519FromSignature`, and the `DerivedX25519` type.
+  [`scripts/verify-wallet-x25519-interop.ts`](../scripts/verify-wallet-x25519-interop.ts)
+  refactored to import from this helper — single source of truth between
+  verify test and live UI. Drift would break the test loudly.
+- New component
+  [`app/app/become-an-agent/steps/GenerateIdentityStep.tsx`](../app/app/become-an-agent/steps/GenerateIdentityStep.tsx)
+  uses the wallet adapter's `signMessage`, derives the keypair, displays
+  the public key (base58) with copy button. Private key never rendered.
+- Determinism confirmed live: same wallet signed 3× produced identical
+  x25519 pubkey every time.
+- Re-ran [`scripts/verify-wallet-x25519-interop.ts`](../scripts/verify-wallet-x25519-interop.ts)
+  post-refactor — still PASS (sealed→opened bytes match).
+
+**Out of scope for Day 6, scheduled for Day 7-8:**
+- Step 3 — `register_agent(handle, pubkey_x25519)` transaction via the wallet adapter
+- Step 4 — generate + download a starter TS agent script wired to the user's keys
+
+### Day 5 — Dashboard polish (in-flight + reputation animation, original spec)
 
 **Goal:** The dashboard becomes more visibly alive when something happens.
 
@@ -145,7 +212,22 @@ Tasks:
 - "Just delivered" highlight on decrypted panel for 5 seconds after delivery
 - Don't break the existing envelope animation; add to it
 
-### Day 6 — Demo script v2 + recording prep
+### Schedule reshuffle (post-Day-6, 2026-05-09)
+
+Submission is **Tuesday 2026-05-12, 15:00 WAT** — three days from Day 6 close.
+Onboarding flow + demo content has to land in those three days. New
+sequencing replaces the original Day 6-10 plan:
+
+- **Day 7 (Sat 2026-05-10)** — Step 3 of onboarding: `register_agent` transaction via the wallet adapter.
+- **Day 8 (Sun 2026-05-11)** — Step 4 of onboarding: starter agent script generator + download. Demo script v2 update + dress rehearsal in the afternoon.
+- **Day 9 (Mon 2026-05-12)** — Recording, README pass, submission. (Recording can fall back to Sunday evening if Step 4 finishes early Sunday.)
+
+Buffer is gone — the network-detection bug + Step 2 ate a chunk of what
+was meant to be polish time. The carry-forward TODOs at the bottom of the
+old Day 9 section (buyer contention, count-based reputation gate, etc.)
+**slip to v2** unless they actively block the demo.
+
+### Day 6 — Demo script v2 + recording prep (original spec, displaced — see reshuffle above)
 
 **Goal:** New 3-min demo that shows multi-agent activity + privacy story sharply.
 

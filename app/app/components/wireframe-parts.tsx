@@ -3,12 +3,52 @@
 
 import type { ReactNode } from 'react';
 
-export function Rep({ score = 3, max = 5 }: { score?: number; max?: number }) {
+export function Rep({
+  score = 3,
+  max = 5,
+  tick = false,
+  tickKey,
+}: {
+  score?: number;
+  max?: number;
+  // When true, run the bounce animation. `tickKey` is a per-trigger key (a
+  // counter) so React re-mounts the inner span and CSS animation re-fires
+  // even if `tick` was already true on the previous render.
+  tick?: boolean;
+  tickKey?: string | number;
+}) {
   return (
     <span className="rep" title={`reputation ${score}/${max}`}>
       {Array.from({ length: max }).map((_, i) => (
-        <i key={i} className={i < score ? 'on' : ''} />
+        <i
+          key={tick && i === score - 1 ? `${i}-${tickKey ?? 0}` : i}
+          className={[i < score ? 'on' : '', tick && i === score - 1 ? 'tick' : '']
+            .filter(Boolean)
+            .join(' ')}
+        />
       ))}
+    </span>
+  );
+}
+
+// Day 5 — rolling number with cross-fade between values. Used for the
+// "LISTED LAST 60s" throughput counter so the digit transition feels alive
+// rather than snapping. Keyed on `value` so each change re-mounts the inner
+// span and the CSS keyframe re-fires.
+export function RollingNumber({
+  value,
+  className,
+  style,
+}: {
+  value: number | string;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <span className={['rolling-number', className].filter(Boolean).join(' ')} style={style}>
+      <span key={value} className="rolling-number-inner">
+        {value}
+      </span>
     </span>
   );
 }
@@ -36,6 +76,47 @@ export function Envelope({
   );
 }
 
+export function BrandMark({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size * 0.72} viewBox="0 0 50 36" aria-label="Whisper Exchange">
+      <rect
+        x="1.5"
+        y="1.5"
+        width="47"
+        height="33"
+        rx="2"
+        fill="none"
+        stroke="var(--ink)"
+        strokeWidth="1.6"
+      />
+      <path
+        d="M2 2 L25 22 L48 2"
+        fill="none"
+        stroke="var(--ink)"
+        strokeWidth="1.6"
+      />
+      <circle
+        cx="25"
+        cy="22"
+        r="6.5"
+        fill="var(--accent)"
+        style={{ filter: 'drop-shadow(0 0 4px var(--accent-soft))' }}
+      />
+      <text
+        x="25"
+        y="25.5"
+        textAnchor="middle"
+        fontSize="8"
+        fontWeight="700"
+        fill="white"
+        fontFamily="var(--font-space), 'Space Grotesk', sans-serif"
+      >
+        W
+      </text>
+    </svg>
+  );
+}
+
 export function TopBar({
   label = 'triptych · suppliers / arena / buyers',
   ping = 'sol-devnet · slot 287,491,203',
@@ -47,7 +128,8 @@ export function TopBar({
 }) {
   return (
     <div className="topbar">
-      <div className="brand">
+      <div className="brand" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+        <BrandMark size={18} />
         WHISPER<span>.</span>EXCHANGE
       </div>
       <div className="crumbs">&nbsp;· {label}</div>
@@ -124,10 +206,14 @@ export function ListingRow({
   l,
   personas = true,
   compact = false,
+  tick = false,
+  tickKey,
 }: {
   l: ListingLite;
   personas?: boolean;
   compact?: boolean;
+  tick?: boolean;
+  tickKey?: string | number;
 }) {
   return (
     <div className="row" style={{ padding: compact ? '6px 10px' : '8px 10px' }}>
@@ -145,7 +231,7 @@ export function ListingRow({
           {l.seller}
         </div>
       )}
-      <Rep score={l.rep} />
+      <Rep score={l.rep} tick={tick} tickKey={tickKey} />
       <div
         className="cell"
         style={{ color: 'var(--accent)', width: 58, textAlign: 'right' }}
@@ -156,14 +242,22 @@ export function ListingRow({
   );
 }
 
-export function OrderBookRow({ l }: { l: ListingLite }) {
+export function OrderBookRow({
+  l,
+  tick = false,
+  tickKey,
+}: {
+  l: ListingLite;
+  tick?: boolean;
+  tickKey?: string | number;
+}) {
   return (
     <div className="ob" title={`sealed listing ${l.id}`}>
       <span className="cat">{l.cat}</span>
       <span className="redacted" style={{ height: 8, width: '100%', maxWidth: 140 }}>
         &nbsp;
       </span>
-      <Rep score={l.rep} />
+      <Rep score={l.rep} tick={tick} tickKey={tickKey} />
       <span className="price">{l.price} ◎</span>
       <Envelope size={14} />
     </div>
@@ -175,14 +269,18 @@ export function DecryptedPayload({
   ts = '17:38:22',
   supplier = 'night-oracle',
   rep = 4,
+  pulsing = false,
 }: {
   listingId?: string;
   ts?: string;
   supplier?: string;
   rep?: number;
+  // Day 5 — when true, the panel pulses (background flash + scale) for
+  // ~5 seconds. Caller controls timing; the component just toggles the class.
+  pulsing?: boolean;
 }) {
   return (
-    <div className="payload">
+    <div className={['payload', pulsing ? 'pulse-just-delivered' : ''].filter(Boolean).join(' ')}>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
         <span className="label" style={{ color: 'var(--accent)' }}>
           {listingId} · DECRYPTED
