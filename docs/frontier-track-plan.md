@@ -227,6 +227,37 @@ was meant to be polish time. The carry-forward TODOs at the bottom of the
 old Day 9 section (buyer contention, count-based reputation gate, etc.)
 **slip to v2** unless they actively block the demo.
 
+### Day 7 — DONE (2026-05-09) — Steps 3 + 4 of onboarding (Level 3 ships)
+
+**Status:** End-to-end onboarding flow live. Browser → wallet → on-chain →
+downloadable starter script that reads its own state back from devnet.
+Loop closes.
+
+**Step 3 — register_agent through wallet:**
+- [`app/lib/anchor-client.ts`](../app/lib/anchor-client.ts) — `buildProgram(connection, wallet)` factory bound to the connected wallet's signing methods.
+- [`app/lib/idl/whisper-types.ts`](../app/lib/idl/whisper-types.ts) — typed IDL copied from `programs/whisper/target/types/whisper.ts`, build-isolated.
+- [`app/lib/register-agent.ts`](../app/lib/register-agent.ts) — `deriveAgentPda`, `validateHandle`, `registerAgent` with discriminated `RegisterAgentError` (`invalid_handle | already_registered | insufficient_funds | user_rejected | unknown`).
+- [`app/app/become-an-agent/steps/RegisterStep.tsx`](../app/app/become-an-agent/steps/RegisterStep.tsx) — handle input + PDA preview + tx flow + success panel + existing-agent claim panel.
+- Pre-flight rules out four common failure modes before opening the wallet: invalid handle (regex), insufficient funds, already-registered, signature rejection.
+- **Existing-agent claim flow:** when `already_registered` fires, fetches the on-chain Agent and compares its `pubkey_x25519` to the user's just-derived x25519. On match → "Continue with existing agent" path. On mismatch → claim refused, sharper error copy. Proves the user controls the encryption key on-chain before handing back access.
+
+**Step 4 — starter agent script:**
+- [`app/lib/agent-starter-template.ts`](../app/lib/agent-starter-template.ts) — `generateStarterScript({ handle, walletPubkey, agentPda, x25519PublicKey, x25519PrivateKey })` returns a personalized TS source file. Hand-rolled borsh decoder against the on-chain Agent schema; single npm dep (`@solana/web3.js`); no Anchor in the downloaded script.
+- [`app/app/become-an-agent/steps/DownloadStep.tsx`](../app/app/become-an-agent/steps/DownloadStep.tsx) — identity summary + red `⚠ contains your x25519 PRIVATE KEY` warning panel + Blob-driven `whisper-agent-{handle}.ts` download + post-download instructions.
+- **Honest limitations** called out in the script header: read-only without wallet signing flow, full automation requires the reference `agents/supplier.ts` / `agents/buyer.ts`. Pointer to `docs/agent-protocol.md`.
+
+**End-to-end verification (loop closes):**
+- `shrooms-test` agent registered via Phantom (Step 3 — verified on devnet, byte dump from `solana account` matched `state.rs` schema).
+- Existing-agent claim flow tested: same wallet re-runs the flow, gets offered "Continue with existing agent →", lands in Step 4 with `signature: null`, `isExisting: true`.
+- Starter script downloaded from Step 4, run via `npx tsx whisper-agent-shrooms-test.ts`, output prints handle + reputation `unrated` + `listings_created 0` + `✓ on-chain x25519 pubkey matches your local key`.
+- Server-side integration test against `night-oracle` (existing on-chain agent, full reputation + 250 listings) printed correct state too — confirms the borsh decoder handles non-empty agents.
+
+**Out of scope for Day 7, scheduled for Day 8:**
+- Vercel deploy of the latest dashboard + onboarding flow
+- Demo script v2 update reflecting the onboarding flow
+- README pass to surface the live URL + onboarding link prominently
+- Dress rehearsal recording (proper recording on Day 9)
+
 ### Day 6 — Demo script v2 + recording prep (original spec, displaced — see reshuffle above)
 
 **Goal:** New 3-min demo that shows multi-agent activity + privacy story sharply.

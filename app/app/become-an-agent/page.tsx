@@ -17,6 +17,8 @@ import { TopBar } from '../components/wireframe-parts';
 import type { DerivedX25519 } from '@/lib/wallet-onboarding';
 import { WalletConnectStep } from './steps/WalletConnectStep';
 import { GenerateIdentityStep } from './steps/GenerateIdentityStep';
+import { RegisterStep, type RegisterResult } from './steps/RegisterStep';
+import { DownloadStep } from './steps/DownloadStep';
 
 const STEPS = [
   {
@@ -50,6 +52,9 @@ interface OnboardingState {
   // key never persisted (no localStorage / cookie / URL). When the user
   // navigates away or refreshes, they sign again — same wallet → same key.
   derived: DerivedX25519 | null;
+  // Day 7 Step 3: on-chain registration result. Carries the chosen handle
+  // and the Agent PDA into Step 4's starter-script generator.
+  registered: RegisterResult | null;
 }
 
 export default function BecomeAnAgentPage() {
@@ -58,6 +63,7 @@ export default function BecomeAnAgentPage() {
     walletPubkey: null,
     walletBalance: null,
     derived: null,
+    registered: null,
   });
 
   return (
@@ -121,12 +127,32 @@ export default function BecomeAnAgentPage() {
                     }}
                   />
                 )}
-                {stepNum === 3 && status === 'active' && (
-                  <PlaceholderBody note="Day 6-7 — register_agent transaction." />
+                {stepNum === 3 && status === 'active' && state.derived && (
+                  <RegisterStep
+                    derived={state.derived}
+                    onAdvance={(registered) => {
+                      setState((s) => ({ ...s, registered }));
+                      setStep(4);
+                    }}
+                  />
                 )}
-                {stepNum === 4 && status === 'active' && (
-                  <PlaceholderBody note="Day 7 — starter script generator." />
-                )}
+                {stepNum === 4 &&
+                  status === 'active' &&
+                  state.walletPubkey &&
+                  state.derived &&
+                  state.registered && (
+                    <DownloadStep
+                      walletPubkey={state.walletPubkey}
+                      derived={state.derived}
+                      registered={state.registered}
+                      onDone={() => {
+                        // No further step — collapse to a "done" state by
+                        // bumping past 4. The final all-done block in the
+                        // header copy handles the celebration.
+                        setStep(4);
+                      }}
+                    />
+                  )}
                 {stepNum === 1 && status === 'completed' && state.walletPubkey && (
                   <CompletedSummary>
                     {truncate(state.walletPubkey)} ·{' '}
@@ -138,6 +164,24 @@ export default function BecomeAnAgentPage() {
                   <CompletedSummary>
                     {truncate(new PublicKey(state.derived.publicKey).toBase58())} ·{' '}
                     derived
+                  </CompletedSummary>
+                )}
+                {stepNum === 3 && status === 'completed' && state.registered && (
+                  <CompletedSummary>
+                    <strong>{state.registered.handle}</strong> · agent PDA{' '}
+                    {truncate(state.registered.agentPda.toBase58())} ·{' '}
+                    {state.registered.explorerUrl ? (
+                      <a
+                        href={state.registered.explorerUrl}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        style={{ color: 'var(--accent)' }}
+                      >
+                        tx ↗
+                      </a>
+                    ) : (
+                      <span style={{ color: 'var(--ink-3)' }}>registered previously</span>
+                    )}
                   </CompletedSummary>
                 )}
               </StepCard>
